@@ -1,0 +1,51 @@
+/* ============================================================
+   Portfolio Design Tokens
+   Source: Figma – Portfolio (node 39-2)
+   ============================================================ */
+
+:root {
+
+  /* --- Colors --- */
+  --color-flamingo:      #EB5127; /* primary orange: headings, titles, CTAs */
+  --color-tobacco-brown: #7A6045; /* body text dark */
+  --color-rum-swizzle:   #FCFAF0; /* page background cream */
+  --color-blue:          #2321D4; /* app card backgrounds */
+  --color-white:         #FFFFFF; /* text on blue cards */
+  --color-crowshead:     #1C1208; /* footer / nav dark */
+
+  /* --- Typography: Font families --- */
+  --font-family-heading:   "Inter", sans-serif;
+  --font-family-body:      "Inter", sans-serif;
+  --font-family-card-body: "DM Sans", sans-serif;
+
+  /* --- Typography: Sizes --- */
+  --font-size-heading:    55.2px;  /* display heading */
+  --font-size-body:       16.7px;  /* project descriptions, body copy */
+  --font-size-card-body:  20px;    /* text on blue cards */
+
+  /* --- Typography: Weights --- */
+  --font-weight-heading:    700;
+  --font-weight-body:       500;
+  --font-weight-card-body:  300;   /* Light */
+
+  /* --- Typography: Line heights --- */
+  --line-height-heading:   49.7px;
+  --line-height-body:      35px;
+  --line-height-card-body: 23.9px;
+
+  /* --- Typography: Letter spacing --- */
+  --letter-spacing-heading: -3.86px; /* tight tracking on display text */
+
+  /* --- Spacing --- */
+  --spacing-section-horizontal: 48px;  /* section left/right padding */
+  --spacing-section-gap:        72px;  /* vertical gap between sections */
+  --spacing-card-padding:       28px;  /* blue card internal padding */
+  --spacing-footer-horizontal:  48px;
+  --spacing-footer-vertical:    28px;
+
+  /* --- Border radius --- */
+  --radius-card: 16px;
+
+  /* --- Sizing --- */
+  --size-canvas-width: 1540px;    /* design frame / page max-width */
+}
