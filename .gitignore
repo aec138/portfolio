@@ -1,1 +1,4 @@
 .claude/
+.env
+.DS_Store
+assets/about/*.gif

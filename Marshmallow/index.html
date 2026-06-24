@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Designing a product no one wants — Alex Cain</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" defer></script>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --blue:   #3737f5;
+      --orange: #eb5127;
+      --cream:  #fcfaf0;
+      --brown:  #5e4630;
+      --dark:   #1c1208;
+      --border: #e5d5be;
+      --white:  #ffffff;
+      --pad-section-v:    56px;
+      --pad-section-h:    48px;
+      --pad-section-h-md: 4rem;
+      --pad-section-h-lg: 8rem;
+      --radius-card:  16px;
+      --radius-pill:  100px;
+      --radius-input: 10px;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--cream);
+      font-family: 'Barlow', sans-serif;
+      color: var(--brown);
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    .nav-wrapper {
+      position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+      z-index: 100;
+    }
+    .nav {
+      display: flex; align-items: center; gap: 40px;
+      padding: 8px 10px; height: 56px;
+      background: rgba(252,250,240,.9);
+      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+      border-radius: 28px; border: 1px solid var(--border);
+      white-space: nowrap;
+      transition: gap 0.3s ease;
+    }
+    .nav--scrolled .nav-avatar,
+    .nav--scrolled .nav-links,
+    .nav--scrolled .nav-hamburger { display: none; }
+    .nav--scrolled { gap: 0; }
+    .nav-avatar {
+      width: 40px; height: 40px; border-radius: 50%; overflow: hidden; flex-shrink: 0;
+      display: block; text-decoration: none;
+    }
+    .nav-avatar img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
+    .nav-links { display: flex; align-items: center; gap: 32px; list-style: none; }
+    .nav-links a {
+      font-family: 'Barlow', sans-serif; font-weight: 400; font-size: 16px;
+      color: var(--dark); text-decoration: none; transition: opacity .15s;
+    }
+    .nav-links a:hover { opacity: .6; }
+    a.nav-cta {
+      background: var(--orange); color: var(--dark) !important;
+      font-family: 'Barlow', sans-serif; font-weight: 500; font-size: 16px;
+      padding: 6px 20px 7px; border-radius: 99px;
+      white-space: nowrap; text-decoration: none; transition: opacity .15s; letter-spacing: 0;
+    }
+    a.nav-cta:hover { opacity: .82; }
+    .nav-hamburger {
+      display: none; flex-direction: column; gap: 5px;
+      cursor: pointer; background: none; border: none; padding: 4px; flex-shrink: 0;
+    }
+    .nav-hamburger span { display: block; width: 22px; height: 2px; background: var(--dark); border-radius: 2px; }
+    .nav-drawer {
+      display: none; position: absolute; top: calc(100% + 8px); left: 50%; transform: translateX(-50%);
+      background: rgba(252,250,240,.97); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+      border: 1px solid var(--border); border-radius: 20px;
+      padding: 16px 24px 20px; flex-direction: column; gap: 16px; z-index: 99;
+      min-width: 200px;
+    }
+    .nav-drawer.open { display: flex; }
+    .nav-drawer a {
+      font-family: 'Barlow', sans-serif; font-weight: 400; font-size: 18px;
+      color: var(--dark); text-decoration: none; transition: opacity .15s;
+    }
+    .nav-drawer a:hover { opacity: .6; }
+    .nav-drawer a.nav-cta {
+      background: var(--orange); color: var(--dark) !important;
+      padding: 8px 20px; border-radius: 99px; align-self: flex-start; margin-top: 4px; font-size: 16px;
+    }
+
+    /* ── SECTION HEADING ── */
+    .section-heading {
+      font-family: 'Barlow Condensed', sans-serif; font-weight: 900;
+      font-size: clamp(36px, 3.9vw, 50px); line-height: 1.05;
+      color: var(--orange); text-transform: uppercase; letter-spacing: -1.5px;
+    }
+
+    /* ── CASE STUDY HERO ── */
+    .cs-hero {
+      background: #89a2b6;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 48px;
+      padding: 172px var(--pad-section-h) var(--pad-section-v);
+      min-height: 432px;
+    }
+    .cs-hero-left { flex: 0 0 auto; max-width: 544px; }
+    .cs-hero-title {
+      font-family: 'Barlow Condensed', sans-serif; font-weight: 900;
+      font-size: clamp(40px, 5.5vw, 64px); line-height: 1.0;
+      color: #fdf8f2; text-transform: uppercase;
+    }
+    .cs-hero-right { flex: 0 0 auto; max-width: 550px; }
+    .cs-results-label {
+      font-family: 'Barlow', sans-serif; font-weight: 500;
+      font-size: 24px; letter-spacing: -1.8px;
+      color: rgba(253,248,242,0.93);
+      margin-bottom: 12px;
+    }
+    .cs-results-text {
+      font-family: 'Barlow', sans-serif; font-weight: 500;
+      font-size: clamp(24px, 3.5vw, 42px); line-height: 1.15; letter-spacing: -1.8px;
+      color: rgba(253,248,242,0.93);
+    }
+
+    /* ── HERO IMAGE ── */
+    .cs-image-wrap {
+      display: flex;
+      justify-content: center;
+      padding: 40px var(--pad-section-h) var(--pad-section-v);
+    }
+    .cs-image-frame {
+      border: 2px solid #2c352d;
+      border-bottom: 5px solid #2c352d;
+      border-radius: 16px;
+      overflow: hidden;
+      max-width: 902px;
+      width: 100%;
+    }
+    .cs-image-frame img,
+    .cs-image-frame video { width: 100%; display: block; }
+
+    /* ── TEAM STRIP ── */
+    .cs-team {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px var(--pad-section-h);
+      min-height: 128px;
+    }
+    .cs-team-heading {
+      font-family: 'Barlow Condensed', sans-serif; font-weight: 900;
+      font-size: clamp(36px, 3.9vw, 50px); line-height: 1.05;
+      color: var(--orange); text-transform: uppercase; letter-spacing: -1.5px;
+    }
+    .cs-team-meta {
+      display: flex;
+      gap: 40px;
+      align-items: flex-start;
+    }
+    .cs-meta-block {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding-top: 8px;
+    }
+    .cs-meta-icon {
+      width: 28px; height: 28px;
+      display: block;
+      margin-bottom: 2px;
+    }
+    .cs-meta-label {
+      font-family: 'Barlow', sans-serif; font-weight: 500;
+      font-size: 20px; letter-spacing: -1.4px;
+      color: var(--brown); line-height: 1.1;
+    }
+    .cs-meta-value {
+      font-family: 'Barlow', sans-serif; font-weight: 400;
+      font-size: 18px; line-height: 28px;
+      color: var(--brown);
+    }
+
+    /* ── CONTENT AREA ── */
+    .cs-content {
+      display: flex;
+      flex-direction: column;
+      gap: 64px;
+      padding: 72px var(--pad-section-h);
+    }
+
+    /* ── CONTENT ROWS (2-col) ── */
+    .cs-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 40px;
+    }
+    .cs-row-left {
+      flex: 0 0 380px;
+      min-width: 0;
+    }
+    .cs-row-right {
+      flex: 1;
+      max-width: 550px;
+      padding-top: 32px;
+      padding-bottom: 8px;
+    }
+    .cs-row-right--wide { max-width: none; }
+
+    /* Body text */
+    .cs-body {
+      font-family: 'Barlow', sans-serif; font-weight: 400;
+      font-size: 18px; line-height: 28px; color: var(--brown);
+    }
+    .cs-body p + p { margin-top: 16px; }
+    .cs-body em { font-style: italic; }
+    .cs-body strong { font-weight: 600; }
+    .cs-sub {
+      font-family: 'Barlow', sans-serif; font-weight: 500;
+      font-size: 24px; letter-spacing: -1.8px;
+      color: var(--brown); line-height: 1.1;
+      margin-bottom: 6px;
+    }
+    .cs-sub + .cs-body { /* adjacent */ }
+
+    /* ── RESEARCH ITEMS ── */
+    .cs-research-items {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      max-width: 500px;
+    }
+    .cs-research-item {
+      padding: 18px 0 20px;
+    }
+    .cs-research-label {
+      font-family: 'Barlow', sans-serif; font-weight: 500;
+      font-size: 24px; letter-spacing: -1.8px; color: var(--brown);
+      margin-bottom: 8px; line-height: 1.1;
+    }
+    .cs-research-body {
+      font-family: 'Barlow', sans-serif; font-weight: 400;
+      font-size: 18px; line-height: 28px; color: var(--brown);
+    }
+    .cs-research-body em { font-style: italic; }
+    .cs-research-body strong { font-weight: 600; }
+
+    /* ── PULL QUOTE ── */
+    .cs-pull-quote {
+      background: #838e49;
+      border: 2px solid var(--brown);
+      border-bottom: 5px solid var(--brown);
+      border-radius: 12px;
+      min-height: 242px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 48px;
+      overflow: hidden;
+    }
+    .cs-pull-quote-text {
+      font-family: 'Barlow Condensed', sans-serif; font-weight: 900;
+      font-size: clamp(30px, 4vw, 50px); line-height: 1.05;
+      color: var(--white); text-transform: uppercase;
+      max-width: 790px;
+    }
+
+    /* ── RESULT CARDS ── */
+    .cs-result-cards {
+      display: flex;
+      gap: 24px;
+      padding-top: 32px;
+      padding-bottom: 8px;
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* ── DECO CARD (unified component) ── */
+    .cs-deco-card {
+      border-radius: 16px;
+      overflow: hidden;
+      position: relative;
+      flex: 1;
+      min-height: 180px;
+    }
+    .cs-deco-card--pink  { background: #ff88c8; }
+    .cs-deco-card-body {
+      padding: 24px;
+      position: relative;
+      z-index: 1;
+      width: 50%;
+      min-height: 180px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: flex-start;
+    }
+    .cs-deco-card-img {
+      position: absolute;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      width: 55%;
+      overflow: hidden;
+    }
+    .cs-deco-card-img img {
+      position: absolute;
+      width: 131%;
+      height: 100%;
+      object-fit: cover;
+      object-position: left center;
+      left: -16%;
+      top: 0;
+    }
+    .cs-deco-card-text {
+      font-family: 'Barlow', sans-serif; font-weight: 500;
+      font-size: 24px; letter-spacing: -1.8px;
+      color: var(--dark); line-height: 1.0;
+    }
+
+    /* ── PHONE PANEL ── */
+    .cs-phone-panel {
+      background: #89a2b6;
+      border-radius: 16px;
+      display: flex;
+      gap: 32px;
+      align-items: center;
+      justify-content: center;
+      min-height: 602px;
+      overflow: hidden;
+      width: 100%;
+    }
+    .cs-phone-panel-phone {
+      height: 454px;
+      width: 233px;
+      border-radius: 16px;
+      overflow: hidden;
+      position: relative;
+      flex-shrink: 0;
+    }
+    .cs-phone-panel-phone img {
+      position: absolute;
+      width: 100%;
+      height: 105.71%;
+      top: -0.08%;
+      left: 0;
+      object-fit: cover;
+    }
+
+    /* ── FULL WIDTH IMAGE ── */
+    .cs-full-image {
+      border: 1px solid #e5e7eb;
+      border-bottom: 5px solid #e5e7eb;
+      border-radius: 16px;
+      overflow: hidden;
+      width: 100%;
+    }
+    .cs-full-image img { width: 100%; display: block; }
+
+    /* ── BROWSER SCREENSHOT ── */
+    .cs-browser {
+      border: 2px solid #bbcfdf;
+      border-bottom: 5px solid #bbcfdf;
+      border-radius: 12px;
+      overflow: hidden;
+      background: white;
+    }
+    .cs-browser img { display: block; width: 100%; }
+
+    /* ── BRAND GRID ── */
+    .cs-brand-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 16px;
+      min-height: 540px;
+    }
+    .cs-brand-col-1 {
+      grid-column: 1 / span 2;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .cs-brand-col-2 {
+      grid-column: 3 / span 2;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .cs-brand-col-main {
+      grid-column: 5 / span 8;
+      background: #838e49;
+      border-radius: 16px;
+      display: flex;
+      gap: 32px;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 24px;
+      min-height: 540px;
+    }
+    .cs-brand-asset {
+      border: 2px solid var(--dark);
+      border-bottom: 5px solid var(--dark);
+      border-radius: 12px;
+      overflow: hidden;
+      background: var(--white);
+      flex: 1;
+    }
+    .cs-brand-asset img { width: 100%; display: block; object-fit: contain; }
+    .cs-brand-asset--tall { flex: 2.1; }
+    .cs-brand-asset--dark {
+      border-color: #2c352d;
+    }
+    .cs-brand-phone {
+      height: 460px; width: 210px;
+      border-radius: 14px; overflow: hidden;
+      flex-shrink: 0;
+    }
+    .cs-brand-phone img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .cs-brand-full {
+      grid-column: 1 / span 12;
+      background: #838e49;
+      border-radius: 16px;
+      overflow: hidden;
+      min-height: 300px;
+    }
+    .cs-brand-full img { width: 100%; display: block; object-fit: cover; max-height: 400px; }
+
+    /* ── CONTACT ── */
+    .contact { border-top: 1px solid var(--border); padding: var(--pad-section-v) var(--pad-section-h); }
+    .contact-grid { display: grid; grid-template-columns: 1fr 1.4fr; gap: 48px; max-width: 1450px; }
+    .contact-photo { width: 240px; height: 300px; border-radius: 14px; object-fit: cover; object-position: center 15%; display: block; }
+    .contact-blurb { font-family: 'Barlow', sans-serif; font-weight: 400; font-size: 18px; line-height: 28px; color: var(--brown); margin-top: 20px; max-width: 340px; }
+    .contact-heading { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: clamp(36px, 3.9vw, 50px); line-height: 1.05; color: var(--orange); text-transform: uppercase; margin-bottom: 8px; }
+    .contact-form { display: flex; flex-direction: column; gap: 10px; margin-top: 18px; }
+    .form-field { background: var(--cream); border: 1px solid var(--border); border-radius: 10px; padding: 14px 17px; font-family: 'Barlow', sans-serif; font-weight: 400; font-size: 18px; line-height: 28px; color: var(--brown); width: 100%; outline: none; appearance: none; transition: border-color .15s; }
+    .form-field::placeholder { color: var(--brown); opacity: .7; }
+    .form-field:focus { border-color: var(--orange); }
+    textarea.form-field { height: 100px; resize: vertical; }
+    .form-submit { background: var(--dark); color: var(--white); font-family: 'Barlow', sans-serif; font-weight: 600; font-size: 18px; letter-spacing: 1.3px; text-transform: uppercase; border: none; border-radius: 10px; padding: 14px; cursor: pointer; width: 100%; transition: opacity .15s; }
+    .form-submit:hover { opacity: .82; }
+
+    /* ── FOOTER BAR ── */
+    .footer-bar { background: var(--dark); padding: 28px 48px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+    .footer-copy { font-family: 'Barlow', sans-serif; font-weight: 400; font-size: 13px; letter-spacing: .46px; color: var(--white); }
+    .footer-links { display: flex; gap: 20px; list-style: none; }
+    .footer-links a { font-family: 'Barlow', sans-serif; font-weight: 400; font-size: 13px; letter-spacing: .69px; text-transform: uppercase; color: var(--white); text-decoration: none; transition: opacity .15s; }
+    .footer-links a:hover { opacity: .65; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .nav { gap: 16px; max-width: calc(100vw - 32px); }
+      .nav-links { display: none; }
+      .nav-hamburger { display: flex; }
+      .cs-hero { flex-direction: column; gap: 32px; padding: 140px 24px 56px; min-height: auto; }
+      .cs-hero-left { max-width: 100%; }
+      .cs-hero-right { max-width: 100%; }
+      .cs-image-wrap { padding: var(--pad-section-v) 24px; }
+      .cs-team { flex-direction: column; align-items: flex-start; padding: 32px 24px; gap: 20px; min-height: auto; }
+      .cs-team-meta { flex-wrap: wrap; gap: 24px; }
+      .cs-content { padding: 48px 24px; gap: 48px; }
+      .cs-row { flex-direction: column; gap: 12px; }
+      .cs-row-left { flex: none; width: 100%; }
+      .cs-row-right { max-width: 100%; padding-top: 0; padding-bottom: 0; }
+      .cs-result-cards { flex-direction: column; padding-top: 0; gap: 16px; }
+      .cs-deco-card { min-height: 160px; }
+      .cs-deco-card-body { min-height: 160px; }
+      .cs-phone-panel { gap: 16px; min-height: 350px; }
+      .cs-phone-panel-phone { height: 300px; width: 160px; }
+      .cs-pull-quote { padding: 24px; }
+      .cs-brand-grid { grid-template-columns: 1fr 1fr; gap: 10px; min-height: auto; }
+      .cs-brand-col-1 { grid-column: 1 / span 1; }
+      .cs-brand-col-2 { grid-column: 2 / span 1; }
+      .cs-brand-col-main { grid-column: 1 / span 2; min-height: 280px; }
+      .cs-brand-full { display: none; }
+      .cs-brand-phone { height: 280px; width: 130px; }
+      .contact { padding: 56px 24px; }
+      .contact-grid { grid-template-columns: 1fr; gap: 40px; }
+      .contact-photo { width: 180px; height: 220px; }
+      .footer-bar { padding: 24px; }
+    }
+    @media (max-width: 600px) {
+      .cs-hero { padding: 120px 24px 48px; }
+      .cs-hero-title { font-size: 36px; }
+      .cs-results-text { font-size: 22px; }
+      .cs-pull-quote-text { font-size: 28px; }
+      .cs-team-heading { font-size: 36px; }
+    }
+    @media (min-width: 768px) {
+      .cs-hero { padding-left: var(--pad-section-h-md); padding-right: var(--pad-section-h-md); }
+      .cs-image-wrap { padding-left: var(--pad-section-h-md); padding-right: var(--pad-section-h-md); }
+      .cs-team { padding-left: var(--pad-section-h-md); padding-right: var(--pad-section-h-md); }
+      .cs-content { padding-left: var(--pad-section-h-md); padding-right: var(--pad-section-h-md); }
+      .contact { padding-left: var(--pad-section-h-md); padding-right: var(--pad-section-h-md); }
+    }
+    @media (min-width: 1024px) {
+      .cs-hero { padding-left: var(--pad-section-h-lg); padding-right: var(--pad-section-h-lg); }
+      .cs-image-wrap { padding-left: var(--pad-section-h-lg); padding-right: var(--pad-section-h-lg); }
+      .cs-team { padding-left: var(--pad-section-h-lg); padding-right: var(--pad-section-h-lg); }
+      .cs-content { padding-left: var(--pad-section-h-lg); padding-right: var(--pad-section-h-lg); }
+      .contact { padding-left: var(--pad-section-h-lg); padding-right: var(--pad-section-h-lg); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<header>
+  <div class="nav-wrapper">
+    <nav class="nav" aria-label="Main navigation">
+      <a href="../index.html" class="nav-avatar">
+        <img src="../assets/alex-hero.jpg" alt="Alex Cain">
+      </a>
+      <ul class="nav-links" role="list">
+        <li><a href="../about.html">About</a></li>
+        <li><a href="../projects.html">My Projects</a></li>
+        <li><a href="https://substack.com/@alexcaindesign" target="_blank" rel="noopener">My Thoughts</a></li>
+        <li><a href="https://docs.google.com/document/d/1baQoC_o6pZB8Hsee8ddzqnkunp4sn146tAxX6LeLSK4/edit?pli=1&tab=t.vh9lp2u1ry7g#heading=h.x8fm1uorkbaw" target="_blank" rel="noopener">CV</a></li>
+      </ul>
+      <a href="#contact" class="nav-cta">Contact</a>
+      <button class="nav-hamburger" aria-label="Open menu" aria-expanded="false" onclick="toggleMenu(this)">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+    <nav class="nav-drawer" id="navDrawer" aria-label="Mobile navigation">
+      <a href="../about.html" onclick="closeMenu()">About</a>
+      <a href="../projects.html" onclick="closeMenu()">My Projects</a>
+      <a href="../index.html#apps" onclick="closeMenu()">My Thoughts</a>
+      <a href="https://docs.google.com/document/d/1baQoC_o6pZB8Hsee8ddzqnkunp4sn146tAxX6LeLSK4/edit?pli=1&tab=t.vh9lp2u1ry7g#heading=h.x8fm1uorkbaw" target="_blank" rel="noopener" onclick="closeMenu()">CV</a>
+      <a href="#contact" class="nav-cta" onclick="closeMenu()">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<!-- CASE STUDY HERO -->
+<section class="cs-hero" aria-label="Case study hero">
+  <div class="cs-hero-left">
+    <h1 class="cs-hero-title">Designing a product no one wants</h1>
+  </div>
+  <div class="cs-hero-right">
+    <p class="cs-results-label">Results</p>
+    <p class="cs-results-text">Released in Dec 2025, by April 2026 it was Marshmallow's fastest selling product and already over 40% of all Marshmallow customer policies.</p>
+  </div>
+</section>
+
+<!-- EXPLAINER VIDEO -->
+<div class="cs-image-wrap">
+  <div class="cs-image-frame">
+    <video
+      src="Telematics full sequence 001.mp4"
+      controls
+      muted
+      playsinline
+      preload="metadata"
+      class="cs-video"
+      aria-label="Marshmallow telematics explainer video"
+    ></video>
+  </div>
+</div>
+
+<!-- TEAM STRIP -->
+<div class="cs-team">
+  <h2 class="cs-team-heading">The team</h2>
+  <div class="cs-team-meta">
+    <div class="cs-meta-block">
+      <svg class="cs-meta-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 25.3333C21.1547 25.3333 25.3333 21.1547 25.3333 16C25.3333 10.8453 21.1547 6.66667 16 6.66667C10.8453 6.66667 6.66667 10.8453 6.66667 16C6.66667 21.1547 10.8453 25.3333 16 25.3333Z"/><path d="M16 12V16L18 18"/><path d="M22.0133 23.1333L21.5467 28.24C21.4866 28.9049 21.1793 29.523 20.6856 29.9723C20.1919 30.4216 19.5476 30.6694 18.88 30.6667H13.1067C12.4391 30.6694 11.7948 30.4216 11.3011 29.9723C10.8073 29.523 10.5001 28.9049 10.44 28.24L9.97333 23.1333M9.98667 8.86667L10.4533 3.76C10.5132 3.09744 10.8186 2.48118 11.3095 2.0322C11.8004 1.58323 12.4414 1.33396 13.1067 1.33333H18.9067C19.5742 1.33062 20.2185 1.5784 20.7123 2.0277C21.206 2.477 21.5133 3.09514 21.5733 3.76L22.04 8.86667"/></svg>
+      <span class="cs-meta-label">Timeframe</span>
+      <span class="cs-meta-value">4 months</span>
+    </div>
+    <div class="cs-meta-block">
+      <svg class="cs-meta-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 25.3333L25.3333 16L29.3333 20L20 29.3333L16 25.3333Z"/><path d="M24 17.3333L22 7.33333L2.66667 2.66667L7.33333 22L17.3333 24L24 17.3333Z"/><path d="M2.66667 2.66667L12.7813 12.7813"/><path d="M14.6667 17.3333C16.1394 17.3333 17.3333 16.1394 17.3333 14.6667C17.3333 13.1939 16.1394 12 14.6667 12C13.1939 12 12 13.1939 12 14.6667C12 16.1394 13.1939 17.3333 14.6667 17.3333Z"/></svg>
+      <span class="cs-meta-label">My role</span>
+      <span class="cs-meta-value">Staff Designer</span>
+    </div>
+    <div class="cs-meta-block">
+      <svg class="cs-meta-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22.6667 28V25.3333C22.6667 23.9188 22.1048 22.5623 21.1046 21.5621C20.1044 20.5619 18.7478 20 17.3333 20H6.66667C5.25218 20 3.89562 20.5619 2.89543 21.5621C1.89524 22.5623 1.33333 23.9188 1.33333 25.3333V28"/><path d="M12 14.6667C14.9455 14.6667 17.3333 12.2789 17.3333 9.33333C17.3333 6.38781 14.9455 4 12 4C9.05448 4 6.66667 6.38781 6.66667 9.33333C6.66667 12.2789 9.05448 14.6667 12 14.6667Z"/><path d="M30.6667 28V25.3333C30.6658 24.1516 30.2725 23.0037 29.5485 22.0698C28.8245 21.1358 27.8108 20.4688 26.6667 20.1733"/><path d="M21.3333 4.17333C22.4806 4.46707 23.4974 5.13427 24.2235 6.06975C24.9497 7.00523 25.3438 8.15577 25.3438 9.34C25.3438 10.5242 24.9497 11.6748 24.2235 12.6103C23.4974 13.5457 22.4806 14.2129 21.3333 14.5067"/></svg>
+      <span class="cs-meta-label">Squad team</span>
+      <span class="cs-meta-value">Devs, PM, CMT &amp; Data</span>
+    </div>
+  </div>
+</div>
+
+<!-- CONTENT -->
+<div class="cs-content">
+
+  <!-- THE PROBLEM -->
+  <div class="cs-row">
+    <div class="cs-row-left">
+      <h2 class="section-heading">The problem</h2>
+    </div>
+    <div class="cs-row-right">
+      <div class="cs-body">
+        <p>Marshmallow initially gained a competitive edge by selling insurance to the migrant market, having gathered sufficient data to underwrite this typically underserved segment. However, competitors can now also take on this risk using Telematics.</p>
+        <p>The challenge is: Marshmallow needs to develop a Telematics product to stay in the race but given that many of our customers are non-native English speakers and telematics has a poor reputation, how can we create a unique, appealing product when the business won't offer the lowest price?</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- THE RESULT -->
+  <div class="cs-row">
+    <div class="cs-row-left">
+      <h2 class="section-heading">The Result</h2>
+    </div>
+  </div>
+  <div class="cs-result-cards">
+    <div class="cs-deco-card cs-deco-card--pink">
+      <div class="cs-deco-card-body">
+        <p class="cs-deco-card-text">MVP became the top selling product in less than three months</p>
+      </div>
+      <div class="cs-deco-card-img">
+        <img src="globe-coins-a.png" alt="">
+      </div>
+    </div>
+    <div class="cs-deco-card cs-deco-card--pink">
+      <div class="cs-deco-card-body">
+        <p class="cs-deco-card-text">Company targets moved from the red into the green from sales.</p>
+      </div>
+      <div class="cs-deco-card-img">
+        <img src="globe-coins-b.png" alt="">
+      </div>
+    </div>
+  </div>
+
+  <!-- RESEARCH -->
+  <div class="cs-row">
+    <div class="cs-row-left">
+      <h2 class="section-heading">Research</h2>
+    </div>
+    <div class="cs-row-right">
+      <div class="cs-research-items">
+        <div class="cs-research-item">
+          <p class="cs-research-label">What we wanted to learn</p>
+          <p class="cs-research-body">What level of understanding do Marshmallow customers have of telematics and what would they value in a hyper competitive space?<br><br><em>Marshmallow customers lean towards migrant healthcare workers who have been in the UK 2–5 years. Average salary £37k.</em></p>
+        </div>
+        <div class="cs-research-item">
+          <p class="cs-research-label">Method</p>
+          <p class="cs-research-body">Survey, card sort and qual interviews.</p>
+        </div>
+        <div class="cs-research-item">
+          <p class="cs-research-label">Result</p>
+          <div class="cs-research-body">
+            <p>Contrary to our hypothesis, our audience understood telematics pretty well. However, universally they held negative perceptions towards Telematics, many viewed "black boxes" as a mechanism for companies to exploit their data.</p>
+            <p style="margin-top:16px">When investigating what would make a telematics product appealing, card sorting revealed that users prioritised a minimum 20% discount and direct financial rewards, valuing these significantly more than incentives like vouchers or eco-scores.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PULL QUOTE 1 -->
+  <div class="cs-pull-quote">
+    <p class="cs-pull-quote-text">Users were willing to pay up to £1k more to feel more secure that their policy would not "trick them"</p>
+  </div>
+
+  <!-- FUTURE ITERATIONS -->
+  <div class="cs-row">
+    <div class="cs-row-left">
+      <h2 class="section-heading">Future iterations</h2>
+    </div>
+    <div class="cs-row-right">
+      <div class="cs-body">
+        <p><strong>AI insight</strong><br>While AI can demonstrate cost savings, I chose not to highlight this. When I did present it in deeper trips insights, it was met with skepticism, reflecting Marshmallow's demographic, which was more cautious about AI than UK-born customers.</p>
+        <p><strong>Financial incentives</strong><br>Though this was clearly peoples' desired outcome the business was not in position to give this, so though mocked and tested well this is not a probable solution.</p>
+        <p><strong>Cost saving and environment</strong><br>Financial benefit can come in many forms, so if the business could not provide rewards we could show people how to save? Working with CMT I was able to work out what insights we could show and what data we could connect to, this was chosen as the direction moving forward.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- FUTURE ITERATIONS PHONE PANEL -->
+  <div class="cs-phone-panel">
+    <div class="cs-phone-panel-phone">
+      <img src="phone-future-1.png" alt="Marshmallow telematics app — screen 1">
+    </div>
+    <div class="cs-phone-panel-phone">
+      <img src="phone-future-2.png" alt="Marshmallow telematics app — screen 2">
+    </div>
+    <div class="cs-phone-panel-phone">
+      <img src="phone-future-3.png" alt="Marshmallow telematics app — screen 3">
+    </div>
+  </div>
+
+  <!-- BLOCKERS -->
+  <div class="cs-row">
+    <div class="cs-row-left">
+      <h2 class="section-heading">Blockers</h2>
+    </div>
+    <div class="cs-row-right">
+      <p class="cs-sub">Physical device or app only</p>
+      <div class="cs-body">
+        <p>We spent weeks debating with the business a physical device versus an app-only solution for cost reasons. Working with the lead data scientist research settled it: by surfacing user distrust in recent interviews and demonstrating the unreliability of app-only tracking, we proved that ignoring these concerns risked our credibility.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- DESIGN -->
+  <div class="cs-row">
+    <div class="cs-row-left">
+      <h2 class="section-heading">Design</h2>
+    </div>
+    <div class="cs-row-right">
+      <p class="cs-sub">Getting the fundamentals right</p>
+      <div class="cs-body">
+        <p>To start this task I built out the flow, this had web to app, purchase to download, onboarding, delivery, activation, fraud. Each with its own levels of A/B testing.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- PULL QUOTE 2 -->
+  <div class="cs-pull-quote">
+    <p class="cs-pull-quote-text">tOO TRANSPARENT PEOPLE WON'T ACTIVATE THEIR tag, too discreet people will cancel later.</p>
+  </div>
+
+  <!-- SYSTEM MAP A (again) -->
+  <div class="cs-full-image">
+    <img src="system-map-a.png" alt="Telematics flow design">
+  </div>
+
+  <!-- BALANCE / EMAIL (right col only) -->
+  <div class="cs-row">
+    <div class="cs-row-left"><!-- spacing placeholder --></div>
+    <div class="cs-row-right">
+      <p class="cs-sub">Balance in transparency and activation</p>
+      <div class="cs-body">
+        <p>When selling a telematics product too much information might scare users from purchase, too little can be unethical and increase cancellation later in the journey. My personal stance was to lean more in transparency using visual and written cues for non English speaking. This included video animation, new information components and a comprehensive FAQ.</p>
+      </div>
+      <p class="cs-sub" style="margin-top: 20px;">Email is very much a part of the design</p>
+      <div class="cs-body">
+        <p>When your biggest risk is activation your email and CRM design are as important as your onboarding. I sketched the cadence that I think balanced the requirement being too aggressive and worked with the PM and the CRM team to agree the A/B tests we would run.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- BROWSER SCREENSHOT -->
+  <div class="cs-browser">
+    <img src="quote-page-screen.png" alt="Marshmallow telematics landing page design">
+  </div>
+
+  <!-- TAPPING INTO BRAND (right col only) -->
+  <div class="cs-row">
+    <div class="cs-row-left">
+      <h2 class="section-heading">Trade offs</h2>
+    </div>
+    <div class="cs-row-right">
+      <div class="cs-body">
+        <p>The limitations of the MVP including resource, experience and time constraint were a key factor in my decision to pivot my efforts from app capability and new components for web to our strongest asset in the insurance market, a strong sense of brand. I initially collaborated with our in-house branding and design team. Unfortunately, they were made redundant mid-project, which meant I took over the coordination of external freelancers to ensure the video was completed. The final deliverables included an animated explainer video, a custom-branded box design, new marshforms (brand illustrations) and a tightened visual language for the telematics system.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- BRAND ASSETS GRID -->
+  <div class="cs-brand-grid" aria-label="Marshmallow brand assets">
+    <div class="cs-brand-col-1">
+      <div class="cs-brand-asset cs-brand-asset--tall">
+        <img src="brand-colour.png" alt="Marshmallow brand colours">
+      </div>
+      <div class="cs-brand-asset">
+        <img src="brand-spacing.png" alt="Marshmallow brand spacing">
+      </div>
+    </div>
+    <div class="cs-brand-col-2">
+      <div class="cs-brand-asset">
+        <img src="brand-flags.png" alt="Marshmallow brand flags">
+      </div>
+      <div class="cs-brand-asset">
+        <img src="brand-icons.png" alt="Marshmallow brand icons">
+      </div>
+      <div class="cs-brand-asset cs-brand-asset--dark">
+        <img src="brand-type.png" alt="Marshmallow brand typography">
+      </div>
+    </div>
+    <div class="cs-brand-col-main">
+      <div class="cs-brand-phone">
+        <img src="phone-brand-1.png" alt="Marshmallow telematics app screen">
+      </div>
+      <div class="cs-brand-phone">
+        <img src="phone-brand-2.png" alt="Marshmallow telematics app screen">
+      </div>
+    </div>
+  </div>
+
+  <!-- ITERATIONS (right col only) -->
+  <div class="cs-row">
+    <div class="cs-row-left"><!-- spacing placeholder --></div>
+    <div class="cs-row-right">
+      <p class="cs-sub">Iterations</p>
+      <div class="cs-body">
+        <p>The fear I had with this project would be that the app would stop at MVP so I designed iterations and scoped early with devs and demonstrated how they compared to competitors, as a result trips was a quick follow. I was asked to take over a new 0-1 venture for Marshmallow and more price optimisations have taken over but the foundations are there and the research is there to show the direction which would differentiate for consumers. But ultimately I do understand that when it comes to insurance price wins.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- TRIPS SCREENSHOT -->
+  <div class="cs-full-image">
+    <img src="trips-new.png" alt="Marshmallow Trips feature">
+  </div>
+
+  <!-- LESSONS LEARNED -->
+  <div class="cs-row">
+    <div class="cs-row-left">
+      <h2 class="section-heading">Lessons learned</h2>
+    </div>
+    <div class="cs-row-right">
+      <p class="cs-sub">Understand where decisions get made and show up.</p>
+      <div class="cs-body">
+        <p>As someone new to Telematics and the company, I initially invested time envisioning a differentiated Marshmallow Telematics product, this was supported by the product team. But Marshmallow isn't like other tech companies I had worked for, while designing, I noticed a lot of secondhand feedback from leadership, leading to mixed priority messages. The PMs would meet with SLT, causing shifts in focus. Design wasn't included in discussions so I arranged a walkthrough to highlight key areas that could impact metrics, seeking guidance on top-level product decisions. From then on design did have a seat at the table leading to better communication and understanding. Being involved earlier could have enhanced my influence and help me understand Marshmallow and how decisions got made. Once I understood this I made sure to have more touch points, more feedback and more aligned goals throughout the project.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SYSTEM MAP -->
+  <div class="cs-full-image">
+    <img src="system-map-b.png" alt="Telematics product design system map">
+  </div>
+
+  <!-- WHAT I ENJOYED -->
+  <div class="cs-row">
+    <div class="cs-row-left">
+      <h2 class="section-heading">What I enjoyed</h2>
+    </div>
+    <div class="cs-row-right">
+      <p class="cs-sub">Variety</p>
+      <div class="cs-body">
+        <p>We're often asked what we would change after a project but each project reveals what we appreciate about our work too. I enjoyed this project for its variety in design aspects and the depth of understanding required in data and technology, all while collaborating with multiple stakeholders.</p>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /cs-content -->
+
+<!-- LET'S WORK TOGETHER -->
+<section class="contact" id="contact" aria-labelledby="contact-heading">
+  <div class="contact-grid">
+    <div>
+      <img src="../assets/alex-contact.jpg" alt="Alex Cain" class="contact-photo">
+      <p class="contact-blurb">Always happy to have a chat or a coffee, whether it's a big product challenge or just a conversation, feel free to reach&nbsp;out.</p>
+    </div>
+    <div>
+      <h2 class="contact-heading" id="contact-heading">Let's Work<br>Together</h2>
+      <form class="contact-form" action="mailto:hi@alexecain.com" method="post" enctype="text/plain">
+        <input type="text"  class="form-field" name="name"    placeholder="Name"    autocomplete="name">
+        <input type="email" class="form-field" name="email"   placeholder="Email"   autocomplete="email">
+        <textarea class="form-field" name="message" placeholder="What can I help you with..."></textarea>
+        <button type="submit" class="form-submit">Submit</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER BAR -->
+<footer class="footer-bar">
+  <p class="footer-copy">© 2026 Alex Cain · Evidence | Strategy | Design</p>
+  <ul class="footer-links" role="list">
+    <li><a href="mailto:hi@alexecain.com">Email</a></li>
+    <li><a href="https://www.linkedin.com/in/alexandraecain/" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+    <li><a href="https://docs.google.com/document/d/1baQoC_o6pZB8Hsee8ddzqnkunp4sn146tAxX6LeLSK4/edit?pli=1&tab=t.vh9lp2u1ry7g#heading=h.x8fm1uorkbaw" target="_blank" rel="noopener">Download CV</a></li>
+  </ul>
+</footer>
+
+<script>
+  function toggleMenu(btn) {
+    const drawer = document.getElementById('navDrawer');
+    const open = drawer.classList.toggle('open');
+    btn.setAttribute('aria-expanded', String(open));
+  }
+  function closeMenu() {
+    document.getElementById('navDrawer').classList.remove('open');
+    const btn = document.querySelector('.nav-hamburger');
+    if (btn) btn.setAttribute('aria-expanded', 'false');
+  }
+
+  // Nav scroll collapse
+  (function () {
+    var wrapper = document.querySelector('.nav-wrapper');
+    if (!wrapper) return;
+    function onScroll() {
+      wrapper.classList.toggle('nav--scrolled', window.scrollY > 60);
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+  })();
+
+  // GSAP scroll animations
+  window.addEventListener('DOMContentLoaded', function () {
+    if (typeof gsap === 'undefined') return;
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Hero entrance
+    gsap.from('.cs-hero-title', { y: 24, opacity: 0, duration: 0.65, ease: 'power2.out', delay: 0.1 });
+    gsap.from('.cs-hero-right', { y: 20, opacity: 0, duration: 0.65, ease: 'power2.out', delay: 0.25 });
+    gsap.from('.cs-image-frame', { y: 28, opacity: 0, duration: 0.7, ease: 'power2.out', delay: 0.4 });
+
+    // Team strip
+    gsap.from('.cs-team', {
+      y: 20, opacity: 0, duration: 0.55, ease: 'power2.out',
+      scrollTrigger: { trigger: '.cs-team', start: 'top 88%', toggleActions: 'play none none none' }
+    });
+
+    // Each content row
+    document.querySelectorAll('.cs-row, .cs-pull-quote, .cs-full-image, .cs-phone-panel, .cs-browser, .cs-brand-grid, .cs-brand-full').forEach(function (el) {
+      gsap.from(el, {
+        y: 28, opacity: 0, duration: 0.65, ease: 'power2.out',
+        scrollTrigger: { trigger: el, start: 'top 87%', toggleActions: 'play none none none' }
+      });
+    });
+  });
+</script>
+</body>
+</html>

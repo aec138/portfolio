@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Me — Alex Cain</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,800;0,900;1,400&family=Barlow:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --blue:   #3737f5;
+      --orange: #eb5127;
+      --cream:  #fcfaf0;
+      --brown:  #5e4630;
+      --dark:   #1c1208;
+      --border: #e5d5be;
+      --white:  #ffffff;
+      --pad-section-v:    56px;
+      --pad-section-h:    48px;
+      --pad-section-h-md: 4rem;
+      --pad-section-h-lg: 8rem;
+      --text-hero:    clamp(56px, 9.8vw, 158px);
+      --text-heading: clamp(36px, 3.9vw, 50px);
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--cream);
+      font-family: 'Barlow', sans-serif;
+      color: var(--brown);
+      overflow-x: hidden;
+    }
+
+    /* NAV — cream/frosted style for about page */
+    .nav-wrapper {
+      position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+      z-index: 100;
+    }
+    .nav {
+      display: flex; align-items: center; gap: 40px;
+      padding: 8px 10px; height: 56px;
+      background: rgba(252,250,240,.9);
+      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+      border-radius: 28px; border: 1px solid var(--border);
+      white-space: nowrap;
+      transition: gap 0.3s ease;
+    }
+    .nav--scrolled .nav-avatar,
+    .nav--scrolled .nav-links,
+    .nav--scrolled .nav-hamburger { display: none; }
+    .nav--scrolled { gap: 0; }
+    .nav-avatar {
+      width: 40px; height: 40px; border-radius: 50%; overflow: hidden; flex-shrink: 0;
+      display: block; text-decoration: none;
+    }
+    .nav-avatar img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
+    .nav-links { display: flex; align-items: center; gap: 32px; list-style: none; }
+    .nav-links a {
+      font-family: 'Barlow', sans-serif; font-weight: 400; font-size: 16px;
+      color: var(--dark); text-decoration: none; transition: opacity .15s;
+    }
+    .nav-links a:hover { opacity: .6; }
+    .nav-links a.active { font-weight: 600; }
+    a.nav-cta {
+      background: var(--orange); color: var(--dark) !important;
+      font-family: 'Barlow', sans-serif; font-weight: 500; font-size: 16px;
+      padding: 6px 20px 7px; border-radius: 99px;
+      white-space: nowrap; text-decoration: none; transition: opacity .15s; letter-spacing: 0;
+    }
+    a.nav-cta:hover { opacity: .82; }
+    .nav-hamburger {
+      display: none; flex-direction: column; gap: 5px;
+      cursor: pointer; background: none; border: none; padding: 4px; flex-shrink: 0;
+    }
+    .nav-hamburger span {
+      display: block; width: 22px; height: 2px;
+      background: var(--dark); border-radius: 2px;
+    }
+    .nav-drawer {
+      display: none; position: absolute; top: calc(100% + 8px); left: 50%; transform: translateX(-50%);
+      background: rgba(252,250,240,.97); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+      border: 1px solid var(--border); border-radius: 20px;
+      padding: 16px 24px 20px; flex-direction: column; gap: 16px; z-index: 99;
+      min-width: 200px;
+    }
+    .nav-drawer.open { display: flex; }
+    .nav-drawer a {
+      font-family: 'Barlow', sans-serif; font-weight: 400; font-size: 18px;
+      color: var(--dark); text-decoration: none; transition: opacity .15s;
+    }
+    .nav-drawer a:hover { opacity: .6; }
+    .nav-drawer a.nav-cta {
+      background: var(--orange); color: var(--dark) !important;
+      padding: 8px 20px; border-radius: 99px; align-self: flex-start; margin-top: 4px; font-size: 16px;
+    }
+
+    /* PAGE TITLE */
+    .page-title {
+      padding: 148px var(--pad-section-h) 0;
+    }
+    .page-title h1 {
+      font-family: 'Barlow Condensed', sans-serif; font-weight: 900;
+      font-size: var(--text-hero);
+      line-height: .86; color: var(--orange);
+      text-transform: uppercase; letter-spacing: -4.3px;
+    }
+
+    /* BIO */
+    .bio {
+      padding: 40px var(--pad-section-h) 72px;
+      max-width: 900px;
+    }
+    .bio p {
+      font-family: 'Barlow', sans-serif; font-weight: 400;
+      font-size: 18px; line-height: 28px; color: var(--brown);
+      margin-bottom: 28px;
+    }
+    .bio p:last-child { margin-bottom: 0; }
+    .bio strong {
+      font-weight: 700;
+    }
+    .bio ul {
+      margin: 0 0 28px 22px;
+    }
+    .bio ul li {
+      font-family: 'Barlow', sans-serif; font-weight: 400;
+      font-size: 18px; line-height: 28px; color: var(--brown);
+      margin-bottom: 4px;
+    }
+
+    /* OUTSIDE OF WORK */
+    .outside {
+      padding: 0 var(--pad-section-h) 72px;
+      border-top: 1px solid var(--border);
+    }
+    .outside-heading {
+      font-family: 'Barlow', sans-serif; font-weight: 700;
+      font-size: 18px; line-height: 28px; color: var(--brown);
+      padding: 32px 0;
+    }
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 32px;
+    }
+    .photo-grid img {
+      width: 100%; aspect-ratio: 231 / 212;
+      object-fit: cover; display: block;
+      border-radius: 4px;
+    }
+
+    /* CONTACT */
+    .contact { border-top: 1px solid var(--border); padding: var(--pad-section-v) var(--pad-section-h); }
+    .contact-grid {
+      display: grid; grid-template-columns: 1fr 1.4fr;
+      gap: 64px; max-width: 1450px;
+    }
+    .contact-photo {
+      width: 240px; height: 300px; border-radius: 14px;
+      object-fit: cover; object-position: center 15%; display: block;
+    }
+    .contact-blurb {
+      font-family: 'Barlow', sans-serif; font-weight: 400; font-size: 18px;
+      line-height: 28px; color: var(--brown); margin-top: 20px; max-width: 340px;
+    }
+    .contact-heading {
+      font-family: 'Barlow Condensed', sans-serif; font-weight: 900;
+      font-size: var(--text-heading); line-height: 1.05; color: var(--orange);
+      text-transform: uppercase; margin-bottom: 8px;
+    }
+    .contact-form { display: flex; flex-direction: column; gap: 8px; margin-top: 18px; }
+    .form-field {
+      background: var(--cream); border: 1px solid var(--border); border-radius: 10px;
+      padding: 14px 17px; font-family: 'Barlow', sans-serif; font-weight: 400;
+      font-size: 18px; line-height: 28px; color: var(--brown); width: 100%;
+      outline: none; appearance: none; transition: border-color .15s;
+    }
+    .form-field::placeholder { color: var(--brown); opacity: .7; }
+    .form-field:focus { border-color: var(--orange); }
+    textarea.form-field { height: 100px; resize: vertical; }
+    .form-submit {
+      background: var(--dark); color: var(--white);
+      font-family: 'Barlow', sans-serif; font-weight: 600; font-size: 18px;
+      letter-spacing: 1.3px; text-transform: uppercase; border: none;
+      border-radius: 10px; padding: 14px; cursor: pointer; width: 100%;
+      transition: opacity .15s;
+    }
+    .form-submit:hover { opacity: .82; }
+
+    /* FOOTER BAR */
+    .footer-bar {
+      background: var(--dark); padding: 28px var(--pad-section-h);
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 12px;
+    }
+    .footer-copy {
+      font-family: 'DM Sans', sans-serif; font-weight: 400;
+      font-size: 11.5px; letter-spacing: .46px; color: var(--white);
+    }
+    .footer-links { display: flex; gap: 20px; list-style: none; }
+    .footer-links a {
+      font-family: 'DM Sans', sans-serif; font-weight: 400; font-size: 11.5px;
+      letter-spacing: .69px; text-transform: uppercase; color: var(--white);
+      text-decoration: none; transition: opacity .15s;
+    }
+    .footer-links a:hover { opacity: .65; }
+
+    /* RESPONSIVE */
+    @media (min-width: 768px) {
+      .page-title { padding-left: var(--pad-section-h-md); padding-right: var(--pad-section-h-md); }
+      .bio        { padding-left: var(--pad-section-h-md); padding-right: var(--pad-section-h-md); }
+      .outside    { padding-left: var(--pad-section-h-md); padding-right: var(--pad-section-h-md); }
+      .contact    { padding-left: var(--pad-section-h-md); padding-right: var(--pad-section-h-md); }
+      .footer-bar { padding-left: var(--pad-section-h-md); padding-right: var(--pad-section-h-md); }
+    }
+    @media (min-width: 1024px) {
+      .page-title { padding-left: var(--pad-section-h-lg); padding-right: var(--pad-section-h-lg); }
+      .bio        { padding-left: var(--pad-section-h-lg); padding-right: var(--pad-section-h-lg); }
+      .outside    { padding-left: var(--pad-section-h-lg); padding-right: var(--pad-section-h-lg); }
+      .contact    { padding-left: var(--pad-section-h-lg); padding-right: var(--pad-section-h-lg); }
+      .footer-bar { padding-left: var(--pad-section-h-lg); padding-right: var(--pad-section-h-lg); }
+    }
+    @media (max-width: 900px) {
+      .nav { gap: 16px; max-width: calc(100vw - 32px); }
+      .nav-links { display: none; }
+      .nav-hamburger { display: flex; }
+      .page-title { padding: 148px 24px 0; }
+      .page-title h1 { letter-spacing: -2px; }
+      .bio { padding: 32px 24px 56px; }
+      .outside { padding: 0 24px 56px; }
+      .photo-grid { grid-template-columns: repeat(4, 1fr); gap: 16px; }
+      .contact { padding: 56px 24px; }
+      .contact-grid { grid-template-columns: 1fr; gap: 40px; }
+      .contact-photo { width: 180px; height: 220px; }
+      .footer-bar { padding: 24px; }
+    }
+    @media (max-width: 600px) {
+      .photo-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<header>
+  <div class="nav-wrapper">
+    <nav class="nav" aria-label="Main navigation">
+      <a href="index.html" class="nav-avatar">
+        <img src="assets/alex-hero.jpg" alt="Alex Cain">
+      </a>
+      <ul class="nav-links" role="list">
+        <li><a href="about.html" class="active" aria-current="page">About</a></li>
+        <li><a href="projects.html">My Projects</a></li>
+        <li><a href="https://substack.com/@alexcaindesign" target="_blank" rel="noopener">My Thoughts</a></li>
+        <li><a href="https://docs.google.com/document/d/1baQoC_o6pZB8Hsee8ddzqnkunp4sn146tAxX6LeLSK4/edit?pli=1&tab=t.vh9lp2u1ry7g#heading=h.x8fm1uorkbaw" target="_blank" rel="noopener">CV</a></li>
+      </ul>
+      <a href="#contact" class="nav-cta">Contact</a>
+      <button class="nav-hamburger" aria-label="Open menu" aria-expanded="false" onclick="toggleMenu(this)">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+    <nav class="nav-drawer" id="navDrawer" aria-label="Mobile navigation">
+      <a href="about.html" class="active" onclick="closeMenu()">About</a>
+      <a href="projects.html" onclick="closeMenu()">My Projects</a>
+      <a href="index.html#apps" onclick="closeMenu()">My Thoughts</a>
+      <a href="https://docs.google.com/document/d/1baQoC_o6pZB8Hsee8ddzqnkunp4sn146tAxX6LeLSK4/edit?pli=1&tab=t.vh9lp2u1ry7g#heading=h.x8fm1uorkbaw" target="_blank" rel="noopener" onclick="closeMenu()">CV</a>
+      <a href="#contact" class="nav-cta" onclick="closeMenu()">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<!-- PAGE TITLE -->
+<section class="page-title">
+  <h1>About me</h1>
+</section>
+
+<!-- BIO -->
+<section class="bio" aria-label="Biography">
+  <p>Hi I'm Alex a Staff Product Designer. I've spent 12 years focused on design and product thinking, never quite a PM, never just a designer and increasingly convinced that's exactly where the most interesting work happens. AI is accelerating the shift away from rigid titles toward outcome driven thinking and I'm here for it.</p>
+
+  <p>I care deeply about the why behind what gets built: the strategy, the research, the ethical implications, and the craft of turning ambiguity into something people actually want to use.</p>
+
+  <p><strong>My career so far.</strong></p>
+  <p><strong>Agencies</strong> — I started in agencies, where managers like Dave had the genius or possibly the recklessness to let a junior run as a lead. It shaped how I work, understanding the context quickly, narrowing in on the problem to be solved and adapting to the teams way of working to get products shipped.</p>
+
+  <p><strong>Zalando</strong> — A contract pulled me to Berlin, where I designed an internal feedback tool for 16,000 employees across 140 countries. The scale and cultural complexity were unlike anything I'd done before and it completely hooked me. I stayed on to join their consumer app team, who were making bold early bets on the influencer market. I was skeptical, guess who turned out to be wrong!</p>
+
+  <p>Back in the UK, things got bigger and messier in the best way:<br>
+  <strong>Zoopla</strong> — Worked across B2B and B2C, pulling strategy and shipping together with some brilliant colleagues until new home leads went up 4x.<br>
+  <strong>Bumble</strong> — Picked up Opening Moves after a failing launch and redundancies had left it struggling, grew adoption by 40% and quality conversations by 5%. Then moved to the Women's Experience team, where whilst our new PM was in visa purgatory the lead engineer, researcher, content designer and I made a roadmap and we shipped 80% of it, which, if you've worked in product, you'll know is basically unheard of.<br>
+  <strong>Marshmallow</strong> — Led a 0-to-1 physical device connected to the app. The MVP became their leading product in three months. I then changed focus to how Marshmallow becomes a multi-product company.</p>
+
+  <p><strong>What I'm looking for</strong><br>
+  Talented, kind people to call colleagues. Products that don't make the world worse. A team that sits in the ambiguity together but builds with real clarity. And work that keeps me learning.</p>
+</section>
+
+<!-- OUTSIDE OF WORK -->
+<section class="outside" aria-labelledby="outside-heading">
+  <p class="outside-heading" id="outside-heading">Outside of work</p>
+  <div class="photo-grid">
+    <img src="assets/about/photo-1.jpg" alt="Outside of work photo">
+    <img src="assets/about/photo-2.jpg" alt="Outside of work photo">
+    <img src="assets/about/photo-3.jpg" alt="Outside of work photo">
+    <img src="assets/about/coco.gif" alt="Outside of work photo">
+    <img src="assets/about/photo-5.jpg" alt="Outside of work photo">
+    <img src="assets/about/photo-7.jpg" alt="Outside of work photo">
+    <img src="assets/about/Outside of work -nino.gif" alt="Outside of work photo">
+    <img src="assets/about/photo-8.jpg" alt="Outside of work photo">
+    <img src="assets/about/photo-9.jpg" alt="Outside of work photo">
+    <img src="assets/about/photo-10.jpg" alt="Outside of work photo">
+  </div>
+</section>
+
+<!-- LET'S WORK TOGETHER -->
+<section class="contact" id="contact" aria-labelledby="contact-heading">
+  <div class="contact-grid">
+    <div>
+      <img src="assets/alex-contact.jpg" alt="Alex Cain" class="contact-photo">
+      <p class="contact-blurb">Always happy to have a chat or a coffee, whether it's a big product challenge or just a conversation, feel free to reach&nbsp;out.</p>
+    </div>
+    <div>
+      <h2 class="contact-heading" id="contact-heading">Let's Work<br>Together</h2>
+      <form class="contact-form" onsubmit="return false;">
+        <input type="text"   class="form-field" name="name"    placeholder="Name"    autocomplete="name">
+        <input type="email"  class="form-field" name="email"   placeholder="Email"   autocomplete="email">
+        <textarea class="form-field" name="message" placeholder="What can I help you with..."></textarea>
+        <button type="submit" class="form-submit">Submit</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER BAR -->
+<footer class="footer-bar">
+  <p class="footer-copy">© 2026 Alex Cain · Evidence | Strategy | Design</p>
+  <ul class="footer-links" role="list">
+    <li><a href="mailto:hi@alexecain.com">Email</a></li>
+    <li><a href="https://linkedin.com/in/alexandraecain" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+    <li><a href="assets/cv.pdf" target="_blank" rel="noopener">Download CV</a></li>
+  </ul>
+</footer>
+
+<script>
+  function toggleMenu(btn) {
+    const drawer = document.getElementById('navDrawer');
+    const open = drawer.classList.toggle('open');
+    btn.setAttribute('aria-expanded', String(open));
+  }
+  function closeMenu() {
+    document.getElementById('navDrawer').classList.remove('open');
+    const btn = document.querySelector('.nav-hamburger');
+    if (btn) btn.setAttribute('aria-expanded', 'false');
+  }
+  var wrapper = document.querySelector('.nav-wrapper');
+  window.addEventListener('scroll', function() {
+    wrapper.classList.toggle('nav--scrolled', window.scrollY > 60);
+  });
+</script>
+
+</body>
+</html>
