@@ -480,6 +480,7 @@
       font-family: 'Barlow Condensed', sans-serif; font-weight: 900;
       font-size: clamp(36px, 3.9vw, 50px); line-height: 1.05;
       color: var(--white); text-transform: uppercase; letter-spacing: -1.5px;
+      margin-bottom: 32px;
     }
     .colleagues-intro-body {
       font-family: 'Barlow', sans-serif; font-weight: 400;
@@ -488,11 +489,11 @@
     .colleagues-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
+      gap: 24px;
     }
     .colleagues-intro {
-      height: 500px;
-      display: flex; flex-direction: column; justify-content: space-between;
+      height: 450px;
+      display: flex; flex-direction: column; justify-content: flex-end;
       padding: 28px 32px 32px;
     }
     .flip-card {
@@ -981,10 +982,10 @@
 
 <!-- WHAT COLLEAGUES SAY -->
 <section class="colleagues" aria-labelledby="colleagues-heading">
+  <h2 class="colleagues-heading" id="colleagues-heading">What colleagues say</h2>
   <div class="colleagues-grid">
 
     <div class="colleagues-intro">
-      <h2 class="colleagues-heading" id="colleagues-heading">What colleagues say</h2>
       <p class="colleagues-intro-body">However much AI we use I still believe we will always need to work with others.</p>
     </div>
 
@@ -1057,7 +1058,7 @@
     </button>
 
     <!-- Card 5: Placeholder for LinkedIn -->
-    <a href="https://www.linkedin.com/in/alexandraecain/" target="_blank" rel="noopener" class="flip-card flip-more" aria-label="See more recommendations on LinkedIn" style="text-decoration:none; display:flex; height:500px;">
+    <a href="https://www.linkedin.com/in/alexandraecain/" target="_blank" rel="noopener" class="flip-card flip-more" aria-label="See more recommendations on LinkedIn" style="text-decoration:none; display:flex; height:450px;">
       <p class="flip-more-label">More nice stuff</p>
       <p class="flip-more-sub">See more recommendations on LinkedIn</p>
       <span class="flip-more-link">View LinkedIn →</span>
