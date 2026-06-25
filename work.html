@@ -51,7 +51,6 @@
     /* ── HERO ── */
     .work-hero {
       padding: 148px var(--pad-section-h) 40px;
-      border-bottom: 1px solid var(--border);
     }
     .work-title {
       font-family: 'Barlow Condensed', sans-serif; font-weight: 900;
@@ -71,7 +70,6 @@
       gap: 48px;
       align-items: center;
       padding: 72px var(--pad-section-h);
-      border-bottom: 1px solid var(--border);
     }
     .work-entry-text {
       display: flex; flex-direction: column; gap: 20px;
@@ -112,7 +110,7 @@
     }
 
     /* ── CONTACT ── */
-    .contact { border-top: 1px solid var(--border); padding: var(--pad-section-v) var(--pad-section-h); }
+    .contact { padding: var(--pad-section-v) var(--pad-section-h); }
     .contact-grid { display: grid; grid-template-columns: 1fr 1.4fr; gap: 48px; max-width: 1450px; }
     .contact-photo { width: 240px; height: 300px; border-radius: 14px; object-fit: cover; object-position: center 15%; display: block; }
     .contact-blurb { font-family: 'Barlow', sans-serif; font-weight: 400; font-size: 18px; line-height: 28px; color: var(--brown); margin-top: 20px; max-width: 340px; }
@@ -168,10 +166,10 @@
         <img src="assets/alex-hero.jpg" alt="Alex Cain">
       </a>
       <ul class="nav-links" role="list">
-        <li><a href="about.html">About</a></li>
         <li><a href="work.html" class="active">Work</a></li>
-        <li><a href="projects.html">My Projects</a></li>
-        <li><a href="https://substack.com/@alexcaindesign" target="_blank" rel="noopener">My Thoughts</a></li>
+        <li><a href="projects.html">Projects</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="https://substack.com/@alexcaindesign" target="_blank" rel="noopener">Thoughts</a></li>
         <li><a href="https://docs.google.com/document/d/1baQoC_o6pZB8Hsee8ddzqnkunp4sn146tAxX6LeLSK4/edit?pli=1&tab=t.vh9lp2u1ry7g#heading=h.x8fm1uorkbaw" target="_blank" rel="noopener">CV</a></li>
       </ul>
       <a href="#contact" class="nav-cta">Contact</a>
@@ -180,10 +178,10 @@
       </button>
     </nav>
     <nav class="nav-drawer" id="navDrawer" aria-label="Mobile navigation">
-      <a href="about.html" onclick="closeMenu()">About</a>
       <a href="work.html" onclick="closeMenu()">Work</a>
-      <a href="projects.html" onclick="closeMenu()">My Projects</a>
-      <a href="https://substack.com/@alexcaindesign" target="_blank" rel="noopener" onclick="closeMenu()">My Thoughts</a>
+      <a href="projects.html" onclick="closeMenu()">Projects</a>
+      <a href="about.html" onclick="closeMenu()">About</a>
+      <a href="https://substack.com/@alexcaindesign" target="_blank" rel="noopener" onclick="closeMenu()">Thoughts</a>
       <a href="https://docs.google.com/document/d/1baQoC_o6pZB8Hsee8ddzqnkunp4sn146tAxX6LeLSK4/edit?pli=1&tab=t.vh9lp2u1ry7g#heading=h.x8fm1uorkbaw" target="_blank" rel="noopener" onclick="closeMenu()">CV</a>
       <a href="#contact" class="nav-cta" onclick="closeMenu()">Contact</a>
     </nav>
