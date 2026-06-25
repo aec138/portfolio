@@ -225,6 +225,8 @@
       margin-bottom: 10px;
     }
     .contact-form { display: flex; flex-direction: column; gap: 8px; margin-top: 18px; }
+    .form-name-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    @media (max-width: 600px) { .form-name-row { grid-template-columns: 1fr; } }
     .form-field {
       width: 100%; padding: 14px 17px;
       border: 1px solid var(--border); border-radius: var(--radius-input);
@@ -398,11 +400,16 @@
     </div>
     <div>
       <h2 class="contact-heading" id="contact-heading">Let's Work<br>Together</h2>
-      <form class="contact-form" onsubmit="return false;">
-        <input type="text"   class="form-field" name="name"    placeholder="Name"    autocomplete="name">
-        <input type="email"  class="form-field" name="email"   placeholder="Email"   autocomplete="email">
-        <textarea class="form-field" name="message" placeholder="What can I help you with..."></textarea>
-        <button type="submit" class="form-submit">Submit</button>
+      <form class="contact-form" action="https://formsubmit.co/hi@alexecain.com" method="POST">
+        <input type="hidden" name="_subject" value="New message from portfolio">
+        <input type="hidden" name="_captcha" value="false">
+        <div class="form-name-row">
+          <input type="text"  class="form-field" name="first_name" placeholder="First name" autocomplete="given-name" required>
+          <input type="text"  class="form-field" name="last_name"  placeholder="Last name"  autocomplete="family-name">
+        </div>
+        <input type="email" class="form-field" name="email" placeholder="Email" autocomplete="email" required>
+        <textarea class="form-field" name="message" placeholder="What can I help you with..." required></textarea>
+        <button type="submit" class="form-submit">Send</button>
       </form>
     </div>
   </div>

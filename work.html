@@ -117,6 +117,8 @@
     .contact-blurb { font-family: 'Barlow', sans-serif; font-weight: 400; font-size: 18px; line-height: 28px; color: var(--brown); margin-top: 20px; max-width: 340px; }
     .contact-heading { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: clamp(36px, 3.9vw, 50px); line-height: 1.05; color: var(--orange); text-transform: uppercase; margin-bottom: 8px; }
     .contact-form { display: flex; flex-direction: column; gap: 8px; margin-top: 18px; }
+    .form-name-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    @media (max-width: 600px) { .form-name-row { grid-template-columns: 1fr; } }
     .form-field { background: var(--cream); border: 1px solid var(--border); border-radius: 10px; padding: 14px 17px; font-family: 'Barlow', sans-serif; font-weight: 400; font-size: 18px; line-height: 28px; color: var(--brown); width: 100%; outline: none; appearance: none; transition: border-color .15s; }
     .form-field::placeholder { color: var(--brown); opacity: .7; }
     .form-field:focus { border-color: var(--orange); }
@@ -261,12 +263,17 @@
     </div>
     <div>
       <h2 class="contact-heading" id="contact-heading">Let's Work<br>Together</h2>
-      <form class="contact-form" action="mailto:hi@alexecain.com" method="post" enctype="text/plain">
-        <input type="text"  class="form-field" name="name"    placeholder="Name"    autocomplete="name">
-        <input type="email" class="form-field" name="email"   placeholder="Email"   autocomplete="email">
-        <input type="text"  class="form-field" name="type"    placeholder="Type of work...">
-        <textarea class="form-field" name="message" placeholder="What can I help you with..."></textarea>
-        <button type="submit" class="form-submit">Submit</button>
+      <form class="contact-form" action="https://formsubmit.co/hi@alexecain.com" method="POST">
+        <input type="hidden" name="_subject" value="New message from portfolio">
+        <input type="hidden" name="_captcha" value="false">
+        <div class="form-name-row">
+          <input type="text"  class="form-field" name="first_name" placeholder="First name" autocomplete="given-name" required>
+          <input type="text"  class="form-field" name="last_name"  placeholder="Last name"  autocomplete="family-name">
+        </div>
+        <input type="email" class="form-field" name="email" placeholder="Email" autocomplete="email" required>
+        <input type="text"  class="form-field" name="type"  placeholder="Type of work...">
+        <textarea class="form-field" name="message" placeholder="What can I help you with..." required></textarea>
+        <button type="submit" class="form-submit">Send</button>
       </form>
     </div>
   </div>
