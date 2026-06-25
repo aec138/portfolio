@@ -114,16 +114,16 @@
     .contact { padding: var(--pad-section-v) var(--pad-section-h); }
     .contact-grid { display: grid; grid-template-columns: 1fr 1.4fr; gap: 48px; max-width: 1450px; }
     .contact-photo { width: 240px; height: 300px; border-radius: 14px; object-fit: cover; object-position: center 15%; display: block; }
-    .contact-blurb { font-family: 'Barlow', sans-serif; font-weight: 400; font-size: 18px; line-height: 28px; color: var(--brown); margin-top: 20px; max-width: 340px; }
+    .contact-blurb { font-family: 'Barlow', sans-serif; font-weight: 400; font-size: 18px; line-height: 28px; color: var(--brown); margin-top: 20px; }
     .contact-heading { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: clamp(36px, 3.9vw, 50px); line-height: 1.05; color: var(--orange); text-transform: uppercase; margin-bottom: 8px; }
     .contact-form { display: flex; flex-direction: column; gap: 8px; margin-top: 18px; }
     .form-name-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
     @media (max-width: 600px) { .form-name-row { grid-template-columns: 1fr; } }
-    .form-field { background: var(--cream); border: 1px solid var(--border); border-radius: 10px; padding: 14px 17px; font-family: 'Barlow', sans-serif; font-weight: 400; font-size: 18px; line-height: 28px; color: var(--brown); width: 100%; outline: none; appearance: none; transition: border-color .15s; }
+    .form-field { background: var(--cream); border: 1px solid var(--border); border-radius: 10px; padding: 14px 17px; font-family: 'Barlow', sans-serif; font-weight: 400; font-size: 18px; line-height: 28px; color: var(--dark); width: 100%; outline: none; appearance: none; transition: border-color .15s; }
     .form-field::placeholder { color: var(--brown); opacity: .7; }
     .form-field:focus { border-color: var(--orange); }
     textarea.form-field { height: 100px; resize: vertical; }
-    .form-submit { background: var(--dark); color: var(--white); font-family: 'Barlow', sans-serif; font-weight: 600; font-size: 18px; letter-spacing: 1.3px; text-transform: uppercase; border: none; border-radius: 10px; padding: 14px; cursor: pointer; width: 100%; transition: opacity .15s; }
+    .form-submit { background: var(--orange); color: var(--dark); font-family: 'Barlow', sans-serif; font-weight: 500; font-size: 16px; letter-spacing: 0; border: none; border-radius: 99px; padding: 6px 20px 7px; cursor: pointer; align-self: flex-start; transition: opacity .15s; }
     .form-submit:hover { opacity: .82; }
 
     /* ── FOOTER ── */
@@ -259,10 +259,10 @@
   <div class="contact-grid">
     <div>
       <img src="assets/alex-contact.jpg" alt="Alex Cain" class="contact-photo">
-      <p class="contact-blurb">Always happy to have a chat or a coffee, whether it's a big product challenge or just a conversation, feel free to reach&nbsp;out.</p>
     </div>
     <div>
-      <h2 class="contact-heading" id="contact-heading">Let's Work<br>Together</h2>
+      <h2 class="contact-heading" id="contact-heading">Get in touch!</h2>
+      <p class="contact-blurb">Always happy to have a chat or a coffee, whether it's a big product challenge or just a conversation, feel free to reach&nbsp;out.</p>
       <form class="contact-form" action="https://formsubmit.co/hi@alexecain.com" method="POST">
         <input type="hidden" name="_subject" value="New message from portfolio">
         <input type="hidden" name="_captcha" value="false">
