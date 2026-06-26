@@ -7,7 +7,7 @@
   <title>Designing a product no one wants — Alex Cain</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" defer></script>
   <style>
@@ -21,7 +21,7 @@
       --dark:   #1c1208;
       --border: #e5d5be;
       --white:  #ffffff;
-      --pad-section-v:    56px;
+      --pad-section-v:    80px;
       --pad-section-h:    48px;
       --pad-section-h-md: 4rem;
       --pad-section-h-lg: 8rem;
@@ -33,7 +33,7 @@
     html { scroll-behavior: smooth; }
     body {
       background: var(--cream);
-      font-family: 'Barlow', sans-serif;
+      font-family: 'DM Sans', sans-serif;
       color: var(--brown);
       overflow-x: hidden;
     }
@@ -63,13 +63,13 @@
     .nav-avatar img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
     .nav-links { display: flex; align-items: center; gap: 32px; list-style: none; }
     .nav-links a {
-      font-family: 'Barlow', sans-serif; font-weight: 400; font-size: 16px;
+      font-family: 'DM Sans', sans-serif; font-weight: 400; font-size: 16px;
       color: var(--brown); text-decoration: none; transition: opacity .15s;
     }
     .nav-links a:hover { opacity: .6; }
     a.nav-cta {
       background: var(--orange); color: var(--dark) !important;
-      font-family: 'Barlow', sans-serif; font-weight: 500; font-size: 16px;
+      font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 16px;
       padding: 6px 20px 7px; border-radius: 99px;
       white-space: nowrap; text-decoration: none; transition: opacity .15s; letter-spacing: 0;
     }
@@ -88,7 +88,7 @@
     }
     .nav-drawer.open { display: flex; }
     .nav-drawer a {
-      font-family: 'Barlow', sans-serif; font-weight: 400; font-size: 18px;
+      font-family: 'DM Sans', sans-serif; font-weight: 400; font-size: 18px;
       color: var(--brown); text-decoration: none; transition: opacity .15s;
     }
     .nav-drawer a:hover { opacity: .6; }
@@ -99,7 +99,7 @@
 
     /* ── SECTION HEADING ── */
     .section-heading {
-      font-family: 'Barlow Condensed', sans-serif; font-weight: 900;
+      font-family: 'DM Sans', sans-serif; font-weight: 300;
       font-size: clamp(36px, 3.9vw, 50px); line-height: 1.05;
       color: var(--orange); text-transform: uppercase; letter-spacing: -1.5px;
     }
@@ -116,19 +116,19 @@
     }
     .cs-hero-left { flex: 0 0 auto; max-width: 544px; }
     .cs-hero-title {
-      font-family: 'Barlow Condensed', sans-serif; font-weight: 900;
+      font-family: 'DM Sans', sans-serif; font-weight: 300;
       font-size: clamp(40px, 5.5vw, 64px); line-height: 1.0;
       color: #fdf8f2; text-transform: uppercase;
     }
     .cs-hero-right { flex: 0 0 auto; max-width: 550px; }
     .cs-results-label {
-      font-family: 'Barlow', sans-serif; font-weight: 500;
+      font-family: 'DM Sans', sans-serif; font-weight: 400;
       font-size: 24px; letter-spacing: -1.8px;
       color: rgba(253,248,242,0.93);
       margin-bottom: 12px;
     }
     .cs-results-text {
-      font-family: 'Barlow', sans-serif; font-weight: 500;
+      font-family: 'DM Sans', sans-serif; font-weight: 300;
       font-size: clamp(24px, 3.5vw, 42px); line-height: 1.15; letter-spacing: -1.8px;
       color: rgba(253,248,242,0.93);
     }
@@ -159,7 +159,7 @@
       min-height: 128px;
     }
     .cs-team-heading {
-      font-family: 'Barlow Condensed', sans-serif; font-weight: 900;
+      font-family: 'DM Sans', sans-serif; font-weight: 300;
       font-size: clamp(36px, 3.9vw, 50px); line-height: 1.05;
       color: var(--orange); text-transform: uppercase; letter-spacing: -1.5px;
     }
@@ -180,12 +180,12 @@
       margin-bottom: 2px;
     }
     .cs-meta-label {
-      font-family: 'Barlow', sans-serif; font-weight: 500;
+      font-family: 'DM Sans', sans-serif; font-weight: 400;
       font-size: 20px; letter-spacing: -1.4px;
       color: var(--brown); line-height: 1.1;
     }
     .cs-meta-value {
-      font-family: 'Barlow', sans-serif; font-weight: 400;
+      font-family: 'DM Sans', sans-serif; font-weight: 400;
       font-size: 18px; line-height: 28px;
       color: var(--brown);
     }
@@ -219,14 +219,14 @@
 
     /* Body text */
     .cs-body {
-      font-family: 'Barlow', sans-serif; font-weight: 400;
+      font-family: 'DM Sans', sans-serif; font-weight: 400;
       font-size: 18px; line-height: 28px; color: var(--brown);
     }
     .cs-body p + p { margin-top: 16px; }
     .cs-body em { font-style: italic; }
     .cs-body strong { font-weight: 600; }
     .cs-sub {
-      font-family: 'Barlow', sans-serif; font-weight: 500;
+      font-family: 'DM Sans', sans-serif; font-weight: 400;
       font-size: 24px; letter-spacing: -1.8px;
       color: var(--brown); line-height: 1.1;
       margin-bottom: 6px;
@@ -244,12 +244,12 @@
       padding: 18px 0 20px;
     }
     .cs-research-label {
-      font-family: 'Barlow', sans-serif; font-weight: 500;
+      font-family: 'DM Sans', sans-serif; font-weight: 400;
       font-size: 24px; letter-spacing: -1.8px; color: var(--brown);
       margin-bottom: 8px; line-height: 1.1;
     }
     .cs-research-body {
-      font-family: 'Barlow', sans-serif; font-weight: 400;
+      font-family: 'DM Sans', sans-serif; font-weight: 400;
       font-size: 18px; line-height: 28px; color: var(--brown);
     }
     .cs-research-body em { font-style: italic; }
@@ -269,7 +269,7 @@
       overflow: hidden;
     }
     .cs-pull-quote-text {
-      font-family: 'Barlow Condensed', sans-serif; font-weight: 900;
+      font-family: 'DM Sans', sans-serif; font-weight: 300;
       font-size: clamp(30px, 4vw, 50px); line-height: 1.05;
       color: var(--white); text-transform: uppercase;
       max-width: 790px;
@@ -324,7 +324,7 @@
       top: 0;
     }
     .cs-deco-card-text {
-      font-family: 'Barlow', sans-serif; font-weight: 500;
+      font-family: 'DM Sans', sans-serif; font-weight: 400;
       font-size: 24px; letter-spacing: -1.8px;
       color: var(--dark); line-height: 1.0;
     }
@@ -440,23 +440,23 @@
     .contact { border-top: 1px solid var(--border); padding: var(--pad-section-v) var(--pad-section-h); }
     .contact-grid { display: grid; grid-template-columns: 1fr 1.4fr; gap: 48px; max-width: 1450px; }
     .contact-photo { width: 240px; height: 300px; border-radius: 14px; object-fit: cover; object-position: center 15%; display: block; }
-    .contact-blurb { font-family: 'Barlow', sans-serif; font-weight: 400; font-size: 18px; line-height: 28px; color: var(--brown); margin-top: 20px; }
-    .contact-heading { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: clamp(36px, 3.9vw, 50px); line-height: 1.05; color: var(--orange); text-transform: uppercase; margin-bottom: 8px; }
+    .contact-blurb { font-family: 'DM Sans', sans-serif; font-weight: 400; font-size: 18px; line-height: 28px; color: var(--brown); margin-top: 20px; }
+    .contact-heading { font-family: 'DM Sans', sans-serif; font-weight: 300; font-size: clamp(36px, 3.9vw, 50px); line-height: 1.05; color: var(--orange); text-transform: uppercase; margin-bottom: 8px; }
     .contact-form { display: flex; flex-direction: column; gap: 10px; margin-top: 18px; }
     .form-name-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
     @media (max-width: 600px) { .form-name-row { grid-template-columns: 1fr; } }
-    .form-field { background: var(--cream); border: 1px solid var(--border); border-radius: 10px; padding: 14px 17px; font-family: 'Barlow', sans-serif; font-weight: 400; font-size: 18px; line-height: 28px; color: var(--dark); width: 100%; outline: none; appearance: none; transition: border-color .15s; }
+    .form-field { background: var(--cream); border: 1px solid var(--border); border-radius: 10px; padding: 14px 17px; font-family: 'DM Sans', sans-serif; font-weight: 400; font-size: 18px; line-height: 28px; color: var(--dark); width: 100%; outline: none; appearance: none; transition: border-color .15s; }
     .form-field::placeholder { color: var(--brown); opacity: .7; }
     .form-field:focus { border-color: var(--orange); }
     textarea.form-field { height: 100px; resize: vertical; }
-    .form-submit { background: var(--orange); color: var(--dark); font-family: 'Barlow', sans-serif; font-weight: 500; font-size: 16px; letter-spacing: 0; border: none; border-radius: 99px; padding: 6px 20px 7px; cursor: pointer; align-self: flex-start; transition: opacity .15s; }
+    .form-submit { background: var(--orange); color: var(--dark); font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 16px; letter-spacing: 0; border: none; border-radius: 99px; padding: 6px 20px 7px; cursor: pointer; align-self: flex-start; transition: opacity .15s; }
     .form-submit:hover { opacity: .82; }
 
     /* ── FOOTER BAR ── */
     .footer-bar { background: var(--dark); padding: 28px 48px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
-    .footer-copy { font-family: 'Barlow', sans-serif; font-weight: 400; font-size: 13px; letter-spacing: .46px; color: var(--white); }
+    .footer-copy { font-family: 'DM Sans', sans-serif; font-weight: 400; font-size: 13px; letter-spacing: .46px; color: var(--white); }
     .footer-links { display: flex; gap: 20px; list-style: none; }
-    .footer-links a { font-family: 'Barlow', sans-serif; font-weight: 400; font-size: 13px; letter-spacing: .69px; text-transform: uppercase; color: var(--white); text-decoration: none; transition: opacity .15s; }
+    .footer-links a { font-family: 'DM Sans', sans-serif; font-weight: 400; font-size: 13px; letter-spacing: .69px; text-transform: uppercase; color: var(--white); text-decoration: none; transition: opacity .15s; }
     .footer-links a:hover { opacity: .65; }
 
     /* ── RESPONSIVE ── */

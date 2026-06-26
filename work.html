@@ -7,7 +7,7 @@
   <title>Work — Alex Cain</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" defer></script>
   <style>
@@ -20,13 +20,13 @@
       --dark:   #1c1208;
       --border: #e5d5be;
       --white:  #ffffff;
-      --pad-section-v:    56px;
+      --pad-section-v:    80px;
       --pad-section-h:    48px;
       --pad-section-h-md: 4rem;
       --pad-section-h-lg: 8rem;
       --radius-card: 16px;
     }
-    body { background: var(--cream); color: var(--dark); font-family: 'Barlow', sans-serif; }
+    body { background: var(--cream); color: var(--dark); font-family: 'DM Sans', sans-serif; }
 
     /* ── NAV ── */
     .nav-wrapper { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 100; }
@@ -36,16 +36,16 @@
     .nav-avatar { width: 40px; height: 40px; border-radius: 50%; overflow: hidden; flex-shrink: 0; display: block; text-decoration: none; }
     .nav-avatar img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
     .nav-links { display: flex; align-items: center; gap: 32px; list-style: none; }
-    .nav-links a { font-family: 'Barlow', sans-serif; font-weight: 400; font-size: 16px; color: var(--brown); text-decoration: none; transition: opacity .15s; }
+    .nav-links a { font-family: 'DM Sans', sans-serif; font-weight: 400; font-size: 16px; color: var(--brown); text-decoration: none; transition: opacity .15s; }
     .nav-links a:hover { opacity: .6; }
     .nav-links a.active { font-weight: 600; }
-    a.nav-cta { background: var(--orange); color: var(--dark) !important; font-family: 'Barlow', sans-serif; font-weight: 500; font-size: 16px; padding: 6px 20px 7px; border-radius: 99px; white-space: nowrap; text-decoration: none; transition: opacity .15s; letter-spacing: 0; }
+    a.nav-cta { background: var(--orange); color: var(--dark) !important; font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 16px; padding: 6px 20px 7px; border-radius: 99px; white-space: nowrap; text-decoration: none; transition: opacity .15s; letter-spacing: 0; }
     a.nav-cta:hover { opacity: .82; }
     .nav-hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; flex-shrink: 0; }
     .nav-hamburger span { display: block; width: 22px; height: 2px; background: var(--dark); border-radius: 2px; }
     .nav-drawer { display: none; position: absolute; top: calc(100% + 8px); left: 50%; transform: translateX(-50%); background: rgba(252,250,240,.97); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border: 1px solid var(--border); border-radius: 20px; padding: 16px 24px 20px; flex-direction: column; gap: 16px; z-index: 99; min-width: 200px; }
     .nav-drawer.open { display: flex; }
-    .nav-drawer a { font-family: 'Barlow', sans-serif; font-weight: 400; font-size: 18px; color: var(--brown); text-decoration: none; transition: opacity .15s; }
+    .nav-drawer a { font-family: 'DM Sans', sans-serif; font-weight: 400; font-size: 18px; color: var(--brown); text-decoration: none; transition: opacity .15s; }
     .nav-drawer a:hover { opacity: .6; }
     .nav-drawer a.nav-cta { background: var(--orange); color: var(--dark) !important; padding: 8px 20px; border-radius: 99px; align-self: flex-start; margin-top: 4px; font-size: 16px; }
 
@@ -54,12 +54,12 @@
       padding: 148px var(--pad-section-h) 40px;
     }
     .work-title {
-      font-family: 'Barlow Condensed', sans-serif; font-weight: 900;
+      font-family: 'DM Sans', sans-serif; font-weight: 300;
       font-size: clamp(72px, 11.1vw, 172px); line-height: 0.86;
       color: var(--orange); text-transform: uppercase; letter-spacing: -4.3px;
     }
     .work-subtitle {
-      font-family: 'Barlow', sans-serif; font-weight: 500;
+      font-family: 'DM Sans', sans-serif; font-weight: 400;
       font-size: 24px; color: var(--brown); letter-spacing: -1.8px;
       margin-top: 28px;
     }
@@ -76,21 +76,21 @@
       display: flex; flex-direction: column; gap: 20px;
     }
     .work-entry-title {
-      font-family: 'Barlow', sans-serif; font-weight: 500;
+      font-family: 'DM Sans', sans-serif; font-weight: 300;
       font-size: clamp(26px, 2.7vw, 42px); color: var(--orange);
       letter-spacing: -1.8px; line-height: 1.1;
     }
     .work-entry-label {
-      font-family: 'Barlow', sans-serif; font-weight: 600;
+      font-family: 'DM Sans', sans-serif; font-weight: 400;
       font-size: var(--text-label); color: var(--orange);
       text-transform: uppercase; letter-spacing: 1.24px;
     }
     .work-entry-desc {
-      font-family: 'Barlow', sans-serif; font-weight: 400;
+      font-family: 'DM Sans', sans-serif; font-weight: 400;
       font-size: 18px; line-height: 28px; color: var(--brown);
     }
     a.work-entry-cta, span.work-entry-cta {
-      font-family: 'Barlow', sans-serif; font-weight: 600; font-size: 14px;
+      font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 14px;
       color: var(--orange); text-decoration: none; letter-spacing: 1.24px;
       text-transform: uppercase; display: inline-block;
     }
@@ -114,23 +114,23 @@
     .contact { padding: var(--pad-section-v) var(--pad-section-h); }
     .contact-grid { display: grid; grid-template-columns: 1fr 1.4fr; gap: 48px; max-width: 1450px; }
     .contact-photo { width: 240px; height: 300px; border-radius: 14px; object-fit: cover; object-position: center 15%; display: block; }
-    .contact-blurb { font-family: 'Barlow', sans-serif; font-weight: 400; font-size: 18px; line-height: 28px; color: var(--brown); margin-top: 20px; }
-    .contact-heading { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: clamp(36px, 3.9vw, 50px); line-height: 1.05; color: var(--orange); text-transform: uppercase; margin-bottom: 8px; }
+    .contact-blurb { font-family: 'DM Sans', sans-serif; font-weight: 400; font-size: 18px; line-height: 28px; color: var(--brown); margin-top: 20px; }
+    .contact-heading { font-family: 'DM Sans', sans-serif; font-weight: 300; font-size: clamp(36px, 3.9vw, 50px); line-height: 1.05; color: var(--orange); text-transform: uppercase; margin-bottom: 8px; }
     .contact-form { display: flex; flex-direction: column; gap: 8px; margin-top: 18px; }
     .form-name-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
     @media (max-width: 600px) { .form-name-row { grid-template-columns: 1fr; } }
-    .form-field { background: var(--cream); border: 1px solid var(--border); border-radius: 10px; padding: 14px 17px; font-family: 'Barlow', sans-serif; font-weight: 400; font-size: 18px; line-height: 28px; color: var(--dark); width: 100%; outline: none; appearance: none; transition: border-color .15s; }
+    .form-field { background: var(--cream); border: 1px solid var(--border); border-radius: 10px; padding: 14px 17px; font-family: 'DM Sans', sans-serif; font-weight: 400; font-size: 18px; line-height: 28px; color: var(--dark); width: 100%; outline: none; appearance: none; transition: border-color .15s; }
     .form-field::placeholder { color: var(--brown); opacity: .7; }
     .form-field:focus { border-color: var(--orange); }
     textarea.form-field { height: 100px; resize: vertical; }
-    .form-submit { background: var(--orange); color: var(--dark); font-family: 'Barlow', sans-serif; font-weight: 500; font-size: 16px; letter-spacing: 0; border: none; border-radius: 99px; padding: 6px 20px 7px; cursor: pointer; align-self: flex-start; transition: opacity .15s; }
+    .form-submit { background: var(--orange); color: var(--dark); font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 16px; letter-spacing: 0; border: none; border-radius: 99px; padding: 6px 20px 7px; cursor: pointer; align-self: flex-start; transition: opacity .15s; }
     .form-submit:hover { opacity: .82; }
 
     /* ── FOOTER ── */
     .footer-bar { background: var(--dark); padding: 28px 48px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
-    .footer-copy { font-family: 'Barlow', sans-serif; font-weight: 400; font-size: 13px; letter-spacing: .46px; color: var(--white); }
+    .footer-copy { font-family: 'DM Sans', sans-serif; font-weight: 400; font-size: 13px; letter-spacing: .46px; color: var(--white); }
     .footer-links { display: flex; gap: 20px; list-style: none; }
-    .footer-links a { font-family: 'Barlow', sans-serif; font-weight: 400; font-size: 13px; letter-spacing: .69px; text-transform: uppercase; color: var(--white); text-decoration: none; transition: opacity .15s; }
+    .footer-links a { font-family: 'DM Sans', sans-serif; font-weight: 400; font-size: 13px; letter-spacing: .69px; text-transform: uppercase; color: var(--white); text-decoration: none; transition: opacity .15s; }
     .footer-links a:hover { opacity: .65; }
 
     /* ── RESPONSIVE ── */
