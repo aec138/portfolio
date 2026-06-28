@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <title>From the bottom up — Alex Cain</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --orange: #eb5127;
+      --cream:  #fcfaf0;
+      --brown:  #7a6045;
+      --dark:   #1c1208;
+      --border: #e5d5be;
+      --blue:   #3737f5;
+    }
+    body {
+      background: var(--cream);
+      font-family: 'DM Sans', sans-serif;
+      color: var(--brown);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 48px 24px;
+    }
+
+    .gate {
+      width: 100%;
+      max-width: 480px;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+
+    .gate-label {
+      font-size: 14px;
+      font-weight: 400;
+      letter-spacing: 1.24px;
+      text-transform: uppercase;
+      color: var(--orange);
+    }
+
+    .gate-title {
+      font-size: clamp(36px, 5vw, 56px);
+      font-weight: 300;
+      color: var(--orange);
+      line-height: 1.05;
+      letter-spacing: -2px;
+    }
+
+    .gate-desc {
+      font-size: 18px;
+      line-height: 28px;
+      color: var(--brown);
+    }
+
+    .gate-form {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .gate-input {
+      background: var(--cream);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 17px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 18px;
+      color: var(--dark);
+      width: 100%;
+      outline: none;
+      transition: border-color .15s;
+    }
+    .gate-input::placeholder { color: var(--brown); opacity: .5; }
+    .gate-input:focus { border-color: var(--orange); }
+    .gate-input.error { border-color: #c0392b; }
+
+    .gate-submit {
+      background: var(--orange);
+      color: var(--dark);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 600;
+      font-size: 18px;
+      border: none;
+      border-radius: 10px;
+      padding: 14px 24px;
+      cursor: pointer;
+      transition: opacity .15s;
+      width: 100%;
+    }
+    .gate-submit:hover { opacity: .85; }
+
+    .gate-error {
+      font-size: 14px;
+      color: #c0392b;
+      display: none;
+    }
+    .gate-error.visible { display: block; }
+
+    .back-link {
+      font-size: 14px;
+      font-weight: 400;
+      letter-spacing: 1.24px;
+      text-transform: uppercase;
+      color: var(--brown);
+      text-decoration: none;
+      opacity: .6;
+      transition: opacity .15s;
+      align-self: flex-start;
+    }
+    .back-link:hover { opacity: 1; }
+
+    .lock-icon {
+      width: 48px;
+      height: 48px;
+      color: var(--orange);
+    }
+  </style>
+</head>
+<body>
+  <div class="gate">
+    <a href="../work.html" class="back-link">← Back to work</a>
+
+    <svg class="lock-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+      <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+    </svg>
+
+    <div>
+      <p class="gate-label">2025 · Bumble</p>
+      <h1 class="gate-title">From the bottom up</h1>
+    </div>
+
+    <p class="gate-desc">This case study is password protected. Enter the password to view the full project.</p>
+
+    <div class="gate-form">
+      <input
+        class="gate-input"
+        type="password"
+        id="password"
+        placeholder="Enter password"
+        autocomplete="off"
+      >
+      <p class="gate-error" id="error">Incorrect password. Try again.</p>
+      <button class="gate-submit" id="submit">View project</button>
+    </div>
+  </div>
+
+  <script>
+    const input = document.getElementById('password');
+    const btn = document.getElementById('submit');
+    const error = document.getElementById('error');
+
+    function attempt() {
+      if (input.value === 'casestudy') {
+        sessionStorage.setItem('bbu-access', '1');
+        window.location.href = 'case-study.html';
+      } else {
+        input.classList.add('error');
+        error.classList.add('visible');
+        input.value = '';
+        input.focus();
+      }
+    }
+
+    btn.addEventListener('click', attempt);
+    input.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') attempt();
+      input.classList.remove('error');
+      error.classList.remove('visible');
+    });
+  </script>
+</body>
+</html>
