@@ -71,13 +71,14 @@
 
     /* ── WORK ENTRIES ── */
     .work-entry {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
+      display: flex;
+      align-items: flex-start;
       gap: 48px;
-      align-items: start;
       padding: 72px var(--pad-section-h);
     }
     .work-entry-text {
+      flex: 0 0 550px;
+      max-width: 550px;
       display: flex; flex-direction: column; gap: 20px;
     }
     .work-entry-title {
@@ -101,6 +102,7 @@
     }
     a.work-entry-cta:hover { opacity: .7; }
     .work-entry-panel {
+      flex: 1;
       border-radius: var(--radius-card);
       overflow: hidden;
       aspect-ratio: 4 / 3;
@@ -145,8 +147,9 @@
       .nav-hamburger { display: flex; }
       .work-hero { padding: 128px 24px 28px; }
       .work-subtitle { font-size: 18px; letter-spacing: -0.5px; }
-      .work-entry { grid-template-columns: 1fr; padding: 40px 24px; gap: 24px; }
-      .work-entry-panel { aspect-ratio: 3 / 2; padding: 20px; }
+      .work-entry { flex-direction: column; padding: 40px 24px; gap: 24px; }
+      .work-entry-text { flex: none; max-width: 100%; }
+      .work-entry-panel { width: 100%; aspect-ratio: 3 / 2; padding: 20px; }
       .contact { padding: 56px 24px; }
       .contact-grid { grid-template-columns: 1fr; gap: 40px; }
       .contact-photo { width: 180px; height: 220px; }
