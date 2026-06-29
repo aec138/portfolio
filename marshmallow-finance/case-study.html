@@ -8,62 +8,1103 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" defer></script>
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
     :root {
+      --blue:   #3737f5;
       --orange: #eb5127;
       --cream:  #fcfaf0;
-      --brown:  #7a6045;
+      --brown:  #5e4630;
       --dark:   #1c1208;
       --border: #e5d5be;
+      --white:  #ffffff;
+      --pad-section-v:    80px;
+      --pad-section-h:    48px;
+      --pad-section-h-md: 4rem;
+      --pad-section-h-lg: 8rem;
+      --radius-card:  16px;
+      --radius-pill:  100px;
+      --radius-input: 10px;
     }
+
+    html { scroll-behavior: smooth; }
     body {
       background: var(--cream);
       font-family: 'DM Sans', sans-serif;
       color: var(--brown);
-      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    .nav-wrapper {
+      position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+      z-index: 100;
+    }
+    .nav {
+      display: flex; align-items: center; gap: 40px;
+      padding: 8px 10px; height: 56px;
+      background: rgba(252,250,240,.9);
+      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+      border-radius: 28px; border: 1px solid var(--border);
+      white-space: nowrap;
+      transition: gap 0.3s ease;
+    }
+    .nav--scrolled .nav-avatar,
+    .nav--scrolled .nav-links,
+    .nav--scrolled .nav-hamburger { display: none; }
+    .nav--scrolled { gap: 0; }
+    .nav-avatar {
+      width: 40px; height: 40px; border-radius: 50%; overflow: hidden; flex-shrink: 0;
+      display: block; text-decoration: none;
+    }
+    .nav-avatar img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
+    .nav-links { display: flex; align-items: center; gap: 32px; list-style: none; }
+    .nav-links a {
+      font-family: 'DM Sans', sans-serif; font-weight: 400; font-size: 16px;
+      color: var(--brown); text-decoration: none; transition: opacity .15s;
+    }
+    .nav-links a:hover { opacity: .6; }
+    a.nav-cta {
+      background: var(--orange); color: var(--dark) !important;
+      font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 16px;
+      padding: 6px 20px 7px; border-radius: 99px;
+      white-space: nowrap; text-decoration: none; transition: opacity .15s; letter-spacing: 0;
+    }
+    a.nav-cta:hover { opacity: .82; }
+    .nav-hamburger {
+      display: none; flex-direction: column; gap: 5px;
+      cursor: pointer; background: none; border: none; padding: 4px; flex-shrink: 0;
+    }
+    .nav-hamburger span { display: block; width: 22px; height: 2px; background: var(--dark); border-radius: 2px; }
+    .nav-drawer {
+      display: none; position: absolute; top: calc(100% + 8px); left: 50%; transform: translateX(-50%);
+      background: rgba(252,250,240,.97); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+      border: 1px solid var(--border); border-radius: 20px;
+      padding: 16px 24px 20px; flex-direction: column; gap: 16px; z-index: 99;
+      min-width: 200px;
+    }
+    .nav-drawer.open { display: flex; }
+    .nav-drawer a {
+      font-family: 'DM Sans', sans-serif; font-weight: 400; font-size: 18px;
+      color: var(--brown); text-decoration: none; transition: opacity .15s;
+    }
+    .nav-drawer a:hover { opacity: .6; }
+    .nav-drawer a.nav-cta {
+      background: var(--orange); color: var(--dark) !important;
+      padding: 8px 20px; border-radius: 99px; align-self: flex-start; margin-top: 4px; font-size: 16px;
+    }
+
+    /* ── SECTION HEADING ── */
+    .section-heading {
+      font-family: 'DM Sans', sans-serif; font-weight: 300;
+      font-size: clamp(36px, 3.9vw, 50px); line-height: 1.05;
+      color: var(--orange); text-transform: uppercase; letter-spacing: -1.5px;
+    }
+
+    /* ── CASE STUDY HERO ── */
+    .cs-hero {
+      background: #89a2b6;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 48px;
+      padding: 172px var(--pad-section-h) var(--pad-section-v);
+      min-height: 432px;
+    }
+    .cs-hero-left { flex: 0 0 auto; max-width: 544px; }
+    .cs-hero-title {
+      font-family: 'DM Sans', sans-serif; font-weight: 300;
+      font-size: clamp(40px, 5.5vw, 64px); line-height: 1.0;
+      color: #fdf8f2; text-transform: uppercase;
+    }
+    .cs-hero-right { flex: 0 0 auto; max-width: 550px; }
+    .cs-results-label {
+      font-family: 'DM Sans', sans-serif; font-weight: 400;
+      font-size: 24px; letter-spacing: -1.8px;
+      color: rgba(253,248,242,0.93);
+      margin-bottom: 12px;
+    }
+    .cs-results-text {
+      font-family: 'DM Sans', sans-serif; font-weight: 300;
+      font-size: clamp(24px, 3.5vw, 42px); line-height: 1.15; letter-spacing: -1.8px;
+      color: rgba(253,248,242,0.93);
+    }
+
+    /* ── HERO VISUAL PANEL ── */
+    .cs-image-wrap {
+      display: flex;
+      justify-content: center;
+      padding: 40px var(--pad-section-h) var(--pad-section-v);
+    }
+    .cs-hero-visual {
+      background: #000;
+      border-radius: 16px;
+      display: flex;
+      gap: 32px;
+      align-items: center;
+      justify-content: center;
+      min-height: 602px;
+      overflow: hidden;
+      width: 100%;
+      max-width: 1305px;
+      padding: 32px;
+    }
+    .cs-hero-ux {
+      flex: 0 0 auto;
+      width: 380px;
+      height: 540px;
+      overflow: hidden;
+      border-radius: 8px;
+      position: relative;
+    }
+    .cs-hero-ux img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top center;
+    }
+    .cs-hero-ux--diagram img {
+      object-fit: contain;
+      object-position: center;
+    }
+
+    /* ── TEAM STRIP ── */
+    .cs-team {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px var(--pad-section-h);
+      min-height: 128px;
+    }
+    .cs-team-heading {
+      font-family: 'DM Sans', sans-serif; font-weight: 300;
+      font-size: clamp(36px, 3.9vw, 50px); line-height: 1.05;
+      color: var(--orange); text-transform: uppercase; letter-spacing: -1.5px;
+    }
+    .cs-team-meta {
+      display: flex;
+      gap: 40px;
+      align-items: flex-start;
+    }
+    .cs-meta-block {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding-top: 8px;
+    }
+    .cs-meta-icon {
+      width: 28px; height: 28px;
+      display: block;
+      margin-bottom: 2px;
+    }
+    .cs-meta-label {
+      font-family: 'DM Sans', sans-serif; font-weight: 400;
+      font-size: 20px; letter-spacing: -1.4px;
+      color: var(--brown); line-height: 1.1;
+    }
+    .cs-meta-value {
+      font-family: 'DM Sans', sans-serif; font-weight: 400;
+      font-size: 18px; line-height: 28px;
+      color: var(--brown);
+    }
+
+    /* ── CONTENT AREA ── */
+    .cs-content {
+      display: flex;
+      flex-direction: column;
+      gap: 64px;
+      padding: 72px var(--pad-section-h);
+    }
+
+    /* ── CONTENT ROWS (2-col) ── */
+    .cs-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 40px;
+    }
+    .cs-row-left {
+      flex: 0 0 380px;
+      min-width: 0;
+    }
+    .cs-row-right {
+      flex: 1;
+      max-width: 550px;
+      padding-top: 32px;
+      padding-bottom: 8px;
+    }
+    .cs-row-right--wide { max-width: none; }
+
+    /* Body text */
+    .cs-body {
+      font-family: 'DM Sans', sans-serif; font-weight: 400;
+      font-size: 18px; line-height: 28px; color: var(--brown);
+    }
+    .cs-body p + p { margin-top: 16px; }
+    .cs-body strong { font-weight: 600; }
+    .cs-body ul { margin: 12px 0 12px 22px; }
+    .cs-body li { margin-bottom: 4px; }
+    .cs-sub {
+      font-family: 'DM Sans', sans-serif; font-weight: 400;
+      font-size: 24px; letter-spacing: -1.8px;
+      color: var(--brown); line-height: 1.1;
+      margin-bottom: 6px;
+    }
+    .cs-sub + .cs-body { margin-top: 0; }
+
+    /* ── RESEARCH ITEMS ── */
+    .cs-research-items {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      max-width: 500px;
+    }
+    .cs-research-item {
+      padding: 18px 0 20px;
+    }
+    .cs-research-label {
+      font-family: 'DM Sans', sans-serif; font-weight: 400;
+      font-size: 24px; letter-spacing: -1.8px; color: var(--brown);
+      margin-bottom: 8px; line-height: 1.1;
+    }
+    .cs-research-body {
+      font-family: 'DM Sans', sans-serif; font-weight: 400;
+      font-size: 18px; line-height: 28px; color: var(--brown);
+    }
+    .cs-research-body p + p { margin-top: 16px; }
+
+    /* ── PULL QUOTE ── */
+    .cs-pull-quote {
+      background: #838e49;
+      border: 2px solid var(--brown);
+      border-bottom: 5px solid var(--brown);
+      border-radius: 12px;
+      min-height: 242px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 48px;
+      overflow: hidden;
+    }
+    .cs-pull-quote-text {
+      font-family: 'DM Sans', sans-serif; font-weight: 300;
+      font-size: clamp(30px, 4vw, 50px); line-height: 1.05;
+      color: var(--white); text-transform: uppercase;
+      max-width: 790px;
+    }
+
+    /* ── RESULT CARDS ── */
+    .cs-result-cards {
+      display: flex;
+      gap: 24px;
+      padding-top: 32px;
+      padding-bottom: 8px;
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .cs-deco-card {
+      border-radius: 16px;
+      overflow: hidden;
+      position: relative;
+      flex: 1;
+      min-height: 180px;
+    }
+    .cs-deco-card--pink { background: #ff88c8; }
+    .cs-deco-card-body {
+      padding: 24px;
+      position: relative;
+      z-index: 1;
+      width: 50%;
+      min-height: 180px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: flex-start;
+    }
+    .cs-deco-card-img {
+      position: absolute;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      width: 55%;
+      overflow: hidden;
+    }
+    .cs-deco-card-img img {
+      position: absolute;
+      width: 131%;
+      height: 100%;
+      object-fit: cover;
+      object-position: left center;
+      left: -16%;
+      top: 0;
+    }
+    .cs-deco-card-text {
+      font-family: 'DM Sans', sans-serif; font-weight: 400;
+      font-size: 24px; letter-spacing: -1.8px;
+      color: var(--dark); line-height: 1.0;
+    }
+
+    /* ── PHONE PANEL ── */
+    .cs-phone-panel {
+      background: #89a2b6;
+      border-radius: 16px;
+      display: flex;
+      gap: 32px;
+      align-items: center;
+      justify-content: center;
+      min-height: 602px;
+      overflow: hidden;
+      width: 100%;
+    }
+    .cs-phone-panel-phone {
+      height: 454px;
+      width: 233px;
+      border-radius: 16px;
+      overflow: hidden;
+      position: relative;
+      flex-shrink: 0;
+    }
+    .cs-phone-panel-phone img {
+      position: absolute;
+      width: 100%;
+      height: 105.71%;
+      top: -0.08%;
+      left: 0;
+      object-fit: cover;
+    }
+
+    /* ── LANDSCAPE IMAGE PANEL ── */
+    .cs-landscape-panel {
+      background: #89a2b6;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 400px;
+      overflow: hidden;
+      width: 100%;
+      padding: 32px;
+    }
+    .cs-landscape-panel img {
+      border-radius: 24px;
+      width: 100%;
+      max-width: 1134px;
+      height: auto;
+      max-height: 511px;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* ── DESIGN VISUAL PANEL (phone + type cards) ── */
+    .cs-type-panel {
+      background: #89a2b6;
+      border-radius: 16px;
+      display: flex;
+      gap: 24px;
+      align-items: center;
+      justify-content: center;
+      min-height: 602px;
+      overflow: hidden;
+      width: 100%;
+      padding: 40px 32px;
+    }
+    .cs-type-phone {
+      height: 554px;
+      width: 308px;
+      border-radius: 16px;
+      overflow: hidden;
+      flex-shrink: 0;
+      background: #000;
+      position: relative;
+    }
+    .cs-type-phone video {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .cs-type-card {
+      border: 2px solid #2c352d;
+      border-bottom: 5px solid #2c352d;
+      border-radius: 12px;
+      overflow: hidden;
+      flex: 0 0 200px;
+      width: 200px;
+      height: 200px;
+      align-self: center;
+      background: #fff;
+    }
+    .cs-type-card img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    /* ── SCREENSHOT COLLAGE PANEL ── */
+    .cs-collage-panel {
+      background: #89a2b6;
+      border-radius: 16px;
+      display: flex;
+      gap: 24px;
+      align-items: center;
+      justify-content: center;
+      min-height: 602px;
+      overflow: hidden;
+      width: 100%;
+      padding: 40px 32px;
+    }
+    .cs-collage-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      flex-shrink: 0;
+      max-width: 340px;
+    }
+    .cs-collage-stack img {
+      width: 100%;
+      display: block;
+      border-radius: 10px;
+    }
+    .cs-collage-phone {
+      height: 420px;
+      width: 200px;
+      border-radius: 16px;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .cs-collage-phone img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top;
+      display: block;
+    }
+    .cs-collage-shot {
+      border-radius: 12px;
+      overflow: hidden;
+      max-width: 280px;
+      flex-shrink: 0;
+    }
+    .cs-collage-shot img {
+      width: 100%;
+      display: block;
+    }
+
+    /* ── FULL WIDTH IMAGE ── */
+    .cs-full-image {
+      border: 1px solid #e5e7eb;
+      border-bottom: 5px solid #e5e7eb;
+      border-radius: 16px;
+      overflow: hidden;
+      width: 80%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .cs-full-image img { width: 100%; display: block; }
+
+    /* ── BROWSER SCREENSHOT ── */
+    .cs-browser {
+      border: 2px solid #bbcfdf;
+      border-bottom: 5px solid #bbcfdf;
+      border-radius: 12px;
+      overflow: hidden;
+      background: white;
+      width: 60%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .cs-browser img { display: block; width: 100%; }
+
+    /* ── COMPARISON SPLIT PANEL ── */
+    .cs-compare-panel {
+      display: flex;
+      border-radius: 16px;
+      overflow: hidden;
+      min-height: 576px;
+      width: 100%;
+    }
+    .cs-compare-half {
+      flex: 1;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      padding: 48px 24px;
-      text-align: center;
+      justify-content: flex-end;
+      padding: 40px 40px 32px;
+      gap: 16px;
     }
-    h1 {
-      font-size: clamp(36px, 5vw, 56px);
-      font-weight: 300;
-      color: var(--orange);
-      line-height: 1.05;
-      letter-spacing: -2px;
-      margin-bottom: 16px;
+    .cs-compare-half--pink { background: #ffc2ec; }
+    .cs-compare-half--beige { background: #e7e3bf; }
+    .cs-compare-phone {
+      height: 438px;
+      width: 204px;
+      border-radius: 24px;
+      overflow: hidden;
+      flex-shrink: 0;
+      background: #000;
     }
-    p {
-      font-size: 18px;
-      line-height: 28px;
-      max-width: 480px;
-      margin-bottom: 32px;
+    .cs-compare-phone video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
     }
-    a {
-      font-size: 14px;
-      font-weight: 400;
-      letter-spacing: 1.24px;
+    .cs-compare-label {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px; letter-spacing: 1.24px;
       text-transform: uppercase;
-      color: var(--brown);
-      text-decoration: none;
-      opacity: .6;
-      transition: opacity .15s;
+      color: var(--dark); opacity: 0.6;
     }
-    a:hover { opacity: 1; }
+
+    /* ── CONTACT ── */
+    .contact { border-top: 1px solid var(--border); padding: var(--pad-section-v) var(--pad-section-h); }
+    .contact-grid { display: grid; grid-template-columns: 1fr 1.4fr; gap: 48px; max-width: 1450px; }
+    .contact-photo { width: 240px; height: 300px; border-radius: 14px; object-fit: cover; object-position: center 15%; display: block; }
+    .contact-blurb { font-family: 'DM Sans', sans-serif; font-weight: 400; font-size: 18px; line-height: 28px; color: var(--brown); margin-top: 20px; }
+    .contact-heading { font-family: 'DM Sans', sans-serif; font-weight: 300; font-size: clamp(36px, 3.9vw, 50px); line-height: 1.05; color: var(--orange); text-transform: uppercase; margin-bottom: 8px; }
+    .contact-form { display: flex; flex-direction: column; gap: 10px; margin-top: 18px; }
+    .form-name-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    @media (max-width: 600px) { .form-name-row { grid-template-columns: 1fr; } }
+    .form-field { background: var(--cream); border: 1px solid var(--border); border-radius: 10px; padding: 14px 17px; font-family: 'DM Sans', sans-serif; font-weight: 400; font-size: 18px; line-height: 28px; color: var(--dark); width: 100%; outline: none; appearance: none; transition: border-color .15s; }
+    .form-field::placeholder { color: var(--brown); opacity: .7; }
+    .form-field:focus { border-color: var(--orange); }
+    textarea.form-field { height: 100px; resize: vertical; }
+    .form-submit { background: var(--orange); color: var(--dark); font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 16px; letter-spacing: 0; border: none; border-radius: 99px; padding: 6px 20px 7px; cursor: pointer; align-self: flex-start; transition: opacity .15s; }
+    .form-submit:hover { opacity: .82; }
+
+    /* ── FOOTER BAR ── */
+    .footer-bar { background: var(--dark); padding: 28px 48px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+    .footer-copy { font-family: 'DM Sans', sans-serif; font-weight: 400; font-size: 13px; letter-spacing: .46px; color: var(--white); }
+    .footer-links { display: flex; gap: 20px; list-style: none; }
+    .footer-links a { font-family: 'DM Sans', sans-serif; font-weight: 400; font-size: 13px; letter-spacing: .69px; text-transform: uppercase; color: var(--white); text-decoration: none; transition: opacity .15s; }
+    .footer-links a:hover { opacity: .65; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .nav { gap: 16px; max-width: calc(100vw - 32px); }
+      .nav-links { display: none; }
+      .nav-hamburger { display: flex; }
+      .cs-hero { flex-direction: column; gap: 32px; padding: 140px 24px 56px; min-height: auto; }
+      .cs-hero-left { max-width: 100%; }
+      .cs-hero-right { max-width: 100%; }
+      .cs-image-wrap { padding: var(--pad-section-v) 24px; }
+      .cs-hero-visual { min-height: auto; padding: 24px 16px; gap: 16px; }
+      .cs-hero-ux { width: 200px; height: 280px; }
+      .cs-team { flex-direction: column; align-items: flex-start; padding: 32px 24px; gap: 20px; min-height: auto; }
+      .cs-team-meta { flex-wrap: wrap; gap: 24px; }
+      .cs-content { padding: 48px 24px; gap: 48px; }
+      .cs-row { flex-direction: column; gap: 12px; }
+      .cs-row-left { flex: none; width: 100%; }
+      .cs-row-right { max-width: 100%; padding-top: 0; padding-bottom: 0; }
+      .cs-result-cards { flex-direction: column; padding-top: 0; gap: 16px; }
+      .cs-deco-card { min-height: 160px; }
+      .cs-deco-card-body { min-height: 160px; }
+      .cs-phone-panel { flex-direction: column; align-items: center; gap: 20px; min-height: auto; padding: 24px; }
+      .cs-phone-panel-phone { height: 390px; width: 200px; }
+      .cs-pull-quote { padding: 24px; }
+      .cs-landscape-panel { padding: 16px; min-height: auto; }
+      .cs-type-panel { flex-direction: column; min-height: auto; padding: 24px 16px; gap: 16px; }
+      .cs-type-phone { height: 360px; width: 180px; }
+      .cs-type-card { width: 200px; height: 200px; flex: 0 0 200px; align-self: center; }
+      .cs-collage-panel { flex-direction: column; min-height: auto; padding: 24px 16px; gap: 16px; }
+      .cs-collage-stack { max-width: 100%; }
+      .cs-collage-stack img { height: 180px; object-fit: cover; object-position: top; }
+      .cs-collage-shot img { height: 200px; object-fit: cover; object-position: top; }
+      .cs-collage-phone { height: 300px; width: 155px; }
+      .cs-compare-panel { flex-direction: column; }
+      .cs-compare-half { padding: 32px 24px; }
+      .cs-compare-phone { height: 360px; width: 168px; }
+      .contact { padding: 56px 24px; }
+      .contact-grid { grid-template-columns: 1fr; gap: 40px; }
+      .contact-photo { width: 180px; height: 220px; }
+      .footer-bar { padding: 24px; }
+    }
+    @media (max-width: 600px) {
+      .cs-hero { padding: 120px 24px 48px; }
+      .cs-hero-title { font-size: 36px; }
+      .cs-results-text { font-size: 22px; }
+      .cs-pull-quote-text { font-size: 28px; }
+      .cs-team-heading { font-size: 36px; }
+      .cs-hero-visual { overflow-x: visible; flex-wrap: nowrap; justify-content: center; gap: 8px; padding: 16px 12px; }
+      .cs-hero-ux { flex: 0 1 380px; min-width: 0; width: auto; height: 160px; }
+      .cs-phone-panel-phone { flex: 0 1 233px; min-width: 0; width: auto; height: 160px; border-radius: 8px; }
+      .cs-hero-visual .cs-phone-panel-phone img { height: 105.71%; top: -0.08%; object-fit: cover; object-position: top; }
+    }
+    @media (min-width: 768px) {
+      .cs-hero { padding-left: var(--pad-section-h-md); padding-right: var(--pad-section-h-md); }
+      .cs-image-wrap { padding-left: var(--pad-section-h-md); padding-right: var(--pad-section-h-md); }
+      .cs-team { padding-left: var(--pad-section-h-md); padding-right: var(--pad-section-h-md); }
+      .cs-content { padding-left: var(--pad-section-h-md); padding-right: var(--pad-section-h-md); }
+      .contact { padding-left: var(--pad-section-h-md); padding-right: var(--pad-section-h-md); }
+    }
+    @media (min-width: 1024px) {
+      .cs-hero { padding-left: var(--pad-section-h-lg); padding-right: var(--pad-section-h-lg); }
+      .cs-image-wrap { padding-left: var(--pad-section-h-lg); padding-right: var(--pad-section-h-lg); }
+      .cs-team { padding-left: var(--pad-section-h-lg); padding-right: var(--pad-section-h-lg); }
+      .cs-content { padding-left: var(--pad-section-h-lg); padding-right: var(--pad-section-h-lg); }
+      .contact { padding-left: var(--pad-section-h-lg); padding-right: var(--pad-section-h-lg); }
+    }
   </style>
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-KH9T2QPRMX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-KH9T2QPRMX');
+  </script>
 </head>
 <body>
-  <script>
-    if (!sessionStorage.getItem('mf-access')) {
-      window.location.replace('index.html');
+
+<script>
+  if (!sessionStorage.getItem('mf-access')) {
+    window.location.replace('index.html');
+  }
+</script>
+
+<!-- NAV -->
+<header>
+  <div class="nav-wrapper">
+    <nav class="nav" aria-label="Main navigation">
+      <a href="../index.html" class="nav-avatar">
+        <img src="../assets/alex-hero.jpg" alt="Alex Cain">
+      </a>
+      <ul class="nav-links" role="list">
+        <li><a href="../work.html">Work</a></li>
+        <li><a href="../projects.html">Projects</a></li>
+        <li><a href="../about.html">About</a></li>
+        <li><a href="https://substack.com/@alexcaindesign" target="_blank" rel="noopener">Thoughts</a></li>
+        <li><a href="https://docs.google.com/document/d/1baQoC_o6pZB8Hsee8ddzqnkunp4sn146tAxX6LeLSK4/edit?pli=1&tab=t.vh9lp2u1ry7g#heading=h.x8fm1uorkbaw" target="_blank" rel="noopener">CV</a></li>
+      </ul>
+      <a href="#contact" class="nav-cta">Contact</a>
+      <button class="nav-hamburger" aria-label="Open menu" aria-expanded="false" onclick="toggleMenu(this)">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+    <nav class="nav-drawer" id="navDrawer" aria-label="Mobile navigation">
+      <a href="../work.html" onclick="closeMenu()">Work</a>
+      <a href="../projects.html" onclick="closeMenu()">Projects</a>
+      <a href="../about.html" onclick="closeMenu()">About</a>
+      <a href="https://substack.com/@alexcaindesign" target="_blank" rel="noopener" onclick="closeMenu()">Thoughts</a>
+      <a href="https://docs.google.com/document/d/1baQoC_o6pZB8Hsee8ddzqnkunp4sn146tAxX6LeLSK4/edit?pli=1&tab=t.vh9lp2u1ry7g#heading=h.x8fm1uorkbaw" target="_blank" rel="noopener" onclick="closeMenu()">CV</a>
+      <a href="#contact" class="nav-cta" onclick="closeMenu()">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<!-- CASE STUDY HERO -->
+<section class="cs-hero" aria-label="Case study hero">
+  <div class="cs-hero-left">
+    <h1 class="cs-hero-title">A new way of working</h1>
+  </div>
+  <div class="cs-hero-right">
+    <p class="cs-results-label">Results</p>
+    <p class="cs-results-text">Defined Marshmallow's multi-product strategic direction, established a new design operating model using AI tooling, and shipped an app prototype that became the blueprint for the company's first non-insurance product category.</p>
+  </div>
+</section>
+
+<!-- HERO VISUAL -->
+<div class="cs-image-wrap">
+  <div class="cs-hero-visual">
+    <div class="cs-hero-ux cs-hero-ux--diagram">
+      <img src="../assets/case%20studies/High-level%20UX%20Logic.png" alt="High-level UX logic diagram">
+    </div>
+    <div class="cs-phone-panel-phone">
+      <img src="phone-hero-1.png" alt="Marshmallow app — finance screen 1">
+    </div>
+    <div class="cs-phone-panel-phone">
+      <img src="phone-hero-2.png" alt="Marshmallow app — finance screen 2">
+    </div>
+  </div>
+</div>
+
+<!-- TEAM STRIP -->
+<div class="cs-team">
+  <h2 class="cs-team-heading">The team</h2>
+  <div class="cs-team-meta">
+    <div class="cs-meta-block">
+      <svg class="cs-meta-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 25.3333C21.1547 25.3333 25.3333 21.1547 25.3333 16C25.3333 10.8453 21.1547 6.66667 16 6.66667C10.8453 6.66667 6.66667 10.8453 6.66667 16C6.66667 21.1547 10.8453 25.3333 16 25.3333Z"/><path d="M16 12V16L18 18"/><path d="M22.0133 23.1333L21.5467 28.24C21.4866 28.9049 21.1793 29.523 20.6856 29.9723C20.1919 30.4216 19.5476 30.6694 18.88 30.6667H13.1067C12.4391 30.6694 11.7948 30.4216 11.3011 29.9723C10.8073 29.523 10.5001 28.9049 10.44 28.24L9.97333 23.1333M9.98667 8.86667L10.4533 3.76C10.5132 3.09744 10.8186 2.48118 11.3095 2.0322C11.8004 1.58323 12.4414 1.33396 13.1067 1.33333H18.9067C19.5742 1.33062 20.2185 1.5784 20.7123 2.0277C21.206 2.477 21.5133 3.09514 21.5733 3.76L22.04 8.86667"/></svg>
+      <span class="cs-meta-label">Timeframe</span>
+      <span class="cs-meta-value">3 months</span>
+    </div>
+    <div class="cs-meta-block">
+      <svg class="cs-meta-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 25.3333L25.3333 16L29.3333 20L20 29.3333L16 25.3333Z"/><path d="M24 17.3333L22 7.33333L2.66667 2.66667L7.33333 22L17.3333 24L24 17.3333Z"/><path d="M2.66667 2.66667L12.7813 12.7813"/><path d="M14.6667 17.3333C16.1394 17.3333 17.3333 16.1394 17.3333 14.6667C17.3333 13.1939 16.1394 12 14.6667 12C13.1939 12 12 13.1939 12 14.6667C12 16.1394 13.1939 17.3333 14.6667 17.3333Z"/></svg>
+      <span class="cs-meta-label">My role</span>
+      <span class="cs-meta-value">Staff Designer</span>
+    </div>
+    <div class="cs-meta-block">
+      <svg class="cs-meta-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22.6667 28V25.3333C22.6667 23.9188 22.1048 22.5623 21.1046 21.5621C20.1044 20.5619 18.7478 20 17.3333 20H6.66667C5.25218 20 3.89562 20.5619 2.89543 21.5621C1.89524 22.5623 1.33333 23.9188 1.33333 25.3333V28"/><path d="M12 14.6667C14.9455 14.6667 17.3333 12.2789 17.3333 9.33333C17.3333 6.38781 14.9455 4 12 4C9.05448 4 6.66667 6.38781 6.66667 9.33333C6.66667 12.2789 9.05448 14.6667 12 14.6667Z"/><path d="M30.6667 28V25.3333C30.6658 24.1516 30.2725 23.0037 29.5485 22.0698C28.8245 21.1358 27.8108 20.4688 26.6667 20.1733"/><path d="M21.3333 4.17333C22.4806 4.46707 23.4974 5.13427 24.2235 6.06975C24.9497 7.00523 25.3438 8.15577 25.3438 9.34C25.3438 10.5242 24.9497 11.6748 24.2235 12.6103C23.4974 13.5457 22.4806 14.2129 21.3333 14.5067"/></svg>
+      <span class="cs-meta-label">Squad team</span>
+      <span class="cs-meta-value">Devs, PM, PT Researcher</span>
+    </div>
+  </div>
+</div>
+
+<!-- CONTENT -->
+<div class="cs-content">
+
+  <!-- THE PROBLEM -->
+  <div class="cs-row">
+    <div class="cs-row-left">
+      <h2 class="section-heading">The problem</h2>
+    </div>
+    <div class="cs-row-right">
+      <div class="cs-body">
+        <p>There wasn't one.</p>
+        <p>When I joined the money team, Marshmallow didn't have a product for me to design. What they had was a strategic ambition to become a multi-product business. The competitive edge they'd built, using data to insure migrants that other companies wouldn't touch, was narrowing. Rivals could now do the same thing with Telematics. The question wasn't "how do we design this?" It was "what should this even be?"</p>
+        <p>My job was to find that answer.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- THE RESULT -->
+  <div class="cs-row">
+    <div class="cs-row-left">
+      <h2 class="section-heading">The Result</h2>
+    </div>
+  </div>
+  <div class="cs-result-cards">
+    <div class="cs-deco-card cs-deco-card--pink">
+      <div class="cs-deco-card-body">
+        <p class="cs-deco-card-text">New strategic direction for the app and multi products.</p>
+      </div>
+      <div class="cs-deco-card-img">
+        <img src="result-card-a.png" alt="">
+      </div>
+    </div>
+    <div class="cs-deco-card cs-deco-card--pink">
+      <div class="cs-deco-card-body">
+        <p class="cs-deco-card-text">New ways of working for the product team using AI.</p>
+      </div>
+      <div class="cs-deco-card-img">
+        <img src="result-card-b.png" alt="">
+      </div>
+    </div>
+  </div>
+
+  <!-- RESEARCH -->
+  <div class="cs-row">
+    <div class="cs-row-left">
+      <h2 class="section-heading">Research</h2>
+    </div>
+    <div class="cs-row-right">
+      <div class="cs-research-items">
+        <div class="cs-research-item">
+          <p class="cs-research-label">Understanding our customers better.</p>
+          <div class="cs-research-body">
+            <p>Marshmallow's core customer was a migrant, typically a healthcare worker arriving from outside the EU, navigating a new country with an expected salary of around 37k, no credit footprint and limited financial support.</p>
+            <p>The researcher and I ran over 40 qualitative interviews with migrants who had arrived in the UK within the last year, people from all over the world, at different income levels, in different cities. We followed those with large-scale surveys to pressure-test what we were hearing.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONFUSING SYSTEM MAP -->
+  <div class="cs-full-image">
+    <img src="../assets/case%20studies/confusing-system-map.png.png?v=2" alt="Complex financial system map showing migration journeys">
+  </div>
+
+  <!-- WHAT WE LEARNED (right col only) -->
+  <div class="cs-row">
+    <div class="cs-row-left"><!-- spacing --></div>
+    <div class="cs-row-right">
+      <div class="cs-research-items">
+        <div class="cs-research-item">
+          <p class="cs-research-label">What we learned</p>
+          <div class="cs-research-body">
+            <p>Arriving in the UK is expensive in ways people don't anticipate, and their lifestyles take dramatic changes which they didn't expect. The credit system, which as UK-born people know is so fundamental to long-term financial stability, is almost entirely opaque to newcomers and very tricky to start. You can't get credit without a credit history but you can't build a credit history without getting credit. It's a chicken and egg problem nobody explained.</p>
+          </div>
+        </div>
+        <div class="cs-research-item">
+          <p class="cs-research-label">Sometimes AI isn't the answer</p>
+          <div class="cs-research-body">
+            <p>I started using Claude for desk research during this phase, understanding how the migrant market in the UK was changing, what financial products existed, and what the competitive landscape looked like. It was genuinely useful there.</p>
+            <p>For synthesising the interviews themselves, we tried several AI tools and mostly abandoned them. Cultural nuance, humour, the way someone pauses before answering a question about money, the tools kept flattening exactly the things that mattered. We ended up doing it manually, which took longer and was absolutely the right call.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PULL QUOTE -->
+  <div class="cs-pull-quote">
+    <p class="cs-pull-quote-text">Friends and family were the main information sources for migrants, leaving them greatly unprepared.</p>
+  </div>
+
+  <!-- THE OPPORTUNITY -->
+  <div class="cs-row">
+    <div class="cs-row-left">
+      <h2 class="section-heading">The opportunity</h2>
+    </div>
+    <div class="cs-row-right">
+      <div class="cs-research-items">
+        <div class="cs-research-item">
+          <p class="cs-research-label">Different directions</p>
+          <div class="cs-research-body">
+            <p>From the interviews, we mapped an opportunity tree with four directions:</p>
+            <ul style="margin: 12px 0 12px 22px;">
+              <li>Prepare people for the UK cost of living before they arrive</li>
+              <li>Help people understand and build their credit score</li>
+              <li>Create community between people going through the same transition</li>
+              <li>Provide a first credit product (a Marshmallow-branded SIM in a visa pack)</li>
+            </ul>
+            <p>We surveyed across all four. The SIM idea was compelling but required infrastructure investment the business wasn't ready to make. The community tool was interesting but hard to monetise quickly. Cost of living preparation was valuable but harder to own as a product.</p>
+            <p>Credit score education and visibility kept coming back as the clearest, most actionable, most ownable opportunity. Migrants told us directly: they knew they needed a credit score, they had no idea what theirs was.</p>
+          </div>
+        </div>
+        <div class="cs-research-item">
+          <p class="cs-research-label">To one direction</p>
+          <div class="cs-research-body">
+            <p>We partnered with TransUnion to surface credit scores directly in the Marshmallow app, wrapped in an education layer to help people understand what they were seeing and what to do about it.</p>
+            <p>Then the paperwork hit. Internal compliance processes meant the feature was going to be delayed significantly. Which brought me to the more interesting problem.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MONEY TEAM WORKINGS IMAGE PANEL -->
+  <div class="cs-landscape-panel">
+    <img src="../assets/case%20studies/money%20team%20workings.png" alt="Money team opportunity mapping session">
+  </div>
+
+  <!-- DESIGN -->
+  <div class="cs-row">
+    <div class="cs-row-left">
+      <h2 class="section-heading">Design</h2>
+    </div>
+    <div class="cs-row-right">
+      <p class="cs-sub">Experimenting with AI</p>
+      <div class="cs-body">
+        <p>With the direction confirmed, I turned to what the product should actually feel like.</p>
+        <p>Another designer had started creating 3D versions of the Marshforms, Marshmallow's brand characters. I riffed on that using AI to generate new variations, exploring how they could work within a financial product context. The existing app used colour and Marshforms heavily throughout, which created noise and meant promotions were getting lost. My instinct was to strip that back and use the 3D forms sparingly, to mark important moments rather than decorate every screen.</p>
+        <p>I explored this in Figma, then brought those frames into Claude to prototype with, so I could see how the direction held up in motion rather than just as static screens.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- DESIGN VISUAL PANEL -->
+  <div class="cs-type-panel">
+    <div class="cs-type-phone">
+      <video autoplay muted loop playsinline aria-label="Marshmallow app prototype walkthrough">
+        <source src="../assets/case%20studies/Marshforms%20vid.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div class="cs-type-card">
+      <img src="../assets/case%20studies/1%20marshform.png" alt="Marshmallow marshform character 1">
+    </div>
+    <div class="cs-type-card">
+      <img src="../assets/case%20studies/2%20marshform.png" alt="Marshmallow marshform character 2">
+    </div>
+    <div class="cs-type-card">
+      <img src="../assets/case%20studies/3%20marshform.png" alt="Marshmallow marshform character 3">
+    </div>
+  </div>
+
+  <!-- MULTI PIVOTS -->
+  <div class="cs-row">
+    <div class="cs-row-left">
+      <h2 class="section-heading">Multi pivots</h2>
+    </div>
+    <div class="cs-row-right">
+      <div class="cs-body">
+        <p>While I was designing the credit score experience, I kept running into the same thought: the Marshmallow app was built entirely around insurance. Every pattern, every component, every assumption in the design system was scoped to one product type. If we were serious about becoming a multi-product business, the app itself needed to change, like now, and nobody had started that conversation yet.</p>
+        <p>So I started it.</p>
+        <p>Working with the iOS developer, I got connected to the Marshmallow design system inside Claude and connected to Fork. This meant I could prototype directly in the real environment, not a Figma approximation, but something that actually ran on the device, using real components, real tokens, semi-real data and real constraints.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- DESIGNING IN CLAUDE -->
+  <div class="cs-row">
+    <div class="cs-row-left">
+      <h2 class="section-heading">Designing in Claude</h2>
+    </div>
+    <div class="cs-row-right">
+      <p class="cs-sub">The fun and the frustration</p>
+      <div class="cs-body">
+        <p>The feedback loop was instant in a way that Figma never quite is. I could see immediately where the design system was too narrow, where the visual language would break under a second product, where we'd need new tokens before we could ship anything new. I found issues in my own Telematics designs I hadn't spotted before. I made some embarrassing mistakes too, it turns out making a semi-circle in a real dev environment is not as intuitive as it sounds, and I spent longer on it than I'd like to admit.</p>
+        <p>But I also had more fun than I'd had in a while.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCREENSHOT COLLAGE PANEL -->
+  <div class="cs-collage-panel">
+    <div class="cs-collage-stack">
+      <img src="screenshot-a.png" alt="Claude conversation — design system exploration">
+      <img src="screenshot-b.png" alt="Claude conversation — prototyping session">
+    </div>
+    <div class="cs-collage-phone">
+      <img src="screenshot-c.png" alt="Marshmallow app prototype on device">
+    </div>
+    <div class="cs-collage-shot">
+      <img src="screenshot-d.png" alt="Marshmallow design system — token exploration">
+    </div>
+  </div>
+
+  <!-- SHIPPING -->
+  <div class="cs-row">
+    <div class="cs-row-left">
+      <h2 class="section-heading">Shipping</h2>
+    </div>
+    <div class="cs-row-right">
+      <p class="cs-sub">What shipped (and what didn't)</p>
+      <div class="cs-body">
+        <p>From the vision prototype, I created branches, a way to strip out individual pieces we could actually ship incrementally, without waiting for the whole thing to be ready:</p>
+        <ul style="margin: 12px 0 12px 22px;">
+          <li>A new token for a title size, I shipped</li>
+          <li>Updated title hierarchy across the app, I shipped</li>
+          <li>Blog component updates, in progress when I left</li>
+        </ul>
+        <p>The credit score feature was still moving through compliance. The broader app redesign was in its early stages. Then Marshmallow made a strategic decision to move the team toward high-interest loan products, which wasn't a direction I could align with. I left before I could ship more.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- BROWSER SCREENSHOT -->
+  <div class="cs-browser">
+    <img src="quote-page.png" alt="Marshmallow quote page design">
+  </div>
+
+  <!-- LESSONS LEARNED -->
+  <div class="cs-row">
+    <div class="cs-row-left">
+      <h2 class="section-heading">Lessons learned</h2>
+    </div>
+    <div class="cs-row-right">
+      <p class="cs-sub">AI changes the speed of the feedback loop</p>
+      <div class="cs-body">
+        <p>The most useful thing about working in the real environment wasn't that it made the work faster, it was that it made the consequences of decisions visible immediately. I could feel where things were wrong, not just see them. It made the action points afterwards very clear.</p>
+      </div>
+      <p class="cs-sub" style="margin-top: 24px;">Go big then go small</p>
+      <div class="cs-body">
+        <p>The vision prototype was great for getting PMs and senior management engaged, but my devs were excited yet sceptical. This changed when I broke it down into branches, the first shippable slice, then the next. It made something the team could actually visualise on a roadmap level. It's a framing I'll use again.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- COMPARISON PANEL -->
+  <div class="cs-compare-panel">
+    <div class="cs-compare-half cs-compare-half--pink">
+      <div class="cs-compare-phone">
+        <video autoplay muted loop playsinline aria-label="Old design with new title hierarchy">
+          <source src="../assets/case%20studies/ScreenRecording_06-29-2026%2011-17-11_1.MP4" type="video/mp4">
+        </video>
+      </div>
+      <p class="cs-compare-label">Old with new titles</p>
+    </div>
+    <div class="cs-compare-half cs-compare-half--beige">
+      <div class="cs-compare-phone">
+        <video autoplay muted loop playsinline aria-label="New AI prototype design">
+          <source src="../assets/case%20studies/new-design-mq.mp4" type="video/mp4">
+        </video>
+      </div>
+      <p class="cs-compare-label">AI prototype</p>
+    </div>
+  </div>
+
+  <!-- WHAT I ENJOYED -->
+  <div class="cs-row">
+    <div class="cs-row-left">
+      <h2 class="section-heading">What I enjoyed</h2>
+    </div>
+    <div class="cs-row-right">
+      <p class="cs-sub">Ambiguity is a design problem too</p>
+      <div class="cs-body">
+        <p>Going from "here's the brief" to "find us the brief" requires a different muscle. The research process here wasn't just informing a product, it was generating the strategy itself. That's a different kind of design work and it's one I find genuinely energising.</p>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /cs-content -->
+
+<!-- LET'S WORK TOGETHER -->
+<section class="contact" id="contact" aria-labelledby="contact-heading">
+  <div class="contact-grid">
+    <div>
+      <img src="../assets/alex-contact.jpg" alt="Alex Cain" class="contact-photo">
+    </div>
+    <div>
+      <h2 class="contact-heading" id="contact-heading">Get in touch!</h2>
+      <p class="contact-blurb">Always happy to have a chat or a coffee, whether it's a big product challenge or just a conversation, feel free to reach&nbsp;out.</p>
+      <form class="contact-form" action="https://formsubmit.co/hi@alexecain.com" method="POST">
+        <input type="hidden" name="_subject" value="New message from portfolio">
+        <input type="hidden" name="_captcha" value="false">
+        <div class="form-name-row">
+          <input type="text"  class="form-field" name="first_name" placeholder="First name" autocomplete="given-name" required>
+          <input type="text"  class="form-field" name="last_name"  placeholder="Last name"  autocomplete="family-name">
+        </div>
+        <input type="email" class="form-field" name="email" placeholder="Email" autocomplete="email" required>
+        <textarea class="form-field" name="message" placeholder="What can I help you with..." required></textarea>
+        <button type="submit" class="form-submit">Send</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER BAR -->
+<footer class="footer-bar">
+  <p class="footer-copy">© 2026 Alex Cain · Evidence | Strategy | Design</p>
+  <ul class="footer-links" role="list">
+    <li><a href="mailto:hi@alexecain.com">Email</a></li>
+    <li><a href="https://www.linkedin.com/in/alexandraecain/" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+    <li><a href="https://docs.google.com/document/d/1baQoC_o6pZB8Hsee8ddzqnkunp4sn146tAxX6LeLSK4/edit?pli=1&tab=t.vh9lp2u1ry7g#heading=h.x8fm1uorkbaw" target="_blank" rel="noopener">Download CV</a></li>
+  </ul>
+</footer>
+
+<script>
+  function toggleMenu(btn) {
+    const drawer = document.getElementById('navDrawer');
+    const open = drawer.classList.toggle('open');
+    btn.setAttribute('aria-expanded', String(open));
+  }
+  function closeMenu() {
+    document.getElementById('navDrawer').classList.remove('open');
+    const btn = document.querySelector('.nav-hamburger');
+    if (btn) btn.setAttribute('aria-expanded', 'false');
+  }
+
+  // Nav scroll collapse
+  (function () {
+    var wrapper = document.querySelector('.nav-wrapper');
+    if (!wrapper) return;
+    function onScroll() {
+      wrapper.classList.toggle('nav--scrolled', window.scrollY > 60);
     }
-  </script>
-  <h1>Case study coming soon</h1>
-  <p>This project is still being written up. Check back soon.</p>
-  <a href="../work.html">← Back to work</a>
+    window.addEventListener('scroll', onScroll, { passive: true });
+  })();
+
+  // GSAP scroll animations
+  window.addEventListener('DOMContentLoaded', function () {
+    if (typeof gsap === 'undefined') return;
+    gsap.registerPlugin(ScrollTrigger);
+
+    gsap.from('.cs-hero-title', { y: 24, opacity: 0, duration: 0.65, ease: 'power2.out', delay: 0.1 });
+    gsap.from('.cs-hero-right', { y: 20, opacity: 0, duration: 0.65, ease: 'power2.out', delay: 0.25 });
+    gsap.from('.cs-hero-visual', { y: 28, opacity: 0, duration: 0.7, ease: 'power2.out', delay: 0.4 });
+
+    gsap.from('.cs-team', {
+      y: 20, opacity: 0, duration: 0.55, ease: 'power2.out',
+      scrollTrigger: { trigger: '.cs-team', start: 'top 88%', toggleActions: 'play none none none' }
+    });
+
+    document.querySelectorAll('.cs-row, .cs-pull-quote, .cs-full-image, .cs-phone-panel, .cs-browser, .cs-landscape-panel, .cs-type-panel, .cs-collage-panel, .cs-compare-panel, .cs-result-cards').forEach(function (el) {
+      gsap.from(el, {
+        y: 28, opacity: 0, duration: 0.65, ease: 'power2.out',
+        scrollTrigger: { trigger: el, start: 'top 87%', toggleActions: 'play none none none' }
+      });
+    });
+  });
+</script>
 </body>
 </html>
