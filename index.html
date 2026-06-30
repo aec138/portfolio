@@ -178,10 +178,9 @@
     }
     .hero-slide.active { opacity: 1; }
     .hero-slide > img {
-      width: 100%; height: calc(100% - 32px);
-      margin-top: 32px;
-      object-fit: cover;
-      object-position: top center;
+      width: 100%; height: 100%;
+      object-fit: contain;
+      object-position: center;
       display: block;
     }
     .hero-slide--gif {
@@ -211,7 +210,8 @@
       overflow: hidden;
       background: #000;
     }
-    .phone-screen img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .phone-screen img,
+    .phone-screen video { width: 100%; height: 100%; object-fit: cover; display: block; }
     .phone-dynamic-island {
       position: absolute;
       top: 2.85%; left: 50%;
@@ -783,35 +783,35 @@
     <div class="hero-slides">
 
       <div class="hero-slide" data-duration="4000">
-        <img src="assets/hero/slide-1.png" alt="Bumble — Chats design">
+        <img src="assets/hero/slide-1.png" alt="Slide 1">
       </div>
 
       <div class="hero-slide" data-duration="4000">
-        <img src="assets/hero/slide-2.png" alt="Marshmallow — Motion activity design">
+        <img src="assets/hero/slide-2.png" alt="Slide 2">
       </div>
 
       <div class="hero-slide" data-duration="4000">
-        <img src="assets/hero/slide-4.png" alt="Bumble app design">
+        <img src="assets/hero/slide-3.png" alt="Slide 3">
       </div>
 
       <div class="hero-slide" data-duration="4000">
-        <img src="assets/hero/slide-5.png" alt="Bumble — What a match with keyboard">
+        <img src="assets/hero/slide-4.png" alt="Slide 4">
       </div>
 
       <div class="hero-slide" data-duration="4000">
-        <img src="assets/hero/slide-6.png" alt="Marshmallow — Money and credit design">
+        <img src="assets/hero/slide-5.png" alt="Slide 5">
       </div>
 
       <div class="hero-slide" data-duration="4000">
-        <img src="assets/hero/slide-8.png" alt="MacBook Pro — portfolio with content">
+        <img src="assets/hero/slide-6.png" alt="Slide 6">
       </div>
 
       <div class="hero-slide" data-duration="4000">
-        <img src="assets/hero/slide-9.png" alt="MacBook Pro — photography portfolio">
+        <img src="assets/hero/slide-7.png" alt="Slide 7">
       </div>
 
       <div class="hero-slide" data-duration="4000">
-        <img src="assets/hero/slide-10.png" alt="MacBook Pro — portfolio detail">
+        <img src="assets/hero/slide-8.png" alt="Slide 8">
       </div>
 
     </div>
@@ -1323,10 +1323,12 @@
       const slide = slides[current];
       slide.classList.add('active');
 
-      // Restart GIF from frame 0
+      // Restart GIF/video from beginning
       if (slide.classList.contains('hero-slide--gif')) {
         const gif = slide.querySelector('.phone-screen img');
         if (gif) { const s = gif.src; gif.src = ''; gif.src = s; }
+        const video = slide.querySelector('.phone-screen video');
+        if (video) { video.currentTime = 0; video.play(); }
       }
 
       setTimeout(advance, parseInt(slide.dataset.duration) || 4000);
