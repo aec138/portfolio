@@ -694,6 +694,12 @@
       .projects-layout { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 24px; }
       .projects-list { grid-column: 2 / 4; }
     }
+    @media (min-width: 1512px) {
+      .hero, .projects, .colleagues, .apps, .contact {
+        padding-left: calc((100vw - 1512px) / 2 + var(--pad-section-h-lg));
+        padding-right: calc((100vw - 1512px) / 2 + var(--pad-section-h-lg));
+      }
+    }
     @media (max-width: 600px) {
       .hero { padding: 120px 24px 60px; }
       .hero-word { font-size: clamp(28px, 14vw, 72px); letter-spacing: -1px; }

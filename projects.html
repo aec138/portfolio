@@ -285,6 +285,12 @@
       .contact { padding-left: var(--pad-section-h-lg); padding-right: var(--pad-section-h-lg); }
       .footer-bar { padding-left: var(--pad-section-h-lg); padding-right: var(--pad-section-h-lg); }
     }
+    @media (min-width: 1512px) {
+      .projects-hero, .projects-page-intro, .project-row, .contact, .footer-bar {
+        padding-left: calc((100vw - 1512px) / 2 + var(--pad-section-h-lg));
+        padding-right: calc((100vw - 1512px) / 2 + var(--pad-section-h-lg));
+      }
+    }
     @media (max-width: 900px) {
       .nav { gap: 16px; max-width: calc(100vw - 32px); }
       .nav-links { display: none; }

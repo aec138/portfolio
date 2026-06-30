@@ -103,6 +103,7 @@
     a.work-entry-cta:hover { opacity: .7; }
     .work-entry-panel {
       flex: 1;
+      max-width: 658px;
       border-radius: var(--radius-card);
       overflow: hidden;
       aspect-ratio: 4 / 3;
@@ -164,6 +165,14 @@
       .work-hero { padding-left: var(--pad-section-h-lg); padding-right: var(--pad-section-h-lg); }
       .work-entry { padding-left: var(--pad-section-h-lg); padding-right: var(--pad-section-h-lg); }
       .contact { padding-left: var(--pad-section-h-lg); padding-right: var(--pad-section-h-lg); }
+    }
+    @media (min-width: 1512px) {
+      .work-hero,
+      .work-entry,
+      .contact {
+        padding-left: calc((100vw - 1512px) / 2 + var(--pad-section-h-lg));
+        padding-right: calc((100vw - 1512px) / 2 + var(--pad-section-h-lg));
+      }
     }
   </style>
   <!-- Google Analytics -->
