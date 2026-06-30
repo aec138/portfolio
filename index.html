@@ -241,10 +241,15 @@
     .apps-intro {
       margin-bottom: 40px;
     }
+    .apps-subtitle {
+      font-family: 'DM Sans', sans-serif; font-weight: 400;
+      font-size: 24px; line-height: 1.3; letter-spacing: -0.5px;
+      color: var(--brown); margin-top: 32px;
+    }
     .apps-desc {
       font-family: 'DM Sans', sans-serif; font-weight: 400; font-size: 18px;
       line-height: 28px; color: var(--brown); max-width: 550px;
-      margin-top: 32px; text-align: left;
+      margin-top: 20px; text-align: left;
     }
     .apps-desc em { font-style: italic; }
     .apps-process {
@@ -287,6 +292,8 @@
       font-family: 'DM Sans', sans-serif; font-weight: 300;
       font-size: 50px; line-height: 52.5px; color: var(--orange); flex-shrink: 0;
     }
+    .iphone + .app-letter { margin-left: 32px; }
+    @media (min-width: 1024px) { .iphone + .app-letter { margin-left: 48px; } }
     /* iPhone frame */
     .iphone {
       width: 409px;
@@ -676,7 +683,10 @@
     }
     @media (min-width: 1024px) {
       .hero { padding-left: var(--pad-section-h-lg); padding-right: var(--pad-section-h-lg); padding-top: 172px; padding-bottom: 4rem; }
-      .apps { padding-left: var(--pad-section-h-lg); padding-right: var(--pad-section-h-lg); }
+      .apps { padding-left: var(--pad-section-h-lg); padding-right: var(--pad-section-h-lg); display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: 24px; align-items: start; overflow: clip; }
+      .apps-intro { grid-column: 1; grid-row: 1 / 3; margin-bottom: 0; }
+      .apps-phones { grid-column: 2 / 4; justify-content: flex-start; }
+      .apps-dots { grid-column: 2 / 4; }
       .colleagues { padding-left: var(--pad-section-h-lg); padding-right: var(--pad-section-h-lg); }
       .contact { padding-left: var(--pad-section-h-lg); padding-right: var(--pad-section-h-lg); }
       .hero-title { padding-bottom: 4rem; }
@@ -695,8 +705,6 @@
       .flip-card { height: auto; min-height: 342px; }
     }
     @media (min-width: 1280px) {
-      .apps-phones { overflow: visible; scroll-snap-type: none; }
-      .apps-dots { display: none; }
       .iphone { zoom: 0.50; }
     }
     @media (min-width: 1440px) {
@@ -973,7 +981,8 @@
 <!-- APPS I WANT IN THE WORLD -->
 <section class="apps" id="apps" aria-labelledby="apps-heading">
   <div class="apps-intro">
-    <h2 class="section-heading" id="apps-heading">Apps I want in the world,<br>do you?</h2>
+    <h2 class="section-heading" id="apps-heading">Side projects</h2>
+    <p class="apps-subtitle">Apps I want in the world, do you?</p>
     <p class="apps-desc">Anyone can create an app now, that's great, I want to gage whether I <em>should</em>. Taking product principles I will gage interest here, make it, gather feedback, iterate etc.<br><br>You can be a part of it, give feedback along the way.</p>
     <a href="projects.html" class="apps-link">See more details →</a>
   </div>
@@ -1325,10 +1334,18 @@
   // ── Apps carousel dots ────────────────────────────────────────────────────
   (function () {
     var track   = document.querySelector('.apps-phones');
+    var dotsEl  = document.querySelector('.apps-dots');
     var dots    = Array.from(document.querySelectorAll('.apps-dot'));
     var phones  = Array.from(track.querySelectorAll('.iphone'));
     var letters = Array.from(track.querySelectorAll('.app-letter'));
     if (!track || !dots.length || !phones.length) return;
+
+    function syncDotsVisibility() {
+      var overflowing = track.scrollWidth > track.clientWidth + 1;
+      dotsEl.style.display = overflowing ? '' : 'none';
+    }
+    syncDotsVisibility();
+    window.addEventListener('resize', syncDotsVisibility);
 
     function setActive(i) {
       dots.forEach(function (d, idx) {
