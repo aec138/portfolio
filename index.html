@@ -380,13 +380,13 @@
     .apps-link:hover { text-decoration: underline; }
 
     /* ── FEATURED PROJECTS / CASE STUDIES ── */
-    .projects { overflow: clip; }
+    .projects { overflow: clip; padding: var(--pad-section-v) var(--pad-section-h); }
     .projects-layout {
       display: grid; grid-template-columns: 380px 1fr;
     }
     .projects-sidebar {
       position: sticky; top: 80px; height: fit-content;
-      padding: 56px 48px;
+      padding: 56px 0 0 0;
     }
     .projects-label {
       font-family: 'DM Sans', sans-serif; font-weight: 300;
@@ -398,10 +398,11 @@
       line-height: 28px; color: var(--brown); margin-top: 32px; max-width: 550px;
     }
     .project-entry {
-      padding: 56px 48px 56px 48px;
+      padding: 56px 0;
       cursor: pointer;
       transition: opacity 0.3s;
     }
+    .project-entry + .project-entry { border-top: 1px solid var(--border); }
     .project-entry-inner {
       display: flex; align-items: center; justify-content: space-between; gap: 32px;
     }
@@ -437,20 +438,9 @@
     .project-entry:hover .project-cta { transform: translateX(0); opacity: 1; gap: 10px; }
     .project-thumb {
       flex-shrink: 0; overflow: hidden; border-radius: 8px;
-      width: 0; height: 200px; opacity: 0;
-      transform: translateX(20px);
-      transition: width 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-                  opacity 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-                  transform 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-      pointer-events: none;
+      width: 280px; height: 200px;
     }
     .project-thumb img { width: 280px; max-width: none; height: 100%; object-fit: cover; display: block; }
-    .project-entry:hover .project-thumb {
-      width: 280px; opacity: 1; transform: translateX(0);
-    }
-    .projects-list:has(.project-entry:hover) .project-entry:not(:hover) {
-      opacity: 0.3;
-    }
 
     /* ── CLIENT LOGOS ── */
     .logos-bar {
@@ -496,7 +486,7 @@
     }
     .colleagues-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 24px;
     }
     .colleagues-intro {
@@ -657,9 +647,10 @@
       .hero-title-right { align-items: flex-start; }
       .apps { padding: 56px 24px; }
       .apps-intro { gap: 32px; }
+      .projects { padding: 56px 24px; }
       .projects-layout { grid-template-columns: 1fr; }
-      .projects-sidebar { position: static; height: auto; padding: 40px 24px 0; }
-      .project-entry { padding: 40px 24px; }
+      .projects-sidebar { position: static; height: auto; padding: 40px 0 0; }
+      .project-entry { padding: 40px 0; }
       .project-thumb { display: none; }
       .logos-bar { padding: 32px 0; }
       .colleagues { padding: 56px 24px; }
@@ -675,8 +666,7 @@
     @media (min-width: 768px) {
       .hero { padding-left: var(--pad-section-h-md); padding-right: var(--pad-section-h-md); }
       .apps { padding-left: var(--pad-section-h-md); padding-right: var(--pad-section-h-md); }
-      .projects-sidebar { padding-left: var(--pad-section-h-md); padding-right: var(--pad-section-h-md); }
-      .project-entry { padding-left: var(--pad-section-h-md); padding-right: var(--pad-section-h-md); }
+      .projects { padding-left: var(--pad-section-h-md); padding-right: var(--pad-section-h-md); }
       .colleagues { padding-left: var(--pad-section-h-md); padding-right: var(--pad-section-h-md); }
       .contact { padding-left: var(--pad-section-h-md); padding-right: var(--pad-section-h-md); }
       .hero-title { padding-bottom: 4rem; }
@@ -690,9 +680,9 @@
       .colleagues { padding-left: var(--pad-section-h-lg); padding-right: var(--pad-section-h-lg); }
       .contact { padding-left: var(--pad-section-h-lg); padding-right: var(--pad-section-h-lg); }
       .hero-title { padding-bottom: 4rem; }
-      .projects-layout { grid-template-columns: 450px 1fr; }
-      .projects-sidebar { padding-left: var(--pad-section-h-lg); }
-      .project-entry { padding-left: var(--pad-section-h-lg); padding-right: var(--pad-section-h-lg); }
+      .projects { padding-left: var(--pad-section-h-lg); padding-right: var(--pad-section-h-lg); }
+      .projects-layout { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 24px; }
+      .projects-list { grid-column: 2 / 4; }
     }
     @media (max-width: 600px) {
       .hero { padding: 120px 24px 60px; }
