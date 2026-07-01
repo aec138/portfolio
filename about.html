@@ -4,7 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
-  <title>About Me — Alex Cain</title>
+  <title>About — Alex Cain</title>
+  <meta name="description" content="Alex Cain is a Staff Product Designer with 12 years focused on design and product thinking.">
   <meta property="og:type" content="website">
   <meta property="og:title" content="Alex Cain — Staff Product Designer">
   <meta property="og:description" content="Portfolio of Alex Cain showing work from the last three years, thoughts and personal projects.">
@@ -12,9 +13,12 @@
   <meta property="og:url" content="https://alexecain.com/about.html">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300;1,9..40,400&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; }
+    button { font: inherit; cursor: pointer; border: none; background: none; }
 
     :root {
       --blue:   #3737f5;
@@ -24,35 +28,33 @@
       --dark:   #1c1208;
       --border: #e5d5be;
       --white:  #ffffff;
-      --pad-section-v:    80px;
-      --pad-section-h:    48px;
-      --pad-section-h-md: 4rem;
-      --pad-section-h-lg: 8rem;
-      --text-hero:    clamp(56px, 9.8vw, 158px);
-      --text-heading: clamp(36px, 3.9vw, 50px);
+      --pad-h:  clamp(24px, 6vw, 96px);
+      --pad-v:  96px;
+      --radius-card: 16px;
+      --radius-pill: 100px;
     }
 
     html { scroll-behavior: smooth; }
     body {
-      background: var(--cream);
       font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
       color: var(--brown);
       overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
     }
 
-    /* NAV — cream/frosted style for about page */
+    /* ── NAV ── */
     .nav-wrapper {
       position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
       z-index: 100;
     }
     .nav {
-      display: flex; align-items: center; gap: 40px;
-      padding: 8px 10px; height: 56px;
-      background: rgba(252,250,240,.9);
-      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-      border-radius: 28px; border: 1px solid var(--border);
-      white-space: nowrap;
-      transition: gap 0.3s ease;
+      display: flex; align-items: center; gap: 36px;
+      height: 56px; padding: 8px 10px;
+      background: rgba(252,250,240,.92);
+      backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+      border: 1px solid var(--border); border-radius: 28px;
+      white-space: nowrap; transition: gap 0.35s ease;
     }
     .nav.is-scrolled { gap: 0; }
     .nav.is-scrolled .nav-avatar,
@@ -60,201 +62,254 @@
     .nav.is-scrolled .nav-hamburger { width: 0; overflow: hidden; opacity: 0; pointer-events: none; }
     .nav-avatar {
       width: 40px; height: 40px; border-radius: 50%; overflow: hidden; flex-shrink: 0;
-      display: block; text-decoration: none; transition: opacity 0.3s ease, width 0.35s ease;
+      text-decoration: none; transition: opacity 0.3s ease, width 0.35s ease;
     }
-    .nav-avatar img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
-    .nav-links { display: flex; align-items: center; gap: 32px; list-style: none; transition: opacity 0.3s ease, width 0.35s ease; }
-    .nav-links a {
-      font-family: 'DM Sans', sans-serif; font-weight: 400; font-size: 16px;
-      color: var(--brown); text-decoration: none; transition: opacity .15s;
+    .nav-avatar img { width: 100%; height: 100%; object-fit: cover; object-position: center top; }
+    .nav-links {
+      display: flex; align-items: center; gap: 28px; list-style: none;
+      transition: opacity 0.3s ease, width 0.35s ease;
     }
-    .nav-links a:hover { opacity: .6; }
+    .nav-links a { font-size: 15px; font-weight: 400; color: var(--brown); text-decoration: none; transition: opacity .15s; }
+    .nav-links a:hover { opacity: .5; }
     .nav-links a.active { font-weight: 600; }
-    a.nav-cta {
-      background: var(--orange); color: var(--dark) !important;
-      font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 16px;
-      padding: 6px 20px 7px; border-radius: 99px;
-      white-space: nowrap; text-decoration: none; transition: opacity .15s; letter-spacing: 0;
+    .nav-cta {
+      background: var(--orange); color: var(--dark);
+      font-size: 15px; font-weight: 500; padding: 7px 20px 8px; border-radius: var(--radius-pill);
+      text-decoration: none; flex-shrink: 0; transition: opacity .15s, transform .15s; display: inline-block;
     }
-    a.nav-cta:hover { opacity: .82; }
+    .nav-cta:hover { opacity: .84; transform: translateY(-1px); }
     .nav-hamburger {
       display: none; flex-direction: column; gap: 5px;
       cursor: pointer; background: none; border: none; padding: 4px; flex-shrink: 0;
       transition: opacity 0.3s ease, width 0.35s ease;
     }
-    .nav-hamburger span {
-      display: block; width: 22px; height: 2px;
-      background: var(--dark); border-radius: 2px;
-    }
+    .nav-hamburger span { display: block; width: 22px; height: 2px; background: var(--dark); border-radius: 2px; }
     .nav-drawer {
       display: none; position: absolute; top: calc(100% + 8px); left: 50%; transform: translateX(-50%);
       background: rgba(252,250,240,.97); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
       border: 1px solid var(--border); border-radius: 20px;
-      padding: 16px 24px 20px; flex-direction: column; gap: 16px; z-index: 99;
-      min-width: 200px;
+      padding: 16px 24px 20px; flex-direction: column; gap: 16px; z-index: 99; min-width: 200px;
     }
     .nav-drawer.open { display: flex; }
-    .nav-drawer a {
-      font-family: 'DM Sans', sans-serif; font-weight: 400; font-size: 18px;
-      color: var(--brown); text-decoration: none; transition: opacity .15s;
-    }
+    .nav-drawer a { font-size: 18px; font-weight: 400; color: var(--brown); text-decoration: none; transition: opacity .15s; }
     .nav-drawer a:hover { opacity: .6; }
-    .nav-drawer a.nav-cta {
-      background: var(--orange); color: var(--dark) !important;
-      padding: 8px 20px; border-radius: 99px; align-self: flex-start; margin-top: 4px; font-size: 16px;
-    }
+    .nav-drawer a.nav-cta { background: var(--orange); color: var(--dark); padding: 8px 20px; border-radius: 99px; align-self: flex-start; margin-top: 4px; font-size: 16px; }
 
-    /* PAGE TITLE */
+    /* ── PAGE HERO ── */
+    .page-hero { padding: 140px var(--pad-h) 0; }
+    .page-title-line { overflow: hidden; line-height: .88; }
     .page-title {
-      padding: 148px var(--pad-section-h) 0;
-    }
-    .page-title h1 {
-      font-family: 'DM Sans', sans-serif; font-weight: 300;
-      font-size: var(--text-hero);
-      line-height: .86; color: var(--orange);
-      text-transform: uppercase; letter-spacing: -4.3px;
+      font-size: clamp(64px, 10.5vw, 158px);
+      font-weight: 300; letter-spacing: -4px;
+      text-transform: uppercase; color: var(--orange);
+      display: block; transform: translateY(110%);
     }
 
-    /* BIO */
-    .bio {
-      padding: 40px var(--pad-section-h) 72px;
+    /* ── INTRO ── */
+    .intro {
+      padding: 56px var(--pad-h) var(--pad-v);
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 64px; align-items: start;
     }
-    .bio p, .bio ul {
-      max-width: 63ch;
+    .intro-portrait { position: sticky; top: 88px; }
+    .intro-portrait img {
+      width: 100%; aspect-ratio: 4 / 5;
+      object-fit: cover; object-position: center 10%;
+      border-radius: var(--radius-card);
     }
-    .bio p {
-      font-family: 'DM Sans', sans-serif; font-weight: 400;
-      font-size: 18px; line-height: 28px; color: var(--brown);
-      margin-bottom: 28px;
+    .intro-portrait-caption {
+      font-size: 12px; font-weight: 500;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      color: rgba(94,70,48,.45); margin-top: 12px;
     }
-    .bio p:last-child { margin-bottom: 0; }
-    .bio strong {
-      font-weight: 700;
+    .intro-text { display: flex; flex-direction: column; gap: 20px; padding-top: 4px; }
+    .intro-text p { font-size: 18px; line-height: 1.75; color: var(--brown); max-width: 60ch; }
+
+    /* ── CAREER ── */
+    .career {
+      border-top: 1px solid var(--border);
+      padding: var(--pad-v) var(--pad-h);
     }
-    .bio ul {
-      margin: 0 0 28px 22px;
+    .career-header { margin-bottom: 64px; }
+    .career-label {
+      font-size: clamp(36px, 4vw, 52px);
+      font-weight: 300; letter-spacing: -2px;
+      text-transform: uppercase; color: var(--orange); line-height: 1;
     }
-    .bio ul li {
-      font-family: 'DM Sans', sans-serif; font-weight: 400;
-      font-size: 18px; line-height: 28px; color: var(--brown);
-      margin-bottom: 4px;
+    .career-list { display: flex; flex-direction: column; }
+    .career-entry {
+      display: grid; grid-template-columns: 220px 1fr;
+      gap: 40px; padding: 40px 0;
+      border-top: 1px solid var(--border);
+    }
+    .career-entry:first-child { border-top: none; padding-top: 0; }
+    .career-co {
+      font-size: clamp(22px, 2.6vw, 34px);
+      font-weight: 300; letter-spacing: -1.2px;
+      color: var(--orange); line-height: 1.1; padding-top: 3px;
+    }
+    .career-body { font-size: 17px; line-height: 1.75; color: var(--brown); max-width: 56ch; }
+    .career-agencies {
+      padding: 40px 0 0;
+      border-top: 1px solid var(--border);
+    }
+    .career-agencies p {
+      font-size: 17px; line-height: 1.75; color: var(--brown); max-width: 56ch;
+      padding-left: calc(220px + 40px);
     }
 
-    /* OUTSIDE OF WORK */
-    .outside {
-      padding: 0 var(--pad-section-h) 72px;
+    /* ── LOOKING FOR ── */
+    .looking {
+      background: var(--blue);
+      padding: var(--pad-v) var(--pad-h);
+      position: relative; overflow: hidden;
+    }
+    .looking::after {
+      content: ''; position: absolute; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='.07'/%3E%3C/svg%3E");
+      background-size: 300px 300px; pointer-events: none;
+    }
+    .looking-inner { position: relative; z-index: 1; }
+    .looking-label {
+      font-size: clamp(32px, 3.8vw, 52px);
+      font-weight: 300; letter-spacing: -2px;
+      text-transform: uppercase; color: var(--white);
+      line-height: 1.05; margin-bottom: 48px;
+    }
+    .looking-list {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 2px;
+    }
+    .looking-item {
+      background: rgba(255,255,255,.07); border-radius: 12px;
+      padding: 28px 32px; display: flex; align-items: flex-start; gap: 16px;
+    }
+    .looking-item-dot { display: none; }
+    .looking-item-text {
+      font-size: 18px; font-weight: 300;
+      letter-spacing: -0.5px; line-height: 1.45;
+      color: rgba(255,255,255,.85);
+    }
+
+    /* ── OUTSIDE OF WORK ── */
+    .outside { padding: var(--pad-v) var(--pad-h); }
+    .outside-label {
+      font-size: 13px; font-weight: 600;
+      letter-spacing: 2px; text-transform: uppercase;
+      color: rgba(94,70,48,.45);
     }
     .outside-heading {
-      font-family: 'DM Sans', sans-serif; font-weight: 400;
-      font-size: 18px; line-height: 28px; color: var(--brown);
-      padding: 32px 0;
+      font-size: clamp(32px, 3.8vw, 52px);
+      font-weight: 300; letter-spacing: -2px;
+      text-transform: uppercase; color: var(--orange);
+      line-height: 1.05; margin-top: 8px; margin-bottom: 40px;
     }
     .photo-grid {
       display: grid;
       grid-template-columns: repeat(6, 1fr);
-      gap: 32px;
+      grid-auto-rows: 180px;
+      gap: 12px;
     }
-    .photo-grid img {
-      width: 100%; aspect-ratio: 231 / 212;
-      object-fit: cover; display: block;
-      border-radius: 4px;
-    }
+    .ph { overflow: hidden; border-radius: 10px; }
+    .ph img { width: 100%; height: 100%; object-fit: cover; transition: transform .55s ease; }
+    .ph:hover img { transform: scale(1.06); }
+    .photo-grid .ph:nth-child(1)  { grid-column: span 2; grid-row: span 2; }
+    .photo-grid .ph:nth-child(4)  { grid-column: span 2; }
+    .photo-grid .ph:nth-child(7)  { grid-column: span 2; grid-row: span 2; }
+    .photo-grid .ph:nth-child(10) { grid-column: span 2; }
+    .photo-grid .ph:nth-child(12) { grid-column: span 2; }
 
-    /* CONTACT */
-    .contact { border-top: 1px solid var(--border); padding: var(--pad-section-v) var(--pad-section-h); }
-    .contact-grid {
-      display: grid; grid-template-columns: 1fr 1.4fr;
-      gap: 64px; max-width: 1450px;
-    }
-    .contact-photo {
-      width: 240px; height: 300px; border-radius: 14px;
-      object-fit: cover; object-position: center 15%; display: block;
-    }
-    .contact-blurb {
-      font-family: 'DM Sans', sans-serif; font-weight: 400; font-size: 18px;
-      line-height: 28px; color: var(--brown); margin-top: 20px;
-    }
-    .contact-heading {
-      font-family: 'DM Sans', sans-serif; font-weight: 300;
-      font-size: var(--text-heading); line-height: 1.05; color: var(--orange);
-      text-transform: uppercase; margin-bottom: 8px;
-    }
-    .contact-form { display: flex; flex-direction: column; gap: 8px; margin-top: 18px; }
-    .form-name-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-    @media (max-width: 600px) { .form-name-row { grid-template-columns: 1fr; } }
+    /* ── CONTACT ── */
+    .contact { border-top: 1px solid var(--border); padding: var(--pad-v) var(--pad-h); }
+    .contact-grid { display: grid; grid-template-columns: auto 1fr; gap: 64px; align-items: start; max-width: 900px; }
+    .contact-photo { width: 220px; height: 280px; border-radius: 14px; object-fit: cover; object-position: center 15%; display: block; flex-shrink: 0; }
+    .contact-heading { font-size: clamp(36px, 4vw, 52px); font-weight: 300; letter-spacing: -2px; text-transform: uppercase; color: var(--orange); margin-bottom: 8px; }
+    .contact-blurb { font-size: 17px; line-height: 1.7; color: rgba(94,70,48,.7); margin-bottom: 24px; max-width: 440px; }
+    .contact-form { display: flex; flex-direction: column; gap: 8px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
     .form-field {
       background: var(--cream); border: 1px solid var(--border); border-radius: 10px;
-      padding: 14px 17px; font-family: 'DM Sans', sans-serif; font-weight: 400;
-      font-size: 18px; line-height: 28px; color: var(--dark); width: 100%;
+      padding: 13px 16px; font-family: 'DM Sans', sans-serif; font-size: 16px;
+      font-weight: 400; color: var(--dark); width: 100%;
       outline: none; appearance: none; transition: border-color .15s;
     }
-    .form-field::placeholder { color: var(--brown); opacity: .7; }
+    .form-field::placeholder { color: var(--brown); opacity: .55; }
     .form-field:focus { border-color: var(--orange); }
-    textarea.form-field { height: 100px; resize: vertical; }
+    textarea.form-field { height: 110px; resize: vertical; }
     .form-submit {
       background: var(--orange); color: var(--dark);
-      font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 16px;
-      letter-spacing: 0; border: none;
-      border-radius: 99px; padding: 6px 20px 7px; cursor: pointer; align-self: flex-start;
-      transition: opacity .15s;
+      font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 500;
+      padding: 10px 24px; border-radius: var(--radius-pill); cursor: pointer; align-self: flex-start;
+      transition: opacity .15s, transform .15s;
     }
-    .form-submit:hover { opacity: .82; }
+    .form-submit:hover { opacity: .84; transform: translateY(-1px); }
+    .form-submit:active { transform: scale(.97); }
 
-    /* FOOTER BAR */
+    /* ── FOOTER ── */
     .footer-bar {
-      background: var(--dark); padding: 28px var(--pad-section-h);
-      display: flex; align-items: center; justify-content: space-between;
-      flex-wrap: wrap; gap: 12px;
+      background: var(--dark); padding: 28px 48px;
+      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;
     }
-    .footer-copy {
-      font-family: 'DM Sans', sans-serif; font-weight: 400;
-      font-size: 11.5px; letter-spacing: .46px; color: var(--white);
-    }
+    .footer-copy { font-size: 13px; letter-spacing: .46px; color: var(--white); }
     .footer-links { display: flex; gap: 20px; list-style: none; }
     .footer-links a {
-      font-family: 'DM Sans', sans-serif; font-weight: 400; font-size: 11.5px;
-      letter-spacing: .69px; text-transform: uppercase; color: var(--white);
-      text-decoration: none; transition: opacity .15s;
+      font-size: 13px; font-weight: 400; letter-spacing: .69px; text-transform: uppercase;
+      color: var(--white); text-decoration: none; transition: opacity .15s;
     }
     .footer-links a:hover { opacity: .65; }
 
-    /* RESPONSIVE */
-    @media (min-width: 768px) {
-      .page-title { padding-left: var(--pad-section-h-md); padding-right: var(--pad-section-h-md); }
-      .bio        { padding-left: var(--pad-section-h-md); padding-right: var(--pad-section-h-md); }
-      .outside    { padding-left: var(--pad-section-h-md); padding-right: var(--pad-section-h-md); }
-      .contact    { padding-left: var(--pad-section-h-md); padding-right: var(--pad-section-h-md); }
-      .footer-bar { padding-left: var(--pad-section-h-md); padding-right: var(--pad-section-h-md); }
-    }
-    @media (min-width: 1024px) {
-      .page-title { padding-left: var(--pad-section-h-lg); padding-right: var(--pad-section-h-lg); }
-      .bio        { padding-left: var(--pad-section-h-lg); padding-right: var(--pad-section-h-lg); }
-      .outside    { padding-left: var(--pad-section-h-lg); padding-right: var(--pad-section-h-lg); }
-      .contact    { padding-left: var(--pad-section-h-lg); padding-right: var(--pad-section-h-lg); }
-      .footer-bar { padding-left: var(--pad-section-h-lg); padding-right: var(--pad-section-h-lg); }
-    }
-    @media (min-width: 1512px) {
-      .page-title, .bio, .outside, .contact, .footer-bar {
-        padding-left: calc((100vw - 1512px) / 2 + var(--pad-section-h-lg));
-        padding-right: calc((100vw - 1512px) / 2 + var(--pad-section-h-lg));
-      }
-    }
+    /* ── SCROLL REVEAL ── */
+    .sr { opacity: 0; transform: translateY(24px); transition: opacity .65s ease, transform .65s ease; }
+    .sr.in { opacity: 1; transform: translateY(0); }
+    .sr[data-d="1"] { transition-delay: .08s; }
+    .sr[data-d="2"] { transition-delay: .16s; }
+    .sr[data-d="3"] { transition-delay: .24s; }
+    .sr[data-d="4"] { transition-delay: .32s; }
+
+    /* ── RESPONSIVE ── */
     @media (max-width: 900px) {
       .nav { gap: 16px; max-width: calc(100vw - 32px); }
       .nav-links { display: none; }
       .nav-hamburger { display: flex; }
-      .page-title { padding: 148px 24px 0; }
-      .page-title h1 { letter-spacing: -2px; }
-      .bio { padding: 32px 24px 56px; }
-      .outside { padding: 0 24px 56px; }
-      .photo-grid { grid-template-columns: repeat(4, 1fr); gap: 16px; }
+      .intro { grid-template-columns: 1fr; gap: 36px; padding: 40px 24px var(--pad-v); }
+      .intro-portrait { position: static; max-width: 200px; }
+      .career { padding: 56px 24px; }
+      .career-entry { grid-template-columns: 1fr; gap: 10px; }
+      .career-entry:first-child { padding-top: 0; }
+      .career-agencies p { padding-left: 0; }
+      .looking-list { grid-template-columns: 1fr; }
+      .outside { padding: 56px 24px; }
+      .photo-grid { grid-template-columns: repeat(3, 1fr); grid-auto-rows: 140px; }
+      .photo-grid .ph:nth-child(1)  { grid-column: span 2; grid-row: span 2; }
+      .photo-grid .ph:nth-child(4)  { grid-column: span 1; }
+      .photo-grid .ph:nth-child(7)  { grid-column: span 2; grid-row: span 1; }
+      .photo-grid .ph:nth-child(10) { grid-column: span 1; }
+      .photo-grid .ph:nth-child(12) { grid-column: span 1; }
       .contact { padding: 56px 24px; }
       .contact-grid { grid-template-columns: 1fr; gap: 40px; }
-      .contact-photo { width: 180px; height: 220px; }
+      .contact-photo { width: 160px; height: 200px; }
       .footer-bar { padding: 24px; }
     }
-    @media (max-width: 600px) {
-      .photo-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    @media (max-width: 560px) {
+      .photo-grid { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 120px; }
+      .photo-grid .ph:nth-child(1)  { grid-column: span 2; grid-row: span 1; }
+      .photo-grid .ph:nth-child(7)  { grid-column: span 1; grid-row: span 1; }
+      .form-row { grid-template-columns: 1fr; }
+    }
+    @media (min-width: 1512px) {
+      .page-hero, .intro, .career, .looking, .outside, .contact {
+        padding-left: calc((100vw - 1512px) / 2 + 96px);
+        padding-right: calc((100vw - 1512px) / 2 + 96px);
+      }
+      .footer-bar {
+        padding-left: calc((100vw - 1512px) / 2 + 48px);
+        padding-right: calc((100vw - 1512px) / 2 + 48px);
+      }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .page-title { transform: none; }
+      .sr { opacity: 1; transform: none; transition: none; }
+      .ph img { transition: none; }
     }
   </style>
   <!-- Google Analytics -->
@@ -271,8 +326,8 @@
 <!-- NAV -->
 <header>
   <div class="nav-wrapper">
-    <nav class="nav" aria-label="Main navigation">
-      <a href="index.html" class="nav-avatar">
+    <nav class="nav" id="main-nav" aria-label="Main navigation">
+      <a href="index.html" class="nav-avatar" aria-label="Alex Cain home">
         <img src="assets/alex-hero.jpg" alt="Alex Cain">
       </a>
       <ul class="nav-links" role="list">
@@ -289,106 +344,183 @@
     <nav class="nav-drawer" id="navDrawer" aria-label="Mobile navigation">
       <a href="work.html" onclick="closeMenu()">Work</a>
       <a href="about.html" class="active" onclick="closeMenu()">About</a>
-      <a href="index.html#apps" onclick="closeMenu()">Thoughts</a>
+      <a href="https://substack.com/@alexcaindesign" target="_blank" rel="noopener" onclick="closeMenu()">Thoughts</a>
       <a href="https://docs.google.com/document/d/1baQoC_o6pZB8Hsee8ddzqnkunp4sn146tAxX6LeLSK4/edit?pli=1&tab=t.vh9lp2u1ry7g#heading=h.x8fm1uorkbaw" target="_blank" rel="noopener" onclick="closeMenu()">CV</a>
       <a href="#contact" class="nav-cta" onclick="closeMenu()">Contact</a>
     </nav>
   </div>
 </header>
 
-<!-- PAGE TITLE -->
-<section class="page-title">
-  <h1>About me</h1>
-</section>
-
-<!-- BIO -->
-<section class="bio" aria-label="Biography">
-  <p>Hi I'm Alex a Staff Product Designer. I've spent 12 years focused on design and product thinking, never quite a PM, never just a designer and increasingly convinced that's exactly where the most interesting work happens. AI is accelerating the shift away from rigid titles toward outcome driven thinking and I'm here for it.</p>
-
-  <p>I care deeply about the why behind what gets built: the strategy, the research, the ethical implications, and the craft of turning ambiguity into something people actually want to use.</p>
-
-  <p><strong>My career so far.</strong></p>
-  <p><strong>Agencies</strong> — I started in agencies, where managers like Dave had the genius or possibly the recklessness to let a junior run as a lead. It shaped how I work, understanding the context quickly, narrowing in on the problem to be solved and adapting to the teams way of working to get products shipped.</p>
-
-  <p><strong>Zalando</strong> — A contract pulled me to Berlin, where I designed an internal feedback tool for 16,000 employees across 140 countries. The scale and cultural complexity were unlike anything I'd done before and it completely hooked me. I stayed on to join their consumer app team, who were making bold early bets on the influencer market. I was skeptical, guess who turned out to be wrong!</p>
-
-  <p>Back in the UK, things got bigger and messier in the best way:<br>
-  <strong>Zoopla</strong> — Worked across B2B and B2C, pulling strategy and shipping together with some brilliant colleagues until new home leads went up 4x.<br>
-  <strong>Bumble</strong> — Picked up Opening Moves after a failing launch and redundancies had left it struggling, grew adoption by 40% and quality conversations by 5%. Then moved to the Women's Experience team, where whilst our new PM was in visa purgatory the lead engineer, researcher, content designer and I made a roadmap and we shipped 80% of it, which, if you've worked in product, you'll know is basically unheard of.<br>
-  <strong>Marshmallow</strong> — Led a 0-to-1 physical device connected to the app. The MVP became their leading product in three months. I then changed focus to how Marshmallow becomes a multi-product company.</p>
-
-  <p><strong>What I'm looking for</strong><br>
-  Talented, kind people to call colleagues. Products that don't make the world worse. A team that sits in the ambiguity together but builds with real clarity. And work that keeps me learning.</p>
-</section>
-
-<!-- OUTSIDE OF WORK -->
-<section class="outside" aria-labelledby="outside-heading">
-  <p class="outside-heading" id="outside-heading">Outside of work</p>
-  <div class="photo-grid">
-    <img src="assets/about/photo-1.jpg" alt="Outside of work photo">
-    <img src="assets/about/photo-2.jpg" alt="Outside of work photo">
-    <img src="assets/about/photo-3.jpg" alt="Outside of work photo">
-    <img src="https://github.com/aec138/portfolio/releases/download/assets-v1/coco.gif" alt="Outside of work photo">
-    <img src="assets/about/photo-5.jpg" alt="Outside of work photo">
-    <img src="assets/about/photo-7.jpg" alt="Outside of work photo">
-    <img src="https://github.com/aec138/portfolio/releases/download/assets-v1/nino.gif" alt="Outside of work photo">
-    <img src="assets/about/photo-8.jpg" alt="Outside of work photo">
-    <img src="assets/about/photo-9.jpg" alt="Outside of work photo">
-    <img src="assets/about/photo-10.jpg" alt="Outside of work photo">
-    <img src="assets/about/photo-11.jpg" alt="Outside of work photo">
-    <img src="https://github.com/aec138/portfolio/releases/download/assets-v1/photo-12.gif" alt="Outside of work photo">
+<!-- PAGE HERO -->
+<section class="page-hero" aria-label="About me">
+  <div class="page-title-line">
+    <span class="page-title">About me</span>
   </div>
 </section>
 
-<!-- LET'S WORK TOGETHER -->
-<section class="contact" id="contact" aria-labelledby="contact-heading">
-  <div class="contact-grid">
-    <div>
-      <img src="assets/alex-contact.jpg" alt="Alex Cain" class="contact-photo">
+<!-- INTRO -->
+<section class="intro" aria-label="Introduction">
+  <div class="intro-portrait sr">
+    <img src="assets/alex-contact.jpg" alt="Alex Cain">
+    <p class="intro-portrait-caption">London, 2026</p>
+  </div>
+  <div class="intro-text">
+    <p class="sr">
+      Hi, I&#8217;m Alex, a Staff Product Designer. I&#8217;ve spent 12 years focused on design and product thinking. Never quite a PM, never just a designer, and increasingly convinced that&#8217;s exactly where the most interesting work happens. AI is accelerating the shift away from rigid titles toward outcome-driven thinking, and I&#8217;m here for it.
+    </p>
+    <p class="sr" data-d="1">
+      I care deeply about the why behind what gets built: the strategy, the research, the ethical implications, and the craft of turning ambiguity into something people actually want to use.
+    </p>
+  </div>
+</section>
+
+<!-- CAREER HIGHLIGHTS -->
+<section class="career" aria-label="Career highlights">
+  <div class="career-header sr">
+    <h2 class="career-label">Career Highlights</h2>
+  </div>
+
+  <div class="career-list">
+
+    <div class="career-entry sr">
+      <h3 class="career-co">Marshmallow</h3>
+      <p class="career-body">Led a 0-to-1 physical device connected to the app. The MVP became their leading product in three months. I then changed focus to how Marshmallow becomes a multi-product company.</p>
     </div>
+
+    <div class="career-entry sr">
+      <h3 class="career-co">Bumble</h3>
+      <p class="career-body">Picked up Opening Moves after a failing launch and redundancies had left it struggling. Grew adoption by 40% and quality conversations by 5%. Then moved to the Women&#8217;s Experience team, where whilst our new PM was in visa purgatory the lead engineer, researcher, content designer and I made a roadmap and we shipped 80% of it. If you&#8217;ve worked in product, you&#8217;ll know that&#8217;s basically unheard of.</p>
+    </div>
+
+    <div class="career-entry sr">
+      <h3 class="career-co">Zoopla</h3>
+      <p class="career-body">Worked across B2B and B2C, pulling strategy and shipping together with some brilliant colleagues until new home leads went up 4x.</p>
+    </div>
+
+    <div class="career-entry sr">
+      <h3 class="career-co">Zalando</h3>
+      <p class="career-body">A contract pulled me to Berlin, where I designed an internal feedback tool for 16,000 employees across 140 countries. The scale and cultural complexity were unlike anything I&#8217;d done before and it completely hooked me. I stayed on to join their consumer app team, who were making bold early bets on the influencer market. I was skeptical. Guess who turned out to be wrong.</p>
+    </div>
+
+  </div>
+
+  <div class="career-entry sr">
+    <h3 class="career-co">Agencies</h3>
+    <p class="career-body">I started in agencies, where managers like Dave had the genius, or possibly the recklessness, to let a junior run as a lead. It shaped how I work: understanding the context quickly, narrowing in on the problem to be solved, and adapting to how teams work to get products shipped.</p>
+  </div>
+</section>
+
+<!-- WHAT I'M LOOKING FOR -->
+<section class="looking" aria-label="What I'm looking for">
+  <div class="looking-inner">
+    <h2 class="looking-label sr">What I value in a role</h2>
+    <div class="looking-list">
+      <div class="looking-item sr" data-d="1">
+        <span class="looking-item-dot" aria-hidden="true"></span>
+        <p class="looking-item-text">Talented, kind people to call colleagues</p>
+      </div>
+      <div class="looking-item sr" data-d="2">
+        <span class="looking-item-dot" aria-hidden="true"></span>
+        <p class="looking-item-text">Products that don&#8217;t make the world worse</p>
+      </div>
+      <div class="looking-item sr" data-d="3">
+        <span class="looking-item-dot" aria-hidden="true"></span>
+        <p class="looking-item-text">A team that sits in the ambiguity together but builds with real clarity</p>
+      </div>
+      <div class="looking-item sr" data-d="4">
+        <span class="looking-item-dot" aria-hidden="true"></span>
+        <p class="looking-item-text">Work that keeps me learning</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OUTSIDE OF WORK -->
+<section class="outside" aria-label="Outside of work">
+  <div class="sr">
+    <span class="outside-label">Life outside the screen</span>
+    <h2 class="outside-heading">Outside of work</h2>
+  </div>
+  <div class="photo-grid">
+    <div class="ph sr" data-d="1"><img src="assets/about/photo-1.jpg" alt=""></div>
+    <div class="ph sr" data-d="1"><img src="assets/about/photo-2.jpg" alt=""></div>
+    <div class="ph sr" data-d="2"><img src="assets/about/photo-3.jpg" alt=""></div>
+    <div class="ph sr" data-d="2"><img src="https://github.com/aec138/portfolio/releases/download/assets-v1/coco.gif" alt=""></div>
+    <div class="ph sr" data-d="3"><img src="assets/about/photo-5.jpg" alt=""></div>
+    <div class="ph sr" data-d="3"><img src="assets/about/photo-7.jpg" alt=""></div>
+    <div class="ph sr" data-d="1"><img src="https://github.com/aec138/portfolio/releases/download/assets-v1/nino.gif" alt=""></div>
+    <div class="ph sr" data-d="2"><img src="assets/about/photo-8.jpg" alt=""></div>
+    <div class="ph sr" data-d="3"><img src="assets/about/photo-9.jpg" alt=""></div>
+    <div class="ph sr" data-d="1"><img src="assets/about/photo-10.jpg" alt=""></div>
+    <div class="ph sr" data-d="2"><img src="assets/about/photo-11.jpg" alt=""></div>
+    <div class="ph sr" data-d="3"><img src="https://github.com/aec138/portfolio/releases/download/assets-v1/photo-12.gif" alt=""></div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact" aria-labelledby="contact-heading">
+  <div class="contact-grid sr">
+    <img src="assets/alex-contact.jpg" alt="Alex Cain" class="contact-photo">
     <div>
       <h2 class="contact-heading" id="contact-heading">Get in touch!</h2>
-      <p class="contact-blurb">Always happy to have a chat or a coffee, whether it's a big product challenge or just a conversation, feel free to reach&nbsp;out.</p>
+      <p class="contact-blurb">Always happy to have a chat or a coffee, whether it&#8217;s a big product challenge or just a conversation, feel free to reach&nbsp;out.</p>
       <form class="contact-form" action="https://formsubmit.co/hi@alexecain.com" method="POST">
         <input type="hidden" name="_subject" value="New message from portfolio">
         <input type="hidden" name="_captcha" value="false">
-        <div class="form-name-row">
+        <div class="form-row">
           <input type="text"  class="form-field" name="first_name" placeholder="First name" autocomplete="given-name" required>
           <input type="text"  class="form-field" name="last_name"  placeholder="Last name"  autocomplete="family-name">
         </div>
         <input type="email" class="form-field" name="email" placeholder="Email" autocomplete="email" required>
+        <input type="text"  class="form-field" name="type"  placeholder="Type of work...">
         <textarea class="form-field" name="message" placeholder="What can I help you with..." required></textarea>
-        <button type="submit" class="form-submit">Send</button>
+        <button type="submit" class="form-submit">Send message</button>
       </form>
     </div>
   </div>
 </section>
 
-<!-- FOOTER BAR -->
+<!-- FOOTER -->
 <footer class="footer-bar">
-  <p class="footer-copy">© 2026 Alex Cain · Evidence | Strategy | Design</p>
+  <p class="footer-copy">&#169; 2026 Alex Cain &middot; Evidence | Strategy | Design</p>
   <ul class="footer-links" role="list">
     <li><a href="mailto:hi@alexecain.com">Email</a></li>
-    <li><a href="https://linkedin.com/in/alexandraecain" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
-    <li><a href="assets/cv.pdf" target="_blank" rel="noopener">Download CV</a></li>
+    <li><a href="https://www.linkedin.com/in/alexandraecain/" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+    <li><a href="https://docs.google.com/document/d/1baQoC_o6pZB8Hsee8ddzqnkunp4sn146tAxX6LeLSK4/edit?pli=1&tab=t.vh9lp2u1ry7g#heading=h.x8fm1uorkbaw" target="_blank" rel="noopener">Download CV</a></li>
   </ul>
 </footer>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 <script>
+  // Nav scroll collapse
+  var nav = document.getElementById('main-nav');
+  window.addEventListener('scroll', function() {
+    nav.classList.toggle('is-scrolled', window.scrollY > 60);
+  }, { passive: true });
+
+  // Hamburger menu
   function toggleMenu(btn) {
-    const drawer = document.getElementById('navDrawer');
-    const open = drawer.classList.toggle('open');
+    var drawer = document.getElementById('navDrawer');
+    var open = drawer.classList.toggle('open');
     btn.setAttribute('aria-expanded', String(open));
   }
   function closeMenu() {
     document.getElementById('navDrawer').classList.remove('open');
-    const btn = document.querySelector('.nav-hamburger');
+    var btn = document.querySelector('.nav-hamburger');
     if (btn) btn.setAttribute('aria-expanded', 'false');
   }
-  var nav = document.querySelector('.nav');
-  window.addEventListener('scroll', function() {
-    nav.classList.toggle('is-scrolled', window.scrollY > 60);
-  }, { passive: true });
+
+  // Page title clip reveal
+  gsap.to('.page-title', { y: '0%', duration: 1, ease: 'power3.out', delay: 0.1 });
+
+  // Scroll reveal
+  var srEls = document.querySelectorAll('.sr');
+  var revealObserver = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) { e.target.classList.add('in'); revealObserver.unobserve(e.target); }
+    });
+  }, { threshold: 0.12 });
+  srEls.forEach(function(el) { revealObserver.observe(el); });
 </script>
 
 </body>
