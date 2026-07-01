@@ -421,7 +421,7 @@
     .form-submit:hover { opacity: .82; }
 
     /* ── FOOTER BAR ── */
-    .footer-bar { background: var(--dark); padding: 28px 48px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+    .footer-bar { background: var(--dark); padding: 28px var(--pad-section-h); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
     .footer-copy { font-family: 'DM Sans', sans-serif; font-weight: 400; font-size: 13px; letter-spacing: .46px; color: var(--white); }
     .footer-links { display: flex; gap: 20px; list-style: none; }
     .footer-links a { font-family: 'DM Sans', sans-serif; font-weight: 400; font-size: 13px; letter-spacing: .69px; text-transform: uppercase; color: var(--white); text-decoration: none; transition: opacity .15s; }
@@ -475,6 +475,12 @@
       .cs-team { padding-left: var(--pad-section-h-lg); padding-right: var(--pad-section-h-lg); }
       .cs-content { padding-left: var(--pad-section-h-lg); padding-right: var(--pad-section-h-lg); }
       .contact { padding-left: var(--pad-section-h-lg); padding-right: var(--pad-section-h-lg); }
+    }
+    @media (min-width: 1512px) {
+      .cs-hero, .cs-image-wrap, .cs-team, .cs-content, .contact, .footer-bar {
+        padding-left: calc((100vw - 1512px) / 2 + var(--pad-section-h-lg));
+        padding-right: calc((100vw - 1512px) / 2 + var(--pad-section-h-lg));
+      }
     }
   </style>
   <!-- Google Analytics -->
