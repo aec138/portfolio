@@ -71,10 +71,10 @@
       transition: gap 0.3s ease;
     }
     /* Scrolled: smooth collapse to just the Contact button */
-    .nav--scrolled { gap: 0; }
-    .nav--scrolled .nav-avatar,
-    .nav--scrolled .nav-links,
-    .nav--scrolled .nav-hamburger {
+    .is-scrolled { gap: 0; }
+    .is-scrolled .nav-avatar,
+    .is-scrolled .nav-links,
+    .is-scrolled .nav-hamburger {
       width: 0; overflow: hidden; opacity: 0; pointer-events: none;
     }
     .nav-avatar {
@@ -780,7 +780,7 @@
     var nav = document.querySelector('.nav');
     if (!nav) return;
     function onScroll() {
-      nav.classList.toggle('nav--scrolled', window.scrollY > 60);
+      nav.classList.toggle('is-scrolled', window.scrollY > 60);
     }
     window.addEventListener('scroll', onScroll, { passive: true });
     document.addEventListener('scroll', onScroll, { passive: true });

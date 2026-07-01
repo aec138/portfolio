@@ -57,16 +57,16 @@
       white-space: nowrap;
       transition: gap 0.3s ease;
     }
-    .nav--scrolled .nav-avatar,
-    .nav--scrolled .nav-links,
-    .nav--scrolled .nav-hamburger { display: none; }
-    .nav--scrolled { gap: 0; }
+    .nav.is-scrolled { gap: 0; }
+    .nav.is-scrolled .nav-avatar,
+    .nav.is-scrolled .nav-links,
+    .nav.is-scrolled .nav-hamburger { width: 0; overflow: hidden; opacity: 0; pointer-events: none; }
     .nav-avatar {
       width: 40px; height: 40px; border-radius: 50%; overflow: hidden; flex-shrink: 0;
-      display: block; text-decoration: none;
+      display: block; text-decoration: none; transition: opacity 0.3s ease, width 0.35s ease;
     }
     .nav-avatar img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
-    .nav-links { display: flex; align-items: center; gap: 32px; list-style: none; }
+    .nav-links { display: flex; align-items: center; gap: 32px; list-style: none; transition: opacity 0.3s ease, width 0.35s ease; }
     .nav-links a {
       font-family: 'DM Sans', sans-serif; font-weight: 400; font-size: 16px;
       color: var(--brown); text-decoration: none; transition: opacity .15s;
@@ -82,6 +82,7 @@
     .nav-hamburger {
       display: none; flex-direction: column; gap: 5px;
       cursor: pointer; background: none; border: none; padding: 4px; flex-shrink: 0;
+      transition: opacity 0.3s ease, width 0.35s ease;
     }
     .nav-hamburger span { display: block; width: 22px; height: 2px; background: var(--dark); border-radius: 2px; }
     .nav-drawer {
@@ -906,10 +907,10 @@
 
   // Nav scroll collapse
   (function () {
-    var wrapper = document.querySelector('.nav-wrapper');
-    if (!wrapper) return;
+    var nav = document.querySelector('.nav');
+    if (!nav) return;
     function onScroll() {
-      wrapper.classList.toggle('nav--scrolled', window.scrollY > 60);
+      nav.classList.toggle('is-scrolled', window.scrollY > 60);
     }
     window.addEventListener('scroll', onScroll, { passive: true });
   })();
