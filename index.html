@@ -70,17 +70,21 @@
       white-space: nowrap;
       transition: gap 0.3s ease;
     }
-    /* Scrolled: collapse to just the Contact button */
+    /* Scrolled: smooth collapse to just the Contact button */
+    .nav--scrolled { gap: 0; }
     .nav--scrolled .nav-avatar,
     .nav--scrolled .nav-links,
-    .nav--scrolled .nav-hamburger { display: none; }
-    .nav--scrolled { gap: 0; }
+    .nav--scrolled .nav-hamburger {
+      width: 0; overflow: hidden; opacity: 0; pointer-events: none;
+    }
     .nav-avatar {
       width: 40px; height: 40px; border-radius: 50%; overflow: hidden; flex-shrink: 0;
       display: block; text-decoration: none;
+      transition: opacity 0.3s ease, width 0.35s ease;
     }
     .nav-avatar img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
-    .nav-links { display: flex; align-items: center; gap: 32px; list-style: none; }
+    .nav-links { display: flex; align-items: center; gap: 32px; list-style: none;
+      transition: opacity 0.3s ease, width 0.35s ease; }
     .nav-links a {
       font-family: 'DM Sans', sans-serif; font-weight: 400; font-size: 16px;
       color: var(--brown); text-decoration: none; transition: opacity .15s;
@@ -96,6 +100,7 @@
     .nav-hamburger {
       display: none; flex-direction: column; gap: 5px;
       cursor: pointer; background: none; border: none; padding: 4px; flex-shrink: 0;
+      transition: opacity 0.3s ease, width 0.35s ease;
     }
     .nav-hamburger span {
       display: block; width: 22px; height: 2px;
@@ -122,112 +127,59 @@
     /* ── HERO ── */
     .hero {
       background: var(--blue);
-      padding: var(--pad-section-v) var(--pad-section-h);
-      padding-top: 172px;
-    }
-    .hero-title {
-      display: flex;
-      align-items: flex-end;
-      gap: 48px;
-    }
-    .hero-title-half {
-      flex: 1;
+      min-height: 100dvh;
+      padding: 0 var(--pad-section-h);
+      padding-bottom: 72px;
       display: flex;
       flex-direction: column;
+      justify-content: flex-end;
+      position: relative;
+      overflow: hidden;
     }
-    .hero-title-left { align-items: flex-end; }
-    .hero-title-right { align-items: flex-start; }
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+      background-size: 300px 300px;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .hero-inner { position: relative; z-index: 1; }
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500;
+      letter-spacing: 1.8px; text-transform: uppercase;
+      color: rgba(255,255,255,0.45); margin-bottom: 40px;
+      opacity: 0;
+    }
+    .hero-tag-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--orange); flex-shrink: 0;
+    }
+    .hero-title { display: flex; flex-direction: column; gap: 0; }
+    .hero-line { overflow: hidden; line-height: 0.86; }
     .hero-word {
       font-family: 'DM Sans', sans-serif; font-weight: 300;
-      font-size: clamp(36px, 8vw, 133px);
-      line-height: .86; color: var(--white);
-      text-transform: uppercase; letter-spacing: -2px;
-      display: block;
+      font-size: clamp(56px, 11vw, 156px);
+      line-height: 0.86; letter-spacing: -4px;
+      text-transform: uppercase; display: block;
     }
+    .hero-word-1 { color: rgba(255,255,255,0.55); }
+    .hero-word-2 { color: var(--white); }
     #hero-typewriter { opacity: 0; transition: opacity 0.3s ease-in-out; }
     .hero-cursor { display: none; }
     @keyframes hero-cursor-blink {
       0%, 49% { opacity: 1; }
       50%, 100% { opacity: 0; }
     }
+    .hero-bottom { margin-top: 52px; }
     .hero-desc {
-      font-family: 'DM Sans', sans-serif; font-weight: 400; font-size: 24px;
-      line-height: 34px; color: rgba(255,255,255,.8); padding-top: 32px; text-align: center; max-width: 560px; margin: 0 auto;
+      font-family: 'DM Sans', sans-serif; font-weight: 400;
+      font-size: clamp(15px, 1.6vw, 20px); line-height: 1.6;
+      color: rgba(255,255,255,0.6); max-width: 400px;
+      opacity: 0; transform: translateY(16px);
     }
-
-    /* ── HERO MEDIA / SLIDESHOW ── */
-    /* Slides are 1450×774px (ratio 1.875:1).
-       Use aspect-ratio so the box always matches — no letterboxing at any width.
-       max-height caps the desktop size. */
-    .hero-media {
-      width: 100%;
-      aspect-ratio: 1450 / 774;
-      max-height: 774px;
-      background: var(--cream);
-      border-radius: 10px;
-      overflow: hidden;
-      position: relative;
-      margin-top: 56px;
-    }
-    .hero-slides { position: absolute; inset: 0; }
-    .hero-slide {
-      position: absolute; inset: 0;
-      opacity: 0;
-      transition: opacity 0.7s ease;
-      background: var(--cream);
-    }
-    .hero-slide.active { opacity: 1; }
-    .hero-slide > img {
-      width: 100%; height: 100%;
-      object-fit: contain;
-      object-position: center;
-      display: block;
-    }
-    .hero-slide--gif {
-      display: flex;
-      align-items: flex-start;
-      justify-content: center;
-      padding-top: clamp(20px, 6.3vw, 91px);
-    }
-
-    /* ── iPhone mockup (hero + apps) ── */
-    .phone-mockup {
-      width: clamp(240px, 28.2vw, 409px);
-      aspect-ratio: 409 / 843;
-      position: relative;
-      flex-shrink: 0;
-      border-radius: clamp(36px, 4.3vw, 62px);
-      background: linear-gradient(145deg, #edeae0 0%, #d4d0c7 60%, #c8c4bb 100%);
-      box-shadow:
-        0 0 0 1.5px rgba(82,75,64,0.55),
-        0 0 0 3px rgba(200,198,192,0.35),
-        0 8px 48px rgba(0,0,0,0.20);
-    }
-    .phone-screen {
-      position: absolute;
-      left: 2.9%; top: 1.4%; right: 2.9%; bottom: 1.4%;
-      border-radius: clamp(26px, 3.6vw, 52px);
-      overflow: hidden;
-      background: #000;
-    }
-    .phone-screen img,
-    .phone-screen video { width: 100%; height: 100%; object-fit: cover; display: block; }
-    .phone-dynamic-island {
-      position: absolute;
-      top: 2.85%; left: 50%;
-      transform: translateX(-50%);
-      width: 27.1%; height: auto;
-      z-index: 2; pointer-events: none; display: block;
-    }
-    .phone-btn {
-      position: absolute;
-      background: linear-gradient(90deg, #c5c2b8 0%, #d8d4cb 50%, #c5c2b8 100%);
-      border-radius: 2px;
-    }
-    .phone-btn-mute     { left: -1.5%; top: 19%;   width: 1.5%; height: 3.7%;  box-shadow: -1px 0 3px rgba(0,0,0,0.28); }
-    .phone-btn-vol-up   { left: -1.5%; top: 25.5%; width: 1.5%; height: 6.6%;  box-shadow: -1px 0 3px rgba(0,0,0,0.28); }
-    .phone-btn-vol-down { left: -1.5%; top: 34%;   width: 1.5%; height: 6.6%;  box-shadow: -1px 0 3px rgba(0,0,0,0.28); }
-    .phone-btn-power    { right: -1.5%; top: 30%;  width: 1.5%; height: 11.9%; box-shadow:  1px 0 3px rgba(0,0,0,0.28); }
 
     /* ── SECTION HEADING ── */
     .section-heading {
@@ -236,353 +188,175 @@
       color: var(--orange); text-transform: uppercase; letter-spacing: -1.5px;
     }
 
-    /* ── APPS ── */
-    .apps { padding: var(--pad-section-v) var(--pad-section-h); }
-    .apps-intro {
-      margin-bottom: 40px;
+    /* ── RECENT WORK ── */
+    .projects { padding: var(--pad-section-v) var(--pad-section-h); border-top: 1px solid var(--border); overflow: clip; }
+    .work-head { margin-bottom: 72px; max-width: 600px; }
+    .project { padding: 64px 0; }
+    .project-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.15fr;
+      gap: 56px;
+      align-items: center;
     }
+    .project:nth-child(even) .project-grid { grid-template-columns: 1.15fr 1fr; }
+    .project:nth-child(even) .project-copy { order: 2; }
+    .project:nth-child(even) .project-visual { order: 1; }
+    .project-eyebrow {
+      font-size: 12px; font-weight: 600; letter-spacing: 1.8px;
+      text-transform: uppercase; color: rgba(94,70,48,.42); margin-bottom: 14px;
+    }
+    .project-title {
+      font-family: 'DM Sans', sans-serif; font-weight: 300;
+      font-size: clamp(28px, 3.1vw, 40px); line-height: 1.06; letter-spacing: -1.5px;
+      color: var(--orange); margin-bottom: 20px;
+    }
+    .project-body {
+      font-family: 'DM Sans', sans-serif; font-weight: 400; font-size: 18px;
+      line-height: 28px; color: var(--brown); max-width: 420px;
+    }
+    .project-cta {
+      display: inline-flex; align-items: center; gap: 7px;
+      font-size: 12px; font-weight: 600; letter-spacing: 1.8px;
+      text-transform: uppercase; color: var(--orange); text-decoration: none;
+      margin-top: 28px;
+      transition: gap 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    .project-cta:hover { gap: 14px; }
+    .project-cta svg { width: 14px; height: 14px; flex-shrink: 0; }
+    .project-visual {
+      border-radius: var(--radius-card);
+      overflow: hidden; aspect-ratio: 4/3; position: relative;
+    }
+    .project-visual img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform 0.65s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    .project:hover .project-visual img { transform: scale(1.04); }
+
+    /* ── APPS ── */
+    .apps { padding: var(--pad-section-v) var(--pad-section-h); border-top: 1px solid var(--border); }
+    .apps-head { margin-bottom: 56px; max-width: 540px; }
     .apps-subtitle {
       font-family: 'DM Sans', sans-serif; font-weight: 400;
       font-size: 24px; line-height: 1.3; letter-spacing: -0.5px;
       color: var(--brown); margin-top: 32px;
     }
-    .apps-desc {
-      font-family: 'DM Sans', sans-serif; font-weight: 400; font-size: 18px;
-      line-height: 28px; color: var(--brown); max-width: 550px;
-      margin-top: 20px; text-align: left;
-    }
-    .apps-desc em { font-style: italic; }
-    .apps-process {
-      display: flex; align-items: center; gap: 24px; flex-wrap: wrap;
-      margin-top: 24px;
-    }
-    .apps-process-step {
-      font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 24px;
-      line-height: normal; color: var(--brown); letter-spacing: -1.8px; max-width: 160px;
-    }
-    .apps-process-arrow {
-      width: 45px; height: 35px; object-fit: contain; flex-shrink: 0;
-    }
-    .apps-process-arrow--down { transform: rotate(57deg); }
-    .apps-phones {
-      display: flex; align-items: flex-start; gap: 8px;
-      justify-content: flex-end;
-      overflow-x: auto; padding-bottom: 0;
-      scrollbar-width: none; -ms-overflow-style: none;
-      scroll-snap-type: x mandatory;
-    }
-    .apps-phones::-webkit-scrollbar { display: none; }
-    .app-letter { scroll-snap-align: start; }
-    .apps-dots {
-      display: flex; align-items: center; gap: 8px;
-      margin-top: 20px;
-    }
-    .apps-dot {
-      height: 6px; border-radius: 100px;
-      background: rgba(235,81,39,0.25);
-      border: none; cursor: pointer; padding: 0;
-      transition: width 0.25s ease, background 0.25s ease;
-      width: 6px;
-    }
-    .apps-dot--active {
-      width: 28px;
-      background: var(--orange);
-    }
-    .app-letter {
-      font-family: 'DM Sans', sans-serif; font-weight: 300;
-      font-size: 50px; line-height: 52.5px; color: var(--orange); flex-shrink: 0;
-    }
-    .iphone + .app-letter { margin-left: 32px; }
-    @media (min-width: 1024px) { .iphone + .app-letter { margin-left: 48px; } }
-    /* iPhone frame */
-    .iphone {
-      width: 409px;
-      zoom: 0.46;
-      aspect-ratio: 409 / 843;
-      border-radius: 62px;
-      box-shadow:
-        0 0 0 1px rgba(82,75,64,.45),
-        0 0 2px 2px rgba(195,195,195,.5),
-        inset 0 0 1px 5px rgba(255,255,255,.4),
-        0 8px 48px rgba(0,0,0,.18);
-      overflow: hidden;
-      flex-shrink: 0;
-      position: relative;
-      background: #e7e3bf;
-    }
-    /* Black screen bezel + blurred glass border (Figma: screen-frame layer) */
-    .iphone::before {
-      content: '';
-      position: absolute;
-      top: 0.47%; left: 0.98%; right: 0.98%; bottom: 0.47%;
-      border-radius: 58px;
-      background: #000100;
-      box-shadow: 0 0 3.5px 2px rgba(135,145,148,.35), inset 0 0 3.5px 2px rgba(135,145,148,.2);
-    }
-    .iphone-screen {
-      position: absolute;
-      left: 2.9%; top: 1.4%; right: 2.9%; bottom: 1.4%;
-      border-radius: 52px;
-      overflow: hidden;
-      display: flex; flex-direction: column;
-    }
-    .iphone-statusbar {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 12px 24px 0; flex-shrink: 0; position: relative;
-    }
-    .iphone-statusbar-time {
-      font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 15px;
-      letter-spacing: -.8px; line-height: 22px;
-    }
-    .iphone-statusbar-icons { height: 12px; width: auto; }
-    .iphone--cosmos .iphone-statusbar-icons    { color: #fff; }
-    .iphone--fivemins .iphone-statusbar-icons  { color: #2f5165; }
-    .iphone--forth .iphone-statusbar-icons     { color: var(--dark); }
-    .iphone-di {
-      position: absolute; top: 12px; left: 50%; transform: translateX(-50%);
-      width: 27%; z-index: 2; pointer-events: none;
-    }
-    .iphone-content {
-      padding: 35px 30px 32px; flex: 1;
-    }
-    .iphone-appname-row {
-      display: flex; align-items: center; gap: 4px; margin-bottom: 20px;
-    }
-    .iphone-appname-icon { width: 28px; height: 28px; object-fit: contain; flex-shrink: 0; }
-    .iphone-appname {
-      font-size: 42px; letter-spacing: -1.8px; line-height: normal;
-    }
-    .iphone-section { margin-bottom: 24px; }
-    .iphone-label {
-      font-family: 'DM Sans', sans-serif; font-weight: 400; font-size: 24px;
-      line-height: 1.2; letter-spacing: 0;
-      margin-bottom: 8px; display: block;
-    }
-    .iphone-text {
-      font-family: 'DM Sans', sans-serif; font-weight: 400; font-size: 18px;
-      line-height: 28px;
-    }
-    /* Per-phone themes */
-    .iphone--cosmos .iphone-screen { background: #3b5b19; }
-    .iphone--cosmos .iphone-statusbar-time { color: #fff; }
-    .iphone--cosmos .iphone-appname { font-family: 'Fraunces', serif; font-weight: 400; color: #fff; font-variation-settings: '"SOFT" 0, "WONK" 1'; }
-    .iphone--cosmos .iphone-label  { color: #fff; }
-    .iphone--cosmos .iphone-text   { color: #fff; }
-    .iphone--fivemins .iphone-screen { background: #eadabe; }
-    .iphone--fivemins .iphone-statusbar-time { color: #2f5165; }
-    .iphone--fivemins .iphone-appname { font-family: 'Syne', sans-serif; font-weight: 400; color: #2f5165; }
-    .iphone--fivemins .iphone-label  { color: #2f5165; }
-    .iphone--fivemins .iphone-text   { color: #2f5165; }
-    .iphone--forth .iphone-screen { background: rgba(255,255,255,0.95); }
-    .iphone--forth .iphone-statusbar-time { color: var(--dark); }
-    .iphone--forth .iphone-appname { font-family: 'Bebas Neue', sans-serif; font-weight: 400; color: var(--dark); }
-    .iphone--forth .iphone-label  { color: var(--dark); }
-    .iphone--forth .iphone-text   { color: var(--dark); }
-    .apps-footer { margin-top: 32px; }
     .apps-link {
       font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 14px;
       color: var(--orange); text-decoration: none; letter-spacing: 1.24px;
       text-transform: uppercase; display: inline-block; margin-top: 20px;
     }
     .apps-link:hover { text-decoration: underline; }
-
-    /* ── FEATURED PROJECTS / CASE STUDIES ── */
-    .projects { overflow: clip; padding: var(--pad-section-v) var(--pad-section-h); }
-    .projects-layout {
-      display: grid; grid-template-columns: 380px 1fr;
+    .apps-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .app-tile {
+      border-radius: var(--radius-card); overflow: hidden;
+      aspect-ratio: 3/4; position: relative; display: block; text-decoration: none;
     }
-    .projects-sidebar {
-      position: sticky; top: 80px; height: fit-content;
-      padding: 56px 0 0 0;
+    .app-tile-bg {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform 0.55s ease; display: block;
     }
-    .projects-label {
-      font-family: 'DM Sans', sans-serif; font-weight: 300;
-      font-size: clamp(36px, 3.9vw, 50px); line-height: 1.05;
-      color: var(--orange); text-transform: uppercase; letter-spacing: -1.5px;
+    .app-tile:hover .app-tile-bg { transform: scale(1.06); }
+    .app-tile-icon {
+      position: absolute; top: 20px; left: 20px;
+      width: 40px; height: 40px;
     }
-    .projects-sidebar-sub {
-      font-family: 'DM Sans', sans-serif; font-weight: 400; font-size: 18px;
-      line-height: 28px; color: var(--brown); margin-top: 32px; max-width: 550px;
-    }
-    .project-entry {
-      padding: 56px 0;
-      cursor: pointer;
-      transition: opacity 0.3s;
-    }
-    .project-entry + .project-entry { border-top: 1px solid var(--border); }
-    .project-entry-inner {
-      display: flex; align-items: center; justify-content: space-between; gap: 32px;
-    }
-    .project-entry-content {
-      flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 20px;
-      transform: translateY(0);
-      transition: transform 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    }
-    .project-entry:hover .project-entry-content { transform: translateY(-4px); }
-    .project-title {
-      font-family: 'DM Sans', sans-serif; font-weight: 300;
-      font-size: clamp(28px, 3.1vw, 40px); line-height: 1; letter-spacing: -1.4px;
-      color: var(--orange);
-    }
-    .project-company {
-      font-family: 'DM Sans', sans-serif; font-weight: 400; font-size: 14px;
-      line-height: 1; color: var(--orange); display: block;
-    }
-    .project-desc {
-      font-family: 'DM Sans', sans-serif; font-weight: 400; font-size: 18px;
-      line-height: 28px; color: var(--brown);
-    }
-    .project-cta {
-      display: inline-flex; align-items: center; gap: 6px;
+    .app-tile-icon img { width: 100%; height: 100%; object-fit: contain; }
+    .apps-foot { margin-top: 36px; }
+    .apps-see-more {
       font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 14px;
-      letter-spacing: 1.24px; text-transform: uppercase; color: var(--orange);
-      text-decoration: none;
-      transform: translateX(-8px); opacity: 0.5;
-      transition: transform 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-                  gap 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-                  opacity 0.45s;
+      color: var(--orange); text-decoration: none; letter-spacing: 1.24px;
+      text-transform: uppercase;
     }
-    .project-entry:hover .project-cta { transform: translateX(0); opacity: 1; gap: 10px; }
-    .project-thumb {
-      flex-shrink: 0; overflow: hidden; border-radius: 8px;
-      width: 280px; height: 200px;
-    }
-    .project-thumb img { width: 280px; max-width: none; height: 100%; object-fit: cover; display: block; }
+    .apps-see-more:hover { text-decoration: underline; }
 
     /* ── CLIENT LOGOS ── */
     .logos-bar {
+      border-top: 1px solid var(--border);
       border-bottom: 1px solid var(--border);
-      padding: 32px;
-      overflow: hidden;
+      padding: 26px 0; overflow: hidden;
     }
     .logos-track {
       display: flex; align-items: center;
       width: max-content;
-      animation: logos-scroll 18s linear infinite;
-    }
-    .logos-set {
-      display: flex; align-items: center; gap: 64px;
-      flex-shrink: 0;
-      padding-right: 64px;
-    }
-    .logos-track img {
-      height: 24px; width: auto; display: block;
-      flex-shrink: 0;
-      filter: brightness(0) saturate(100%) invert(37%) sepia(30%) saturate(500%) hue-rotate(10deg) brightness(85%) contrast(90%);
-      opacity: 0.65;
-      transition: opacity 0.2s;
+      animation: logos-scroll 22s linear infinite;
     }
     @keyframes logos-scroll {
       from { transform: translateX(0); }
       to { transform: translateX(-50%); }
+    }
+    .logos-set {
+      display: flex; align-items: center; gap: 56px;
+      padding-right: 56px; flex-shrink: 0;
+    }
+    .logos-set span {
+      font-size: 13px; font-weight: 600; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--brown); opacity: 0.32; white-space: nowrap;
     }
 
     /* ── COLLEAGUES / TESTIMONIALS ── */
     .colleagues {
       background: var(--blue);
       padding: var(--pad-section-v) var(--pad-section-h);
+      position: relative; overflow: hidden;
     }
-    .colleagues-heading {
+    .colleagues-inner { position: relative; z-index: 1; }
+    .colleagues-head { margin-bottom: 56px; max-width: 520px; }
+    .colleagues-label {
       font-family: 'DM Sans', sans-serif; font-weight: 300;
-      font-size: clamp(36px, 3.9vw, 50px); line-height: 1.05;
-      color: var(--white); text-transform: uppercase; letter-spacing: -1.5px;
+      font-size: clamp(36px, 3.9vw, 50px); line-height: 1.04; letter-spacing: -1.5px;
+      text-transform: uppercase; color: var(--white);
     }
-    .colleagues-intro-body {
-      font-family: 'DM Sans', sans-serif; font-weight: 400;
-      font-size: 18px; line-height: 28px; color: var(--white);
-    }
-    .colleagues-grid {
+    .cards-grid {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 24px;
-    }
-    .colleagues-intro {
-      height: 450px;
-      display: flex; flex-direction: column; justify-content: space-between;
-      padding: 28px 32px 32px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
     }
     .flip-card {
-      height: 450px;
+      height: 420px;
       perspective: 1000px;
       cursor: pointer;
-      border: none; background: none; padding: 0; text-align: left;
-      border-radius: 16px;
+      border: none; background: none; padding: 0; text-align: left; border-radius: 16px;
     }
     .flip-inner {
       position: relative; width: 100%; height: 100%;
-      transition: transform 0.6s cubic-bezier(.4,0,.2,1);
+      transition: transform 0.62s cubic-bezier(.4,0,.2,1);
       transform-style: preserve-3d;
     }
     .flip-card:hover .flip-inner,
     .flip-card:focus .flip-inner { transform: rotateY(180deg); }
     .flip-front, .flip-back {
-      position: absolute; inset: 0;
-      border-radius: 16px;
-      backface-visibility: hidden;
-      -webkit-backface-visibility: hidden;
-      overflow: hidden;
+      position: absolute; inset: 0; border-radius: 16px;
+      backface-visibility: hidden; -webkit-backface-visibility: hidden; overflow: hidden;
     }
     .flip-front {
       background: var(--cream);
+      padding: 28px 28px 32px;
       display: flex; flex-direction: column; justify-content: space-between;
-      padding: 28px 32px 32px;
     }
     .flip-back {
       background: var(--orange);
       transform: rotateY(180deg);
       display: flex; align-items: center; justify-content: center;
     }
-    .flip-back img {
-      width: 225px; height: 225px;
-      border-radius: 100%; object-fit: cover;
-    }
+    .flip-back img { width: 200px; height: 200px; border-radius: 50%; object-fit: cover; }
     .flip-role {
       font-family: 'DM Sans', sans-serif; font-weight: 300;
-      font-size: clamp(24px, 4vw, 42px); line-height: 1.1; letter-spacing: -1.4px;
+      font-size: clamp(20px, 2.6vw, 34px); line-height: 1.1; letter-spacing: -1.2px;
       color: var(--blue);
     }
     .flip-quote {
-      font-family: 'DM Sans', sans-serif; font-weight: 400; font-size: 16px;
-      line-height: 26px; color: var(--blue); flex: 1; padding: 16px 0;
+      font-family: 'DM Sans', sans-serif; font-weight: 400; font-size: 15px;
+      line-height: 1.72; color: var(--brown); flex: 1; padding: 20px 0;
     }
-    .flip-person { }
     .flip-name {
-      font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 14px;
-      color: var(--brown); display: block; margin-bottom: 4px;
+      font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 13px;
+      color: var(--brown); display: block; margin-bottom: 3px;
     }
     .flip-title {
-      font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 13px;
-      color: var(--brown); display: block;
+      font-family: 'DM Sans', sans-serif; font-weight: 400; font-size: 12px;
+      color: rgba(94,70,48,.55); display: block;
     }
-
-    /* More nice stuff card */
-    .flip-more {
-      background: rgba(255,255,255,.1);
-      border: 1.5px solid rgba(255,255,255,.25);
-      display: flex; flex-direction: column; align-items: center;
-      justify-content: center; gap: 16px; cursor: pointer;
-    }
-    .flip-more-label {
-      font-family: 'DM Sans', sans-serif; font-weight: 300;
-      font-size: 32px; text-transform: uppercase; color: var(--white);
-      letter-spacing: -1px; text-align: center;
-    }
-    .flip-more-sub {
-      font-family: 'DM Sans', sans-serif; font-weight: 400; font-size: 15px;
-      line-height: 24px; color: rgba(255,255,255,.7); text-align: center;
-      max-width: 200px;
-    }
-    .flip-more-link {
-      display: inline-flex; align-items: center; gap: 6px;
-      font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 14px;
-      letter-spacing: 1.24px; text-transform: uppercase; color: var(--white);
-      text-decoration: none;
-      transform: translateX(-8px); opacity: 0.5;
-      transition: transform 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-                  gap 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-                  opacity 0.45s;
-    }
-    .flip-more:hover .flip-more-link { transform: translateX(0); opacity: 1; gap: 10px; }
 
     /* ── CONTACT ── */
     .contact { border-top: 1px solid var(--border); padding: var(--pad-section-v) var(--pad-section-h); }
@@ -642,27 +416,35 @@
     }
     .footer-links a:hover { opacity: .65; }
 
+    /* ── SCROLL REVEAL ── */
+    .sr {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.65s ease, transform 0.65s ease;
+    }
+    .sr.in { opacity: 1; transform: translateY(0); }
+    .sr[data-delay="1"] { transition-delay: 0.1s; }
+    .sr[data-delay="2"] { transition-delay: 0.2s; }
+    .sr[data-delay="3"] { transition-delay: 0.3s; }
+
     /* ── RESPONSIVE ── */
     @media (max-width: 900px) {
       .nav { gap: 16px; max-width: calc(100vw - 32px); }
       .nav-links { display: none; }
       .nav-hamburger { display: flex; }
-      .hero { padding: 140px 24px 64px; }
-      .hero-media { margin-top: 24px; }
-      .hero-title { flex-direction: column; align-items: flex-start; gap: 0; }
-      .hero-title-left { align-items: flex-start; }
-      .hero-title-right { align-items: flex-start; }
-      .apps { padding: 56px 24px; }
-      .apps-intro { gap: 32px; }
+      .hero { padding-left: 24px; padding-right: 24px; padding-bottom: 56px; }
+      .hero-word { letter-spacing: -2px; }
       .projects { padding: 56px 24px; }
-      .projects-layout { grid-template-columns: 1fr; }
-      .projects-sidebar { position: static; height: auto; padding: 40px 0 0; }
-      .project-entry { padding: 40px 0; }
-      .project-thumb { display: none; }
-      .logos-bar { padding: 32px 0; }
+      .project { padding: 40px 0; }
+      .project-grid,
+      .project:nth-child(even) .project-grid { grid-template-columns: 1fr; }
+      .project:nth-child(even) .project-copy { order: 1; }
+      .project:nth-child(even) .project-visual { order: 2; }
+      .apps { padding: 56px 24px; }
+      .apps-grid { grid-template-columns: 1fr 1fr; }
+      .logos-bar { padding: 26px 0; }
       .colleagues { padding: 56px 24px; }
-      .colleagues-grid { grid-template-columns: repeat(2, 1fr); }
-      .colleagues-intro { height: auto; min-height: 280px; padding: 24px; }
+      .cards-grid { grid-template-columns: 1fr 1fr; }
       .flip-card { height: auto; min-height: 324px; }
       .flip-front { padding: 24px; }
       .contact { padding: 56px 24px; }
@@ -672,27 +454,17 @@
     }
     @media (min-width: 768px) {
       .hero { padding-left: var(--pad-section-h-md); padding-right: var(--pad-section-h-md); }
-      .apps { padding-left: var(--pad-section-h-md); padding-right: var(--pad-section-h-md); }
       .projects { padding-left: var(--pad-section-h-md); padding-right: var(--pad-section-h-md); }
+      .apps { padding-left: var(--pad-section-h-md); padding-right: var(--pad-section-h-md); }
       .colleagues { padding-left: var(--pad-section-h-md); padding-right: var(--pad-section-h-md); }
       .contact { padding-left: var(--pad-section-h-md); padding-right: var(--pad-section-h-md); }
-      .hero-title { padding-bottom: 4rem; }
-      .hero-word { padding-left: 0; padding-right: 0; }
-
-      .iphone { zoom: 0.50; }
     }
     @media (min-width: 1024px) {
-      .hero { padding-left: var(--pad-section-h-lg); padding-right: var(--pad-section-h-lg); padding-top: 172px; padding-bottom: 4rem; }
-      .apps { padding-left: var(--pad-section-h-lg); padding-right: var(--pad-section-h-lg); display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: 24px; align-items: start; overflow: clip; }
-      .apps-intro { grid-column: 1; grid-row: 1 / 3; margin-bottom: 0; }
-      .apps-phones { grid-column: 2 / 4; justify-content: flex-start; }
-      .apps-dots { grid-column: 2 / 4; }
+      .hero { padding-left: var(--pad-section-h-lg); padding-right: var(--pad-section-h-lg); }
+      .projects { padding-left: var(--pad-section-h-lg); padding-right: var(--pad-section-h-lg); }
+      .apps { padding-left: var(--pad-section-h-lg); padding-right: var(--pad-section-h-lg); }
       .colleagues { padding-left: var(--pad-section-h-lg); padding-right: var(--pad-section-h-lg); }
       .contact { padding-left: var(--pad-section-h-lg); padding-right: var(--pad-section-h-lg); }
-      .hero-title { padding-bottom: 4rem; }
-      .projects { padding-left: var(--pad-section-h-lg); padding-right: var(--pad-section-h-lg); }
-      .projects-layout { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 24px; }
-      .projects-list { grid-column: 2 / 4; }
     }
     @media (min-width: 1512px) {
       .hero, .projects, .colleagues, .apps, .contact {
@@ -701,20 +473,11 @@
       }
     }
     @media (max-width: 600px) {
-      .hero { padding: 120px 24px 60px; }
-      .hero-word { font-size: clamp(28px, 14vw, 72px); letter-spacing: -1px; }
-      .hero-slide--gif { padding-top: 16px; }
-      .hero-slide--gif .phone-mockup { width: calc(100% - 32px); }
-      .apps-phones { flex-wrap: nowrap; }
-      .iphone { zoom: 0.44; }
-      .colleagues-grid { grid-template-columns: 1fr; }
+      .hero { padding-left: 20px; padding-right: 20px; padding-bottom: 48px; }
+      .hero-word { font-size: clamp(40px, 14vw, 90px); letter-spacing: -2px; }
+      .apps-grid { grid-template-columns: 1fr; }
+      .cards-grid { grid-template-columns: 1fr; }
       .flip-card { height: auto; min-height: 342px; }
-    }
-    @media (min-width: 1280px) {
-      .iphone { zoom: 0.50; }
-    }
-    @media (min-width: 1440px) {
-      .iphone { zoom: 0.58; }
     }
   </style>
   <!-- Google Analytics -->
@@ -737,7 +500,6 @@
       </a>
       <ul class="nav-links" role="list">
         <li><a href="work.html">Work</a></li>
-        <li><a href="projects.html">Projects</a></li>
         <li><a href="about.html">About</a></li>
         <li><a href="https://substack.com/@alexcaindesign" target="_blank" rel="noopener">Thoughts</a></li>
         <li><a href="https://docs.google.com/document/d/1baQoC_o6pZB8Hsee8ddzqnkunp4sn146tAxX6LeLSK4/edit?pli=1&tab=t.vh9lp2u1ry7g#heading=h.x8fm1uorkbaw" target="_blank" rel="noopener">CV</a></li>
@@ -749,7 +511,6 @@
     </nav>
     <nav class="nav-drawer" id="navDrawer" aria-label="Mobile navigation">
       <a href="work.html" onclick="closeMenu()">Work</a>
-      <a href="projects.html" onclick="closeMenu()">Projects</a>
       <a href="about.html" onclick="closeMenu()">About</a>
       <a href="#apps" onclick="closeMenu()">Thoughts</a>
       <a href="https://docs.google.com/document/d/1baQoC_o6pZB8Hsee8ddzqnkunp4sn146tAxX6LeLSK4/edit?pli=1&tab=t.vh9lp2u1ry7g#heading=h.x8fm1uorkbaw" target="_blank" rel="noopener" onclick="closeMenu()">CV</a>
@@ -760,313 +521,199 @@
 
 <!-- HERO -->
 <section class="hero" aria-label="Hero">
-  <div class="hero-title">
-    <div class="hero-title-half hero-title-left">
-      <span class="hero-word">Product</span>
-    </div>
-    <div class="hero-title-half hero-title-right">
-      <span class="hero-word" id="hero-typewriter" aria-live="polite">
-        <span id="hero-inner" style="position:relative;display:inline-block;">
-          <span id="hero-typed"></span><span id="hero-cursor" class="hero-cursor" aria-hidden="true">|</span>
-          <span id="hero-scribble" aria-hidden="true" style="position:absolute;left:0;top:50%;transform:translateY(-50%);width:100%;height:90%;pointer-events:none;clip-path:inset(0 100% 0 0);">
-            <svg id="hero-scribble-svg" width="100%" height="100%" viewBox="0 0 585 104" preserveAspectRatio="none" fill="none">
-              <path id="hero-scribble-path" fill="#EB5127"/>
-            </svg>
+  <div class="hero-inner">
+<div class="hero-title">
+      <div class="hero-line">
+        <span class="hero-word hero-word-1" id="hero-w1">Product</span>
+      </div>
+      <div class="hero-line">
+        <span class="hero-word hero-word-2" id="hero-typewriter" aria-live="polite">
+          <span id="hero-inner" style="position:relative;display:inline-block;">
+            <span id="hero-typed"></span><span id="hero-cursor" class="hero-cursor" aria-hidden="true">|</span>
+            <span id="hero-scribble" aria-hidden="true" style="position:absolute;left:0;top:50%;transform:translateY(-50%);width:100%;height:90%;pointer-events:none;clip-path:inset(0 100% 0 0);">
+              <svg id="hero-scribble-svg" width="100%" height="100%" viewBox="0 0 585 104" preserveAspectRatio="none" fill="none">
+                <path id="hero-scribble-path" fill="#EB5127"/>
+              </svg>
+            </span>
           </span>
         </span>
-      </span>
+      </div>
     </div>
-  </div>
-  <p class="hero-desc">Evidence based Staff IC designer with PM qualities. Strong opinions loosely held.</p>
-
-  <div class="hero-media">
-    <div class="hero-slides">
-
-      <div class="hero-slide" data-duration="4000">
-        <img src="assets/hero/slide-1.png" alt="Slide 1">
-      </div>
-
-      <div class="hero-slide" data-duration="4000">
-        <img src="assets/hero/slide-2.png" alt="Slide 2">
-      </div>
-
-      <div class="hero-slide" data-duration="4000">
-        <img src="assets/hero/slide-3.png" alt="Slide 3">
-      </div>
-
-      <div class="hero-slide" data-duration="4000">
-        <img src="assets/hero/slide-4.png" alt="Slide 4">
-      </div>
-
-      <div class="hero-slide" data-duration="4000">
-        <img src="assets/hero/slide-5.png" alt="Slide 5">
-      </div>
-
-      <div class="hero-slide" data-duration="4000">
-        <img src="assets/hero/slide-6.png" alt="Slide 6">
-      </div>
-
-      <div class="hero-slide" data-duration="4000">
-        <img src="assets/hero/slide-7.png" alt="Slide 7">
-      </div>
-
-      <div class="hero-slide" data-duration="4000">
-        <img src="assets/hero/slide-8.png" alt="Slide 8">
-      </div>
-
+    <div class="hero-bottom">
+      <p class="hero-desc" id="hero-desc">Evidence based Staff IC designer with PM qualities. Strong opinions loosely held.</p>
     </div>
   </div>
 </section>
 
-<!-- CASE STUDIES -->
-<section class="projects" id="projects" aria-labelledby="projects-label">
-  <div class="projects-layout">
-
-    <div class="projects-sidebar">
-      <div class="projects-label" id="projects-label" aria-label="Recent Work">Recent Work</div>
-    </div>
-
-    <div class="projects-list">
-
-      <article class="project-entry">
-        <div class="project-entry-inner">
-          <div class="project-entry-content">
-            <h3 class="project-title">Designing a product no one wants</h3>
-            <span class="project-company">2025 · Marshmallow Insurance</span>
-            <p class="project-desc">Nobody wants a 'black box' in their car. For Marshmallow's first Telematics launch, I had to design for transparency in a category built on surveillance. It's now 38% of Marshmallows new business, proving you can win on trust even when the price isn't the only lever.</p>
-            <a href="Marshmallow/index.html" class="project-cta">View project →</a>
-          </div>
-          <div class="project-thumb" aria-hidden="true">
-            <img src="assets/case studies/Designing a product no one wants.png" alt="">
-          </div>
-        </div>
-      </article>
-
-      <article class="project-entry">
-        <div class="project-entry-inner">
-          <div class="project-entry-content">
-            <h3 class="project-title">When the risk of widely releasing an MVP doesn't pay off</h3>
-            <span class="project-company">2024 · Bumble</span>
-            <p class="project-desc">Opening Moves was meant to change Bumble's trajectory, but the UX and marketing wasn't meeting people's expectations. After a round of redundancies we took on the project prioritising women's safety and increasing adoption of the feature by 40% and good chats by 5%.</p>
-            <a href="Bumble/index.html" class="project-cta">View project →</a>
-          </div>
-          <div class="project-thumb" aria-hidden="true">
-            <img src="assets/case%20studies/when-mvp-risk.png" alt="">
-          </div>
-        </div>
-      </article>
-
-      <article class="project-entry">
-        <div class="project-entry-inner">
-          <div class="project-entry-content">
-            <h3 class="project-title">A new way of working</h3>
-            <span class="project-company">2026 · Marshmallow Insurance</span>
-            <p class="project-desc">Marshmallow is an insurance product. When I joined the finance team my task was to find a financial feature worth building. What I discovered was bigger than a feature, Marshmallow needed to become a multi-product brand and the app wasn't ready for that. So I built a proposal with AI and started to ship piece by piece.</p>
-            <a href="marshmallow-finance/index.html" class="project-cta">VIEW PROJECT <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:-1px;margin-left:4px"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></a>
-          </div>
-          <div class="project-thumb" aria-hidden="true">
-            <img src="assets/case studies/Building 0-1 capability.png" alt="">
-          </div>
-        </div>
-      </article>
-
-
-    </div>
+<!-- RECENT WORK -->
+<section class="projects" id="work" aria-labelledby="work-heading">
+  <div class="work-head sr">
+    <h2 class="section-heading" id="work-heading">Recent Work</h2>
   </div>
-</section>
 
+  <article class="project">
+    <div class="project-grid sr">
+      <div class="project-copy">
+        <p class="project-eyebrow">2025 &middot; Marshmallow Insurance</p>
+        <h3 class="project-title">Designing a product no one wants</h3>
+        <p class="project-body">Nobody wants a &#8216;black box&#8217; in their car. For Marshmallow&#8217;s first Telematics launch, I had to design for transparency in a category built on surveillance. It&#8217;s now 38% of Marshmallows new business, proving you can win on trust even when the price isn&#8217;t the only lever.</p>
+        <a href="Marshmallow/index.html" class="project-cta">View project <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+      </div>
+      <div class="project-visual">
+        <img src="assets/case studies/Designing a product no one wants.png" alt="Marshmallow Telematics case study">
+      </div>
+    </div>
+  </article>
+
+  <article class="project">
+    <div class="project-grid sr">
+      <div class="project-copy">
+        <p class="project-eyebrow">2024 &middot; Bumble</p>
+        <h3 class="project-title">When the risk of widely releasing an MVP doesn&#8217;t pay off</h3>
+        <p class="project-body">Opening Moves was meant to change Bumble&#8217;s trajectory, but the UX and marketing wasn&#8217;t meeting people&#8217;s expectations. After a round of redundancies we took on the project prioritising women&#8217;s safety and increasing adoption of the feature by 40% and good chats by 5%.</p>
+        <a href="Bumble/index.html" class="project-cta">View project <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+      </div>
+      <div class="project-visual">
+        <img src="assets/case studies/when-mvp-risk.png" alt="Bumble Opening Moves case study">
+      </div>
+    </div>
+  </article>
+
+  <article class="project">
+    <div class="project-grid sr">
+      <div class="project-copy">
+        <p class="project-eyebrow">2026 &middot; Marshmallow Insurance</p>
+        <h3 class="project-title">A new way of working</h3>
+        <p class="project-body">Marshmallow is an insurance product. When I joined the finance team my task was to find a financial feature worth building. What I discovered was bigger than a feature, Marshmallow needed to become a multi-product brand and the app wasn&#8217;t ready for that. So I built a proposal with AI and started to ship piece by piece.</p>
+        <a href="marshmallow-finance/index.html" class="project-cta">View project <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:13px;height:13px;display:inline-block;vertical-align:-1px;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></a>
+      </div>
+      <div class="project-visual">
+        <img src="assets/case studies/Building 0-1 capability.png" alt="Marshmallow Finance case study">
+      </div>
+    </div>
+  </article>
+
+</section>
 <!-- CLIENT LOGOS -->
-<div class="logos-bar" aria-label="Companies I've worked with">
-  <div class="logos-track" aria-hidden="true">
+<div class="logos-bar" aria-hidden="true">
+  <div class="logos-track">
     <div class="logos-set">
-      <img src="assets/logos/Bumble logo.png" alt="Bumble">
-      <img src="assets/logos/Marshmallow-logo.png" alt="Marshmallow">
-      <img src="assets/logos/Zoopla-logo.png" alt="Zoopla">
-      <img src="assets/logos/eurostar-logo.png" alt="Eurostar">
-      <img src="assets/logos/tourlane.png" alt="Tourlane">
-      <img src="assets/logos/zalando_wordmark_black_RGB.svg" alt="Zalando">
+      <span>Marshmallow</span>
+      <span>Bumble</span>
+      <span>Zoopla</span>
+      <span>Tourlane</span>
+      <span>Eurostar</span>
+      <span>Zalando</span>
+      <span>BFB Labs</span>
     </div>
     <div class="logos-set">
-      <img src="assets/logos/Bumble logo.png" alt="Bumble">
-      <img src="assets/logos/Marshmallow-logo.png" alt="Marshmallow">
-      <img src="assets/logos/Zoopla-logo.png" alt="Zoopla">
-      <img src="assets/logos/eurostar-logo.png" alt="Eurostar">
-      <img src="assets/logos/tourlane.png" alt="Tourlane">
-      <img src="assets/logos/zalando_wordmark_black_RGB.svg" alt="Zalando">
+      <span>Marshmallow</span>
+      <span>Bumble</span>
+      <span>Zoopla</span>
+      <span>Tourlane</span>
+      <span>Eurostar</span>
+      <span>Zalando</span>
+      <span>BFB Labs</span>
     </div>
   </div>
 </div>
-
 <!-- WHAT COLLEAGUES SAY -->
 <section class="colleagues" aria-labelledby="colleagues-heading">
-  <div class="colleagues-grid">
-
-    <div class="colleagues-intro">
-      <h2 class="colleagues-heading" id="colleagues-heading">What colleagues say</h2>
+  <div class="colleagues-inner">
+    <div class="colleagues-head sr">
+      <h2 class="colleagues-label" id="colleagues-heading">What colleagues say</h2>
     </div>
 
-    <!-- Card 1: Researcher -->
-    <button class="flip-card" tabindex="0" aria-label="Testimonial from Amie Kabia">
-      <div class="flip-inner">
-        <div class="flip-front">
-          <p class="flip-role">Researcher</p>
-          <p class="flip-quote">"Alex is extremely user focused and values research and data to inform design decisions. She breaks down a problem in ways that make everything really strong and well thought out."</p>
-          <div class="flip-person">
-            <span class="flip-name">Amie Kabia</span>
-            <span class="flip-title">Staff Researcher, Strava</span>
+    <div class="cards-grid">
+
+      <!-- Card 1: Manager -->
+      <button class="flip-card sr" data-delay="1" tabindex="0" aria-label="Testimonial from Martyn Reding">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <p class="flip-role">Manager</p>
+            <p class="flip-quote">&#8220;Alex is a star. She always manages to find her way through tricky challenges to land genius solutions. Definitely on my product dream team.&#8221;</p>
+            <div>
+              <span class="flip-name">Martyn Reding</span>
+              <span class="flip-title">UX Director, Expedia Group</span>
+            </div>
+          </div>
+          <div class="flip-back">
+            <img src="assets/testimonial-manager.jpg" alt="Martyn Reding">
           </div>
         </div>
-        <div class="flip-back">
-          <img src="assets/researcher-photo.jpg" alt="Amie Kabia">
-        </div>
-      </div>
-    </button>
+      </button>
 
-    <!-- Card 2: Manager -->
-    <button class="flip-card" tabindex="0" aria-label="Testimonial from Martyn Reding">
-      <div class="flip-inner">
-        <div class="flip-front">
-          <p class="flip-role">Manager</p>
-          <p class="flip-quote">"Alex is a star. She always manages to find her way through tricky challenges to land genius solutions. Definitely on my product dream team."</p>
-          <div class="flip-person">
-            <span class="flip-name">Martyn Reding</span>
-            <span class="flip-title">UX Director, Expedia Group</span>
+      <!-- Card 2: Researcher -->
+      <button class="flip-card sr" data-delay="2" tabindex="0" aria-label="Testimonial from Amie Kabia">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <p class="flip-role">Researcher</p>
+            <p class="flip-quote">&#8220;Alex is extremely user focused and values research and data to inform design decisions. She breaks down a problem in ways that make everything really strong and well thought out.&#8221;</p>
+            <div>
+              <span class="flip-name">Amie Kabia</span>
+              <span class="flip-title">Staff Researcher, Strava</span>
+            </div>
+          </div>
+          <div class="flip-back">
+            <img src="assets/researcher-photo.jpg" alt="Amie Kabia">
           </div>
         </div>
-        <div class="flip-back">
-          <img src="assets/testimonial-manager.jpg" alt="Martyn Reding">
-        </div>
-      </div>
-    </button>
+      </button>
 
-    <!-- Card 3: Product Manager -->
-    <button class="flip-card" tabindex="0" aria-label="Testimonial from Eva Lofenberg">
-      <div class="flip-inner">
-        <div class="flip-front">
-          <p class="flip-role">Product Manager</p>
-          <p class="flip-quote">"Loved working with Alex. She quickly established a great rapport and collaborative ways of working. Alex's work is thorough and well researched, just enough for the task at hand. She will happily and constructively challenge you, driving the team and product forward."</p>
-          <div class="flip-person">
-            <span class="flip-name">Eva Lofenberg</span>
-            <span class="flip-title">Principal Product Manager, Insights</span>
+      <!-- Card 3: Product Manager -->
+      <button class="flip-card sr" data-delay="3" tabindex="0" aria-label="Testimonial from Eva Lofenberg">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <p class="flip-role">Product Manager</p>
+            <p class="flip-quote">&#8220;Loved working with Alex. She quickly established a great rapport and collaborative ways of working. Alex&#8217;s work is thorough and well researched, just enough for the task at hand. She will happily and constructively challenge you, driving the team and product forward.&#8221;</p>
+            <div>
+              <span class="flip-name">Eva Lofenberg</span>
+              <span class="flip-title">Principal Product Manager, Insights</span>
+            </div>
+          </div>
+          <div class="flip-back">
+            <img src="assets/testimonial-pm.png" alt="Eva Lofenberg">
           </div>
         </div>
-        <div class="flip-back">
-          <img src="assets/testimonial-pm.png" alt="Eva Lofenberg">
-        </div>
-      </div>
-    </button>
+      </button>
 
-    <!-- Card 4: Mentee -->
-    <button class="flip-card" tabindex="0" aria-label="Testimonial from Saranne Richter">
-      <div class="flip-inner">
-        <div class="flip-front">
-          <p class="flip-role">Mentee</p>
-          <p class="flip-quote">"Alex taught me a lot about design with patience and diligence. She inspired me to dig deeper on my weak spots to improve. She readily shares experience and shows real interest in your career, with a good sense of humour and positive attitude making any interaction with Alex a delight."</p>
-          <div class="flip-person">
-            <span class="flip-name">Saranne Richter</span>
-            <span class="flip-title">Senior Product Designer, Artlogic</span>
-          </div>
-        </div>
-        <div class="flip-back">
-          <img src="assets/testimonial-mentee.png" alt="Saranne Richter">
-        </div>
-      </div>
-    </button>
-
-    <!-- Card 5: Placeholder for LinkedIn -->
-    <a href="https://www.linkedin.com/in/alexandraecain/" target="_blank" rel="noopener" class="flip-card flip-more" aria-label="See more recommendations on LinkedIn" style="text-decoration:none; display:flex; height:450px;">
-      <p class="flip-more-label">More nice stuff</p>
-      <p class="flip-more-sub">See more recommendations on LinkedIn</p>
-      <span class="flip-more-link">View LinkedIn →</span>
-    </a>
-
+    </div>
   </div>
 </section>
-
-<!-- APPS I WANT IN THE WORLD -->
+<!-- APPS I WANT IN THE WORLD — hidden, restore by uncommenting
 <section class="apps" id="apps" aria-labelledby="apps-heading">
-  <div class="apps-intro">
+  <div class="apps-head sr">
     <h2 class="section-heading" id="apps-heading">Side projects</h2>
     <p class="apps-subtitle">Apps I want in the world, do you?</p>
-    <p class="apps-desc">Anyone can create an app now, that's great, I want to gage whether I <em>should</em>. Taking product principles I will gage interest here, make it, gather feedback, iterate etc.<br><br>You can be a part of it, give feedback along the way.</p>
-    <a href="projects.html" class="apps-link">See more details →</a>
   </div>
 
-  <div class="apps-phones" role="list" aria-label="App concepts">
-
-    <span class="app-letter" aria-hidden="true">A</span>
-    <div class="iphone iphone--cosmos" role="listitem">
-      <div class="iphone-screen">
-        <div class="iphone-statusbar" aria-hidden="true">
-          <span class="iphone-statusbar-time">9:41</span>
-          <svg class="iphone-statusbar-icons" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 67 12"><rect x="0" y="9" width="3" height="3" rx="0.5" fill="currentColor" opacity="0.3"/><rect x="4.5" y="6" width="3" height="6" rx="0.5" fill="currentColor" opacity="0.5"/><rect x="9" y="3" width="3" height="9" rx="0.5" fill="currentColor"/><rect x="13.5" y="0" width="3" height="12" rx="0.5" fill="currentColor"/><circle cx="29" cy="11" r="1.5" fill="currentColor"/><path d="M25 8 Q29 4 33 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"/><path d="M22 5 Q29 -1 36 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"/><rect x="43" y="1" width="21" height="10" rx="2" stroke="currentColor" stroke-width="1.2" fill="none"/><rect x="44.5" y="2.5" width="15" height="7" rx="0.8" fill="currentColor"/><path d="M64.5 4 L64.5 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-        </div>
-        <img src="assets/hero/dynamic-island.png" class="iphone-di" aria-hidden="true" alt="">
-        <div class="iphone-content">
-          <div class="iphone-appname-row">
-            <img src="assets/apps/cosmos-icon.svg" class="iphone-appname-icon" alt="">
-            <span class="iphone-appname">Cosmos</span>
-          </div>
-          <div class="iphone-section">
-            <span class="iphone-label">Problem to solve</span>
-            <p class="iphone-text">Gardening is supposed to be peaceful and it can be but in this economy it's often expensive and frustrating when starting out.</p>
-          </div>
-        </div>
+  <div class="apps-grid">
+    <div class="app-tile sr" data-delay="1">
+      <img class="app-tile-bg" src="assets/apps/phone-cosmos.png" alt="Cosmos">
+      <div class="app-tile-icon">
+        <img src="assets/apps/cosmos-icon.svg" alt="">
       </div>
     </div>
-
-    <span class="app-letter" aria-hidden="true">B</span>
-    <div class="iphone iphone--fivemins" role="listitem">
-      <div class="iphone-screen">
-        <div class="iphone-statusbar" aria-hidden="true">
-          <span class="iphone-statusbar-time">9:41</span>
-          <svg class="iphone-statusbar-icons" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 67 12"><rect x="0" y="9" width="3" height="3" rx="0.5" fill="currentColor" opacity="0.3"/><rect x="4.5" y="6" width="3" height="6" rx="0.5" fill="currentColor" opacity="0.5"/><rect x="9" y="3" width="3" height="9" rx="0.5" fill="currentColor"/><rect x="13.5" y="0" width="3" height="12" rx="0.5" fill="currentColor"/><circle cx="29" cy="11" r="1.5" fill="currentColor"/><path d="M25 8 Q29 4 33 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"/><path d="M22 5 Q29 -1 36 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"/><rect x="43" y="1" width="21" height="10" rx="2" stroke="currentColor" stroke-width="1.2" fill="none"/><rect x="44.5" y="2.5" width="15" height="7" rx="0.8" fill="currentColor"/><path d="M64.5 4 L64.5 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-        </div>
-        <img src="assets/hero/dynamic-island.png" class="iphone-di" aria-hidden="true" alt="">
-        <div class="iphone-content">
-          <div class="iphone-appname-row">
-            <img src="assets/apps/fiveminutes-icon.svg" class="iphone-appname-icon" alt="">
-            <span class="iphone-appname">five minutes</span>
-          </div>
-          <div class="iphone-section">
-            <span class="iphone-label">Problem to solve</span>
-            <p class="iphone-text">Women in tech are burning out at work quicker than your tokens and the more senior, the more likely to report burnout. As a result more women are voluntarily leaving.</p>
-          </div>
-        </div>
+    <div class="app-tile sr" data-delay="2">
+      <img class="app-tile-bg" src="assets/apps/phone-fivemins.png" alt="Five Minutes">
+      <div class="app-tile-icon">
+        <img src="assets/apps/fiveminutes-icon.svg" alt="">
       </div>
     </div>
-
-    <span class="app-letter" aria-hidden="true">C</span>
-    <div class="iphone iphone--forth" role="listitem">
-      <div class="iphone-screen">
-        <div class="iphone-statusbar" aria-hidden="true">
-          <span class="iphone-statusbar-time">9:41</span>
-          <svg class="iphone-statusbar-icons" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 67 12"><rect x="0" y="9" width="3" height="3" rx="0.5" fill="currentColor" opacity="0.3"/><rect x="4.5" y="6" width="3" height="6" rx="0.5" fill="currentColor" opacity="0.5"/><rect x="9" y="3" width="3" height="9" rx="0.5" fill="currentColor"/><rect x="13.5" y="0" width="3" height="12" rx="0.5" fill="currentColor"/><circle cx="29" cy="11" r="1.5" fill="currentColor"/><path d="M25 8 Q29 4 33 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"/><path d="M22 5 Q29 -1 36 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"/><rect x="43" y="1" width="21" height="10" rx="2" stroke="currentColor" stroke-width="1.2" fill="none"/><rect x="44.5" y="2.5" width="15" height="7" rx="0.8" fill="currentColor"/><path d="M64.5 4 L64.5 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-        </div>
-        <img src="assets/hero/dynamic-island.png" class="iphone-di" aria-hidden="true" alt="">
-        <div class="iphone-content">
-          <div class="iphone-appname-row">
-            <img src="assets/apps/forth-icon.svg" class="iphone-appname-icon" alt="">
-            <span class="iphone-appname">Forth</span>
-          </div>
-          <div class="iphone-section">
-            <span class="iphone-label">Problem to solve</span>
-            <p class="iphone-text">In the UK, graduate and junior positions have dropped by 34.9% year over year. When was the last time you encountered a junior role?</p>
-          </div>
-        </div>
+    <div class="app-tile sr" data-delay="3">
+      <img class="app-tile-bg" src="assets/apps/phone-forth.png" alt="Forth">
+      <div class="app-tile-icon">
+        <img src="assets/apps/forth-icon.svg" alt="">
       </div>
     </div>
-
   </div>
 
-  <div class="apps-dots" role="tablist" aria-label="App navigation">
-    <button class="apps-dot apps-dot--active" data-index="0" aria-label="App A: Cosmos"></button>
-    <button class="apps-dot" data-index="1" aria-label="App B: Five Minutes"></button>
-    <button class="apps-dot" data-index="2" aria-label="App C: Forth"></button>
+  <div class="apps-foot sr">
+    <a href="_archive/projects.html" class="apps-see-more">See more details</a>
   </div>
 
 </section>
-
+-->
 <!-- LET'S WORK TOGETHER -->
 <section class="contact" id="contact" aria-labelledby="contact-heading">
   <div class="contact-grid">
@@ -1130,10 +777,10 @@
 
   // ── Nav scroll collapse ───────────────────────────────────────────────────
   (function () {
-    var wrapper = document.querySelector('.nav-wrapper');
-    if (!wrapper) return;
+    var nav = document.querySelector('.nav');
+    if (!nav) return;
     function onScroll() {
-      wrapper.classList.toggle('nav--scrolled', window.scrollY > 60);
+      nav.classList.toggle('nav--scrolled', window.scrollY > 60);
     }
     window.addEventListener('scroll', onScroll, { passive: true });
     document.addEventListener('scroll', onScroll, { passive: true });
@@ -1144,75 +791,26 @@
     if (typeof gsap === 'undefined') return;
     gsap.registerPlugin(ScrollTrigger);
 
-    // Hero: page-load entrance (typewriter handles its own fade separately)
-    gsap.from('.hero-title-left', { y: 28, opacity: 0, duration: 0.6, ease: 'power2.out' });
-    gsap.from('.hero-desc',       { y: 20, opacity: 0, duration: 0.55, ease: 'power2.out', delay: 0.2 });
-    gsap.from('.hero-media',      { y: 24, opacity: 0, duration: 0.7,  ease: 'power2.out', delay: 0.35 });
-
-    // Apps section intro (heading, desc, process steps stagger down)
-    gsap.from(['.apps .section-heading', '.apps-desc', '.apps-process'], {
-      y: 28, opacity: 0, duration: 0.65, stagger: 0.1, ease: 'power2.out',
-      scrollTrigger: { trigger: '.apps', start: 'top 86%', toggleActions: 'play none none none' }
-    });
-    // App phone pairs cascade in one by one (letter and phone sync'd per pair)
-    var phoneTrigger = { trigger: '.apps-phones', start: 'top 84%', toggleActions: 'play none none none' };
-    gsap.from('.apps-phones .iphone', {
-      y: 22, opacity: 0, duration: 0.9, stagger: 0.3, ease: 'power2.out',
-      scrollTrigger: phoneTrigger
-    });
-    gsap.from('.app-letter', {
-      y: 22, opacity: 0, duration: 0.9, stagger: 0.3, ease: 'power2.out',
-      scrollTrigger: phoneTrigger
-    });
-
-    // Recent Work label
-    gsap.from('.projects-label', {
-      y: 24, opacity: 0, duration: 0.65, ease: 'power2.out',
-      scrollTrigger: { trigger: '.projects', start: 'top 86%', toggleActions: 'play none none none' }
-    });
-    // Project entries: each fades up as it enters
-    document.querySelectorAll('.project-entry').forEach(function (entry) {
-      var content = entry.querySelector('.project-content') || entry;
-      gsap.from(content, {
-        y: 40, opacity: 0, duration: 0.8, ease: 'power2.out',
-        scrollTrigger: { trigger: entry, start: 'top 82%', toggleActions: 'play none none none' }
-      });
-    });
-
-    // Logos bar fades up
-    gsap.from('.logos-bar', {
-      opacity: 0, y: 16, duration: 0.65, ease: 'power2.out',
-      scrollTrigger: { trigger: '.logos-bar', start: 'top 90%', toggleActions: 'play none none none' }
-    });
-
-    // Colleagues section
-    gsap.from('.colleagues-intro', {
-      y: 24, opacity: 0, duration: 0.65, ease: 'power2.out',
-      scrollTrigger: { trigger: '.colleagues', start: 'top 86%', toggleActions: 'play none none none' }
-    });
-    gsap.from('.flip-card', {
-      y: 48, opacity: 0, duration: 0.7, stagger: 0.08, ease: 'power2.out',
-      scrollTrigger: { trigger: '.colleagues-grid', start: 'top 80%', toggleActions: 'play none none none' }
-    });
-
-    // Contact section
-    gsap.from('.contact-photo', {
-      x: -20, opacity: 0, duration: 0.7, ease: 'power2.out',
-      scrollTrigger: { trigger: '.contact', start: 'top 85%', toggleActions: 'play none none none' }
-    });
-    gsap.from('.contact-blurb', {
-      y: 20, opacity: 0, duration: 0.6, ease: 'power2.out', delay: 0.1,
-      scrollTrigger: { trigger: '.contact', start: 'top 85%', toggleActions: 'play none none none' }
-    });
-    gsap.from('.contact-heading', {
-      y: 24, opacity: 0, duration: 0.65, ease: 'power2.out',
-      scrollTrigger: { trigger: '.contact', start: 'top 85%', toggleActions: 'play none none none' }
-    });
-    gsap.from('.contact-form', {
-      y: 32, opacity: 0, duration: 0.7, ease: 'power2.out', delay: 0.1,
-      scrollTrigger: { trigger: '.contact', start: 'top 82%', toggleActions: 'play none none none' }
-    });
+    // Hero entrance
+    gsap.from('#hero-w1',   { y: 40, opacity: 0, duration: 0.7, ease: 'power2.out' });
+    gsap.to('#hero-desc',   { opacity: 1, y: 0, duration: 0.55, delay: 0.25, ease: 'power2.out' });
   });
+
+  // ── Scroll reveal (IntersectionObserver) ──────────────────────────────────
+  (function () {
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce) {
+      document.querySelectorAll('.sr').forEach(function (el) { el.classList.add('in'); });
+      return;
+    }
+    var obs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) { entry.target.classList.add('in'); obs.unobserve(entry.target); }
+      });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.sr').forEach(function (el) { obs.observe(el); });
+  })();
+
 
   // ── Hero typewriter ───────────────────────────────────────────────────────
   (function () {
@@ -1311,72 +909,6 @@
     document.fonts.ready.then(animate);
   })();
 
-  // ── Hero slideshow ────────────────────────────────────────────────────────
-  (function () {
-    const slides = Array.from(document.querySelectorAll('.hero-slide'));
-    if (!slides.length) return;
-    let current = 0;
-
-    function advance() {
-      slides[current].classList.remove('active');
-      current = (current + 1) % slides.length;
-      const slide = slides[current];
-      slide.classList.add('active');
-
-      // Restart GIF/video from beginning
-      if (slide.classList.contains('hero-slide--gif')) {
-        const gif = slide.querySelector('.phone-screen img');
-        if (gif) { const s = gif.src; gif.src = ''; gif.src = s; }
-        const video = slide.querySelector('.phone-screen video');
-        if (video) { video.currentTime = 0; video.play(); }
-      }
-
-      setTimeout(advance, parseInt(slide.dataset.duration) || 4000);
-    }
-
-    slides[0].classList.add('active');
-    setTimeout(advance, parseInt(slides[0].dataset.duration) || 4000);
-  })();
-
-  // ── Apps carousel dots ────────────────────────────────────────────────────
-  (function () {
-    var track   = document.querySelector('.apps-phones');
-    var dotsEl  = document.querySelector('.apps-dots');
-    var dots    = Array.from(document.querySelectorAll('.apps-dot'));
-    var phones  = Array.from(track.querySelectorAll('.iphone'));
-    var letters = Array.from(track.querySelectorAll('.app-letter'));
-    if (!track || !dots.length || !phones.length) return;
-
-    function syncDotsVisibility() {
-      var overflowing = track.scrollWidth > track.clientWidth + 1;
-      dotsEl.style.display = overflowing ? '' : 'none';
-    }
-    syncDotsVisibility();
-    window.addEventListener('resize', syncDotsVisibility);
-
-    function setActive(i) {
-      dots.forEach(function (d, idx) {
-        d.classList.toggle('apps-dot--active', idx === i);
-      });
-    }
-
-    track.addEventListener('scroll', function () {
-      var center = track.scrollLeft + track.clientWidth / 2;
-      var closest = 0, minDist = Infinity;
-      phones.forEach(function (phone, i) {
-        var dist = Math.abs((phone.offsetLeft + phone.offsetWidth / 2) - center);
-        if (dist < minDist) { minDist = dist; closest = i; }
-      });
-      setActive(closest);
-    }, { passive: true });
-
-    dots.forEach(function (dot, i) {
-      dot.addEventListener('click', function () {
-        var anchor = letters[i] || phones[i];
-        track.scrollTo({ left: Math.max(0, anchor.offsetLeft - 24), behavior: 'smooth' });
-      });
-    });
-  })();
 </script>
 
 </body>
