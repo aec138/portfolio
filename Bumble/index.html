@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/svg+xml" href="../favicon.svg">
   <title>When the risk of widely releasing an MVP doesn't pay off — Alex Cain</title>
+  <meta name="description" content="Bumble Opening Moves case study by Alex Cain, Lead Product Designer.">
   <meta property="og:type" content="website">
   <meta property="og:title" content="Alex Cain — Staff Product Designer">
   <meta property="og:description" content="Portfolio of Alex Cain showing work from the last three years, thoughts and personal projects.">
@@ -12,11 +13,11 @@
   <meta property="og:url" content="https://alexecain.com/Bumble/">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" defer></script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    a { color: inherit; }
+    button { font: inherit; cursor: pointer; border: none; background: none; }
 
     :root {
       --blue:   #3737f5;
@@ -26,59 +27,48 @@
       --dark:   #1c1208;
       --border: #e5d5be;
       --white:  #ffffff;
-      --pad-section-v:    80px;
-      --pad-section-h:    48px;
-      --pad-section-h-md: 4rem;
-      --pad-section-h-lg: 8rem;
-      --radius-card:  16px;
-      --radius-pill:  100px;
-      --radius-input: 10px;
+      --steel:  #89a2b6;
+      --olive:  #838e49;
+      --pad-v:  96px;
+      --pad-h:  clamp(24px, 6vw, 96px);
+      --radius-card: 16px;
+      --radius-pill: 100px;
     }
 
     html { scroll-behavior: smooth; }
     body {
-      background: var(--cream);
       font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
       color: var(--brown);
       overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
     }
 
     /* ── NAV ── */
-    .nav-wrapper {
-      position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
-      z-index: 100;
-    }
+    .nav-wrapper { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 100; }
     .nav {
-      display: flex; align-items: center; gap: 40px;
-      padding: 8px 10px; height: 56px;
-      background: rgba(252,250,240,.9);
-      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-      border-radius: 28px; border: 1px solid var(--border);
-      white-space: nowrap;
-      transition: gap 0.3s ease;
+      display: flex; align-items: center; gap: 36px;
+      height: 56px; padding: 8px 10px;
+      background: rgba(252,250,240,.92);
+      backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+      border: 1px solid var(--border); border-radius: 28px;
+      white-space: nowrap; transition: gap .35s ease;
     }
     .nav.is-scrolled { gap: 0; }
     .nav.is-scrolled .nav-avatar,
     .nav.is-scrolled .nav-links,
     .nav.is-scrolled .nav-hamburger { width: 0; overflow: hidden; opacity: 0; pointer-events: none; }
-    .nav-avatar {
-      width: 40px; height: 40px; border-radius: 50%; overflow: hidden; flex-shrink: 0;
-      display: block; text-decoration: none; transition: opacity 0.3s ease, width 0.35s ease;
+    .nav-avatar { width: 40px; height: 40px; border-radius: 50%; overflow: hidden; flex-shrink: 0; text-decoration: none; transition: opacity .3s, width .35s; }
+    .nav-avatar img { width: 100%; height: 100%; object-fit: cover; object-position: center top; }
+    .nav-links { display: flex; align-items: center; gap: 28px; list-style: none; transition: opacity .3s, width .35s; }
+    .nav-links a { font-size: 15px; font-weight: 400; color: var(--brown); text-decoration: none; transition: opacity .15s; }
+    .nav-links a:hover { opacity: .5; }
+    .nav-cta {
+      background: var(--orange); color: var(--dark);
+      font-size: 15px; font-weight: 500; padding: 7px 20px 8px; border-radius: var(--radius-pill);
+      text-decoration: none; flex-shrink: 0; transition: opacity .15s, transform .15s; display: inline-block;
     }
-    .nav-avatar img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
-    .nav-links { display: flex; align-items: center; gap: 32px; list-style: none; transition: opacity 0.3s ease, width 0.35s ease; }
-    .nav-links a {
-      font-family: 'DM Sans', sans-serif; font-weight: 400; font-size: 16px;
-      color: var(--brown); text-decoration: none; transition: opacity .15s;
-    }
-    .nav-links a:hover { opacity: .6; }
-    a.nav-cta {
-      background: var(--orange); color: var(--dark) !important;
-      font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 16px;
-      padding: 6px 20px 7px; border-radius: 99px;
-      white-space: nowrap; text-decoration: none; transition: opacity .15s; letter-spacing: 0;
-    }
-    a.nav-cta:hover { opacity: .82; }
+    .nav-cta:hover { opacity: .84; transform: translateY(-1px); }
     .nav-hamburger {
       display: none; flex-direction: column; gap: 5px;
       cursor: pointer; background: none; border: none; padding: 4px; flex-shrink: 0;
@@ -89,399 +79,360 @@
       display: none; position: absolute; top: calc(100% + 8px); left: 50%; transform: translateX(-50%);
       background: rgba(252,250,240,.97); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
       border: 1px solid var(--border); border-radius: 20px;
-      padding: 16px 24px 20px; flex-direction: column; gap: 16px; z-index: 99;
-      min-width: 200px;
+      padding: 16px 24px 20px; flex-direction: column; gap: 16px; z-index: 99; min-width: 200px;
     }
     .nav-drawer.open { display: flex; }
-    .nav-drawer a {
-      font-family: 'DM Sans', sans-serif; font-weight: 400; font-size: 18px;
-      color: var(--brown); text-decoration: none; transition: opacity .15s;
-    }
+    .nav-drawer a { font-size: 18px; font-weight: 400; color: var(--brown); text-decoration: none; transition: opacity .15s; }
     .nav-drawer a:hover { opacity: .6; }
-    .nav-drawer a.nav-cta {
-      background: var(--orange); color: var(--dark) !important;
-      padding: 8px 20px; border-radius: 99px; align-self: flex-start; margin-top: 4px; font-size: 16px;
-    }
+    .nav-drawer a.nav-cta { background: var(--orange); color: var(--dark); padding: 8px 20px; border-radius: 99px; align-self: flex-start; margin-top: 4px; font-size: 16px; }
 
-    /* ── SECTION HEADING ── */
-    .section-heading {
-      font-family: 'DM Sans', sans-serif; font-weight: 300;
-      font-size: clamp(36px, 3.9vw, 50px); line-height: 1.05;
-      color: var(--orange); text-transform: uppercase; letter-spacing: -1.5px;
-    }
-
-    /* ── CASE STUDY HERO ── */
+    /* ── HERO ── */
     .cs-hero {
-      background: #000000;
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 48px;
-      padding: 172px var(--pad-section-h) var(--pad-section-v);
-      min-height: 432px;
+      background: var(--steel);
+      min-height: 100dvh;
+      padding: 0 var(--pad-h) 80px;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      position: relative; overflow: hidden;
     }
-    .cs-hero-left { flex: 0 0 auto; max-width: 544px; }
-    .cs-hero-title {
-      font-family: 'DM Sans', sans-serif; font-weight: 300;
-      font-size: clamp(40px, 5.5vw, 64px); line-height: 1.0;
-      color: #fdf8f2; text-transform: uppercase;
+    .cs-hero::after {
+      content: ''; position: absolute; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      background-size: 300px 300px; pointer-events: none;
     }
-    .cs-hero-right { flex: 0 0 auto; max-width: 550px; }
+    .cs-hero-inner {
+      position: relative; z-index: 1; padding-top: 120px;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 56px; align-items: flex-start;
+    }
+    .cs-title-line { overflow: hidden; line-height: .9; }
+    .cs-title {
+      font-size: clamp(38px, 5.5vw, 68px);
+      font-weight: 300; letter-spacing: -2px; line-height: 1.0;
+      text-transform: uppercase; color: #fdf8f2;
+      display: block; transform: translateY(110%);
+    }
+    .cs-results-wrap { padding-top: 8px; }
     .cs-results-label {
-      font-family: 'DM Sans', sans-serif; font-weight: 400;
-      font-size: 24px; letter-spacing: -1.8px;
-      color: rgba(253,248,242,0.93);
-      margin-bottom: 12px;
+      font-size: 12px; font-weight: 600;
+      letter-spacing: 2px; text-transform: uppercase;
+      color: var(--dark); opacity: .6; margin-bottom: 14px; display: block;
     }
     .cs-results-text {
-      font-family: 'DM Sans', sans-serif; font-weight: 300;
-      font-size: clamp(24px, 3.5vw, 42px); line-height: 1.15; letter-spacing: -1.8px;
-      color: rgba(253,248,242,0.93);
+      font-size: clamp(20px, 2.8vw, 36px);
+      font-weight: 300; letter-spacing: -1.5px; line-height: 1.18;
+      color: var(--dark); opacity: 0; transform: translateY(16px);
     }
 
-    /* ── HERO IMAGE ── */
-    .cs-image-wrap {
-      display: flex;
-      justify-content: center;
-      padding: 40px var(--pad-section-h) var(--pad-section-v);
+    /* ── MEDIA FRAME ── */
+    .cs-media { padding: 48px var(--pad-h); background: var(--cream); }
+    .cs-media-frame {
+      border: 2px solid #2c352d; border-bottom: 5px solid #2c352d;
+      border-radius: var(--radius-card); overflow: hidden;
     }
-    .cs-image-frame {
-      border: 2px solid #2c352d;
-      border-bottom: 5px solid #2c352d;
-      border-radius: 16px;
-      overflow: hidden;
-      max-width: 902px;
-      width: 100%;
-    }
-    .cs-image-frame img,
-    .cs-image-frame video { width: 100%; display: block; }
+    .cs-media-frame video,
+    .cs-media-frame img { width: 100%; display: block; }
 
     /* ── TEAM STRIP ── */
     .cs-team {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 20px var(--pad-section-h);
-      min-height: 128px;
+      border-bottom: 1px solid var(--border);
+      padding: 32px var(--pad-h);
+      display: flex; align-items: center;
+      justify-content: space-between; gap: 32px; flex-wrap: wrap;
     }
-    .cs-team-heading {
-      font-family: 'DM Sans', sans-serif; font-weight: 300;
-      font-size: clamp(36px, 3.9vw, 50px); line-height: 1.05;
-      color: var(--orange); text-transform: uppercase; letter-spacing: -1.5px;
+    .cs-team-label {
+      font-size: clamp(28px, 3vw, 44px);
+      font-weight: 300; letter-spacing: -1.5px;
+      text-transform: uppercase; color: var(--orange);
     }
-    .cs-team-meta {
-      display: flex;
-      gap: 40px;
-      align-items: flex-start;
-    }
-    .cs-meta-block {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      padding-top: 8px;
-    }
-    .cs-meta-icon {
-      width: 28px; height: 28px;
-      display: block;
-      margin-bottom: 2px;
-    }
-    .cs-meta-label {
-      font-family: 'DM Sans', sans-serif; font-weight: 400;
-      font-size: 20px; letter-spacing: -1.4px;
-      color: var(--brown); line-height: 1.1;
-    }
-    .cs-meta-value {
-      font-family: 'DM Sans', sans-serif; font-weight: 400;
-      font-size: 18px; line-height: 28px;
-      color: var(--brown);
-    }
+    .cs-meta-row { display: flex; gap: 48px; flex-wrap: wrap; }
+    .cs-meta { display: flex; flex-direction: column; gap: 4px; }
+    .cs-meta-icon { width: 24px; height: 24px; color: var(--brown); opacity: .5; margin-bottom: 4px; }
+    .cs-meta-name { font-size: 13px; font-weight: 500; letter-spacing: 1px; text-transform: uppercase; color: rgba(94,70,48,.5); }
+    .cs-meta-val { font-size: 17px; font-weight: 400; color: var(--brown); }
 
     /* ── CONTENT AREA ── */
-    .cs-content {
-      display: flex;
-      flex-direction: column;
-      gap: 64px;
-      padding: 72px var(--pad-section-h);
-    }
+    .cs-content { padding: var(--pad-v) var(--pad-h); display: flex; flex-direction: column; gap: 72px; }
 
-    /* ── CONTENT ROWS (2-col) ── */
-    .cs-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 40px;
+    .cs-row { display: grid; grid-template-columns: 280px 1fr; gap: 56px; align-items: start; }
+    .cs-row-head {
+      font-size: clamp(28px, 3vw, 44px);
+      font-weight: 300; letter-spacing: -1.5px;
+      text-transform: uppercase; color: var(--orange);
+      line-height: 1.05; padding-top: 4px;
     }
-    .cs-row-left {
-      flex: 0 0 380px;
-      min-width: 0;
-    }
-    .cs-row-right {
-      flex: 1;
-      max-width: 550px;
-      padding-top: 32px;
-      padding-bottom: 8px;
-    }
-    .cs-row-right--wide { max-width: none; }
+    .cs-row-body { max-width: 560px; }
 
-    /* Body text */
-    .cs-body {
-      font-family: 'DM Sans', sans-serif; font-weight: 400;
-      font-size: 18px; line-height: 28px; color: var(--brown);
-    }
+    .cs-body { font-size: 17px; line-height: 1.75; color: var(--brown); }
     .cs-body p + p { margin-top: 16px; }
     .cs-body em { font-style: italic; }
     .cs-body strong { font-weight: 600; }
-    .cs-sub {
-      font-family: 'DM Sans', sans-serif; font-weight: 400;
-      font-size: 24px; letter-spacing: -1.8px;
-      color: var(--brown); line-height: 1.1;
-      margin-bottom: 6px;
-    }
-    .cs-sub + .cs-sub { margin-top: 24px; }
 
-    /* ── RESEARCH ITEMS ── */
-    .cs-research-items {
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-      max-width: 550px;
+    .cs-sub {
+      font-size: 22px; font-weight: 400;
+      letter-spacing: -1.2px; color: var(--brown);
+      line-height: 1.15; margin-bottom: 10px; display: block;
     }
-    .cs-research-item {
-      padding: 18px 0 20px;
+
+    /* result cards */
+    .cs-result-cards {
+      display: flex; gap: 24px;
+      max-width: 900px; margin-left: auto; margin-right: auto;
     }
-    .cs-research-label {
-      font-family: 'DM Sans', sans-serif; font-weight: 400;
-      font-size: 24px; letter-spacing: -1.8px; color: var(--brown);
-      margin-bottom: 8px; line-height: 1.1;
+    .cs-deco-card {
+      border-radius: var(--radius-card);
+      overflow: hidden; position: relative;
+      flex: 1; min-height: 180px;
     }
-    .cs-research-body {
-      font-family: 'DM Sans', sans-serif; font-weight: 400;
-      font-size: 18px; line-height: 28px; color: var(--brown);
+    .cs-deco-card--pink { background: #ff88c8; }
+    .cs-deco-card-body {
+      padding: 24px; position: relative; z-index: 1;
+      width: 50%; min-height: 160px;
+      display: flex; flex-direction: column; justify-content: flex-start;
     }
+    .cs-deco-card-img {
+      position: absolute; right: 0; top: 0; bottom: 0;
+      width: 55%; overflow: hidden;
+    }
+    .cs-deco-card-img img {
+      position: absolute; width: 131%; height: 100%;
+      object-fit: cover; object-position: left center;
+      left: -16%; top: 0;
+    }
+    .cs-deco-card-text {
+      font-size: 20px; font-weight: 400;
+      letter-spacing: -1px; color: var(--dark); line-height: 1.2;
+    }
+
+    /* research items */
+    .cs-research { display: flex; flex-direction: column; }
+    .cs-research-item { padding: 20px 0; border-top: 1px solid var(--border); }
+    .cs-research-item:first-child { border-top: none; padding-top: 0; }
+    .cs-research-name {
+      font-size: 20px; font-weight: 400;
+      letter-spacing: -1.2px; color: var(--brown);
+      margin-bottom: 8px; display: block;
+    }
+    .cs-research-body { font-size: 17px; line-height: 1.75; color: var(--brown); }
     .cs-research-body em { font-style: italic; }
     .cs-research-body p + p { margin-top: 12px; }
 
-    /* ── PULL QUOTE ── */
-    .cs-pull-quote {
-      border: 2px solid var(--brown);
-      border-bottom: 5px solid var(--brown);
-      border-radius: 12px;
-      min-height: 242px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 32px 48px;
-      overflow: hidden;
+    /* pull quote */
+    .cs-pull {
+      background: var(--olive);
+      border: 2px solid var(--brown); border-bottom: 5px solid var(--brown);
+      border-radius: var(--radius-card);
+      padding: 40px 56px; min-height: 180px;
+      display: flex; align-items: center;
     }
-    .cs-pull-quote--yellow { background: #ffd671; }
-    .cs-pull-quote--yellow .cs-pull-quote-text { color: var(--dark); }
-    .cs-pull-quote-text {
-      font-family: 'DM Sans', sans-serif; font-weight: 300;
-      font-size: clamp(30px, 4vw, 50px); line-height: 1.05;
-      text-transform: uppercase;
-      max-width: 790px;
+    .cs-pull-text {
+      font-size: clamp(24px, 3.5vw, 46px);
+      font-weight: 300; letter-spacing: -1.5px; line-height: 1.1;
+      text-transform: uppercase; color: var(--white); max-width: 800px;
     }
 
-    /* ── RESULT CARDS ── */
-    .cs-result-cards {
-      display: flex;
-      gap: 24px;
-      padding-top: 32px;
-      padding-bottom: 8px;
+    /* phone panel */
+    .cs-phone-panel {
+      background: var(--steel); border-radius: var(--radius-card);
+      display: flex; gap: 32px; align-items: center;
+      justify-content: center; min-height: 560px;
+      overflow: hidden; width: 100%;
     }
-    .cs-principle-cards {
-      display: flex;
-      gap: 24px;
-      padding: 0 48px;
+    .cs-phone-panel-phone {
+      height: 454px; width: 233px;
+      border-radius: 16px; overflow: hidden;
+      position: relative; flex-shrink: 0;
     }
-
-    /* ── DECO CARD (unified: result cards + principle cards) ── */
-    .cs-deco-card {
-      border-radius: 16px;
-      overflow: hidden;
-      position: relative;
-      flex: 1;
-      min-height: 180px;
-    }
-    .cs-deco-card--dark  { background: #292924; }
-    .cs-deco-card--black { background: #000000; }
-    .cs-deco-card-body {
-      padding: 24px;
-      position: relative;
-      z-index: 1;
-      width: 50%;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      align-items: flex-start;
-    }
-    .cs-deco-card-body--end { justify-content: flex-end; min-height: 180px; }
-    .cs-deco-card-img {
-      position: absolute;
-      right: 0;
-      top: -1px;
-      width: 57%;
-      height: 196px;
-    }
-    .cs-deco-card-img img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      object-position: center;
-    }
-    .cs-principle-cards .cs-deco-card-img img {
-      object-fit: cover;
-      object-position: top center;
-    }
-    .cs-deco-card-text {
-      font-family: 'DM Sans', sans-serif; font-weight: 400;
-      font-size: 24px; letter-spacing: -1.8px;
-      color: white; line-height: 1.0;
-    }
-    .cs-principle-label {
-      font-family: 'DM Sans', sans-serif; font-weight: 500;
-      font-size: 20px; letter-spacing: -1.4px;
-      color: white; line-height: 1.1;
-      margin-bottom: 4px;
-    }
-    .cs-principle-name {
-      font-family: 'DM Sans', sans-serif; font-weight: 500;
-      font-size: 20px; letter-spacing: -1.4px;
-      color: #ffd671; line-height: 1.1;
+    .cs-phone-panel-phone img {
+      position: absolute; width: 100%; height: 105.71%;
+      top: -0.08%; left: 0; object-fit: cover;
     }
 
-    /* ── WHITE SCREENSHOT CARD ── */
-    .cs-white-card {
-      background: white;
-      border-radius: 16px;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 32px;
-    }
-    .cs-white-card img {
-      max-width: 685px;
-      width: 100%;
-      display: block;
-      border-radius: 8px;
-    }
-
-    /* ── FULL WIDTH IMAGE ── */
+    /* image blocks */
     .cs-full-image {
-      border: 1px solid #e5e7eb;
-      border-bottom: 5px solid #e5e7eb;
-      border-radius: 16px;
-      overflow: hidden;
-      width: 100%;
+      border: 1px solid var(--border); border-bottom: 4px solid var(--border);
+      border-radius: var(--radius-card); overflow: hidden; width: 100%;
     }
     .cs-full-image img { width: 100%; display: block; }
 
-    /* ── PHONE PANEL ── */
-    .cs-phone-panel {
-      background: #000000;
-      border-radius: 16px;
-      display: flex;
-      gap: 32px;
-      align-items: center;
-      justify-content: center;
-      min-height: 602px;
-      overflow: hidden;
-      width: 100%;
+    .cs-browser {
+      border: 2px solid #bbcfdf; border-bottom: 5px solid #bbcfdf;
+      border-radius: 12px; overflow: hidden; background: white;
     }
-    .cs-phone-panel-phone {
-      height: 503px;
-      width: 233px;
-      border-radius: 16px;
-      overflow: hidden;
-      position: relative;
-      flex-shrink: 0;
+    .cs-browser img { display: block; width: 100%; }
+
+    /* brand grid */
+    .cs-brand-grid {
+      display: grid; grid-template-columns: repeat(12, 1fr);
+      gap: 16px; min-height: 540px;
     }
-    .cs-phone-panel-phone img {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
+    .cs-brand-col-1 { grid-column: 1 / span 2; display: flex; flex-direction: column; gap: 16px; }
+    .cs-brand-col-2 { grid-column: 3 / span 2; display: flex; flex-direction: column; gap: 16px; }
+    .cs-brand-col-main {
+      grid-column: 5 / span 8; background: var(--olive);
+      border-radius: var(--radius-card);
+      display: flex; gap: 32px; align-items: center; justify-content: center;
+      padding: 32px 24px; min-height: 540px;
     }
+    .cs-brand-asset {
+      border: 2px solid var(--dark); border-bottom: 5px solid var(--dark);
+      border-radius: 12px; overflow: hidden;
+      background: var(--white); flex: 1;
+    }
+    .cs-brand-asset img { width: 100%; display: block; object-fit: contain; }
+    .cs-brand-asset--tall { flex: 2.1; }
+    .cs-brand-asset--dark { border-color: #2c352d; }
+    .cs-brand-phone { height: 460px; width: 210px; border-radius: 14px; overflow: hidden; flex-shrink: 0; }
+    .cs-brand-phone img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
     /* ── CONTACT ── */
-    .contact { border-top: 1px solid var(--border); padding: var(--pad-section-v) var(--pad-section-h); }
-    .contact-grid { display: grid; grid-template-columns: 1fr 1.4fr; gap: 48px; max-width: 1450px; }
-    .contact-photo { width: 240px; height: 300px; border-radius: 14px; object-fit: cover; object-position: center 15%; display: block; }
-    .contact-blurb { font-family: 'DM Sans', sans-serif; font-weight: 400; font-size: 18px; line-height: 28px; color: var(--brown); margin-top: 20px; }
-    .contact-heading { font-family: 'DM Sans', sans-serif; font-weight: 300; font-size: clamp(36px, 3.9vw, 50px); line-height: 1.05; color: var(--orange); text-transform: uppercase; margin-bottom: 8px; }
-    .contact-form { display: flex; flex-direction: column; gap: 10px; margin-top: 18px; }
-    .form-name-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-    @media (max-width: 600px) { .form-name-row { grid-template-columns: 1fr; } }
-    .form-field { background: var(--cream); border: 1px solid var(--border); border-radius: 10px; padding: 14px 17px; font-family: 'DM Sans', sans-serif; font-weight: 400; font-size: 18px; line-height: 28px; color: var(--dark); width: 100%; outline: none; appearance: none; transition: border-color .15s; }
-    .form-field::placeholder { color: var(--brown); opacity: .7; }
+    .contact { border-top: 1px solid var(--border); padding: var(--pad-v) var(--pad-h); }
+    .contact-grid { display: grid; grid-template-columns: auto 1fr; gap: 64px; align-items: start; max-width: 900px; }
+    .contact-photo { width: 220px; height: 280px; border-radius: 14px; object-fit: cover; object-position: center 15%; display: block; flex-shrink: 0; }
+    .contact-heading { font-size: clamp(36px, 4vw, 52px); font-weight: 300; letter-spacing: -2px; text-transform: uppercase; color: var(--orange); margin-bottom: 8px; }
+    .contact-blurb { font-size: 17px; line-height: 1.7; color: rgba(94,70,48,.7); margin-bottom: 24px; max-width: 440px; }
+    .contact-form { display: flex; flex-direction: column; gap: 8px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .form-field {
+      background: var(--cream); border: 1px solid var(--border); border-radius: 10px;
+      padding: 13px 16px; font-family: 'DM Sans', sans-serif; font-size: 16px;
+      font-weight: 400; color: var(--dark); width: 100%;
+      outline: none; appearance: none; transition: border-color .15s;
+    }
+    .form-field::placeholder { color: var(--brown); opacity: .55; }
     .form-field:focus { border-color: var(--orange); }
-    textarea.form-field { height: 100px; resize: vertical; }
-    .form-submit { background: var(--orange); color: var(--dark); font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 16px; letter-spacing: 0; border: none; border-radius: 99px; padding: 6px 20px 7px; cursor: pointer; align-self: flex-start; transition: opacity .15s; }
-    .form-submit:hover { opacity: .82; }
+    textarea.form-field { height: 110px; resize: vertical; }
+    .form-submit {
+      background: var(--orange); color: var(--dark);
+      font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 500;
+      padding: 10px 24px; border-radius: var(--radius-pill); cursor: pointer; align-self: flex-start;
+      transition: opacity .15s, transform .15s;
+    }
+    .form-submit:hover { opacity: .84; transform: translateY(-1px); }
 
-    /* ── FOOTER BAR ── */
-    .footer-bar { background: var(--dark); padding: 28px var(--pad-section-h); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
-    .footer-copy { font-family: 'DM Sans', sans-serif; font-weight: 400; font-size: 13px; letter-spacing: .46px; color: var(--white); }
+    /* ── FOOTER ── */
+    .footer-bar {
+      background: var(--dark); padding: 28px 48px;
+      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+    }
+    .footer-copy { font-size: 13px; letter-spacing: .46px; color: var(--white); }
     .footer-links { display: flex; gap: 20px; list-style: none; }
-    .footer-links a { font-family: 'DM Sans', sans-serif; font-weight: 400; font-size: 13px; letter-spacing: .69px; text-transform: uppercase; color: var(--white); text-decoration: none; transition: opacity .15s; }
+    .footer-links a { font-size: 13px; font-weight: 400; letter-spacing: .69px; text-transform: uppercase; color: var(--white); text-decoration: none; transition: opacity .15s; }
     .footer-links a:hover { opacity: .65; }
+
+    /* ── SCROLL REVEAL ── */
+    .sr { opacity: 0; transform: translateY(24px); transition: opacity .65s ease, transform .65s ease; }
+    .sr.in { opacity: 1; transform: translateY(0); }
+    .sr[data-d="1"] { transition-delay: .1s; }
+    .sr[data-d="2"] { transition-delay: .2s; }
 
     /* ── RESPONSIVE ── */
     @media (max-width: 900px) {
       .nav { gap: 16px; max-width: calc(100vw - 32px); }
       .nav-links { display: none; }
       .nav-hamburger { display: flex; }
-      .cs-hero { flex-direction: column; gap: 32px; padding: 140px 24px 56px; min-height: auto; }
-      .cs-hero-left { max-width: 100%; }
-      .cs-hero-right { max-width: 100%; }
-      .cs-image-wrap { padding: var(--pad-section-v) 24px; }
-      .cs-team { flex-direction: column; align-items: flex-start; padding: 32px 24px; gap: 20px; min-height: auto; }
-      .cs-team-meta { flex-wrap: wrap; gap: 24px; }
-      .cs-content { padding: 48px 24px; gap: 48px; }
-      .cs-row { flex-direction: column; gap: 12px; }
-      .cs-row-left { flex: none; width: 100%; }
-      .cs-row-right { max-width: 100%; padding-top: 0; padding-bottom: 0; }
-      .cs-result-cards { flex-direction: column; padding-top: 0; gap: 16px; }
-      .cs-principle-cards { flex-direction: column; padding: 0; gap: 16px; }
-      .cs-deco-card { min-height: 160px; }
-      .cs-deco-card-body { min-height: 160px; }
-      .cs-white-card { padding: 16px; }
-      .cs-phone-panel { flex-direction: column; align-items: center; gap: 20px; min-height: auto; padding: 24px; }
-      .cs-phone-panel-phone { height: 432px; width: 200px; }
-      .cs-pull-quote { padding: 24px; }
+      .cs-hero { padding: 0 24px 56px; }
+      .cs-hero-inner { grid-template-columns: 1fr; gap: 40px; padding-top: 120px; }
+      .cs-media { padding: 32px 24px; }
+      .cs-team { flex-direction: column; align-items: flex-start; padding: 32px 24px; }
+      .cs-meta-row { gap: 24px; flex-wrap: wrap; }
+      .cs-content { padding: 56px 24px; gap: 48px; }
+      .cs-row { grid-template-columns: 1fr; gap: 16px; }
+      .cs-row-body { max-width: 100%; }
+      .cs-result-cards { flex-direction: column; }
+      .cs-pull { padding: 28px 32px; }
+      .cs-phone-panel { flex-direction: column; min-height: auto; padding: 32px 24px; gap: 20px; }
+      .cs-phone-panel-phone { height: 390px; width: 200px; }
+      .cs-brand-grid { grid-template-columns: 1fr 1fr; gap: 10px; min-height: auto; }
+      .cs-brand-col-1 { grid-column: 1 / span 1; }
+      .cs-brand-col-2 { grid-column: 2 / span 1; }
+      .cs-brand-col-main { grid-column: 1 / span 2; min-height: 280px; }
+      .cs-brand-phone { height: 280px; width: 130px; }
       .contact { padding: 56px 24px; }
       .contact-grid { grid-template-columns: 1fr; gap: 40px; }
-      .contact-photo { width: 180px; height: 220px; }
+      .contact-photo { width: 160px; height: 200px; }
       .footer-bar { padding: 24px; }
+      .cs-principle-cards { flex-direction: column; gap: 16px; }
+      .cs-white-card { padding: 16px; }
+      .cs-pull-quote { padding: 24px; }
     }
-    @media (max-width: 600px) {
-      .cs-hero { padding: 120px 24px 48px; }
-      .cs-hero-title { font-size: 36px; }
-      .cs-results-text { font-size: 22px; }
+    @media (max-width: 560px) {
+      .cs-deco-card-body { width: 100%; }
+      .cs-deco-card-img { display: none; }
+      .form-row { grid-template-columns: 1fr; }
       .cs-pull-quote-text { font-size: 28px; }
-      .cs-team-heading { font-size: 36px; }
     }
     @media (min-width: 768px) {
-      .cs-hero { padding-left: var(--pad-section-h-md); padding-right: var(--pad-section-h-md); }
-      .cs-image-wrap { padding-left: var(--pad-section-h-md); padding-right: var(--pad-section-h-md); }
-      .cs-team { padding-left: var(--pad-section-h-md); padding-right: var(--pad-section-h-md); }
-      .cs-content { padding-left: var(--pad-section-h-md); padding-right: var(--pad-section-h-md); }
-      .contact { padding-left: var(--pad-section-h-md); padding-right: var(--pad-section-h-md); }
+      .cs-hero, .cs-media, .cs-team, .cs-content, .contact { padding-left: 4rem; padding-right: 4rem; }
     }
     @media (min-width: 1024px) {
-      .cs-hero { padding-left: var(--pad-section-h-lg); padding-right: var(--pad-section-h-lg); }
-      .cs-image-wrap { padding-left: var(--pad-section-h-lg); padding-right: var(--pad-section-h-lg); }
-      .cs-team { padding-left: var(--pad-section-h-lg); padding-right: var(--pad-section-h-lg); }
-      .cs-content { padding-left: var(--pad-section-h-lg); padding-right: var(--pad-section-h-lg); }
-      .contact { padding-left: var(--pad-section-h-lg); padding-right: var(--pad-section-h-lg); }
+      .cs-hero, .cs-media, .cs-team, .cs-content, .contact { padding-left: 8rem; padding-right: 8rem; }
     }
     @media (min-width: 1512px) {
-      .cs-hero, .cs-image-wrap, .cs-team, .cs-content, .contact, .footer-bar {
-        padding-left: calc((100vw - 1512px) / 2 + var(--pad-section-h-lg));
-        padding-right: calc((100vw - 1512px) / 2 + var(--pad-section-h-lg));
+      .cs-hero, .cs-media, .cs-team, .cs-content, .contact {
+        padding-left: calc((100vw - 1512px) / 2 + 8rem);
+        padding-right: calc((100vw - 1512px) / 2 + 8rem);
       }
+      .footer-bar {
+        padding-left: calc((100vw - 1512px) / 2 + 48px);
+        padding-right: calc((100vw - 1512px) / 2 + 48px);
+      }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .cs-title { transform: none; }
+      .cs-results-text { opacity: 1; transform: none; }
+      .cs-back { opacity: 1; }
+      .sr { opacity: 1; transform: none; transition: none; }
+    }
+
+    /* ── BUMBLE-SPECIFIC ── */
+
+    /* Hero black variant */
+    .cs-hero--black { background: #000000; }
+    .cs-hero--black .cs-results-label { color: rgba(253,248,242,.6); }
+    .cs-hero--black .cs-results-text { color: #fdf8f2; }
+
+    /* Principle cards */
+    .cs-principle-cards { display: flex; gap: 24px; }
+    .cs-deco-card--dark { background: #292924; }
+    .cs-deco-card--black { background: #000000; }
+    .cs-deco-card-body--end { justify-content: flex-end; min-height: 180px; }
+    .cs-principle-label { font-size: 20px; font-weight: 500; letter-spacing: -1.4px; color: var(--white); line-height: 1.1; margin-bottom: 4px; }
+    .cs-principle-name { font-size: 20px; font-weight: 500; letter-spacing: -1.4px; color: #ffd671; line-height: 1.1; }
+
+    /* Dark card text override */
+    .cs-deco-card--dark .cs-deco-card-text,
+    .cs-deco-card--black .cs-deco-card-text { color: var(--white); }
+
+    /* White screenshot card */
+    .cs-white-card { background: var(--white); border-radius: var(--radius-card); overflow: hidden; display: flex; align-items: center; justify-content: center; padding: 32px; }
+    .cs-white-card img { max-width: 685px; width: 100%; display: block; border-radius: 8px; }
+
+    /* Pull quote — yellow version */
+    .cs-pull-quote {
+      border: 2px solid var(--brown); border-bottom: 5px solid var(--brown);
+      border-radius: var(--radius-card);
+      min-height: 242px; display: flex; align-items: center; justify-content: center;
+      padding: 32px 48px; overflow: hidden;
+    }
+    .cs-pull-quote--yellow { background: #ffd671; }
+    .cs-pull-quote-text {
+      font-size: clamp(30px, 4vw, 50px); font-weight: 300;
+      line-height: 1.05; text-transform: uppercase; color: var(--dark); max-width: 790px;
+    }
+
+    /* Result card images for Bumble use contain, not the 131% overflow style */
+    .cs-result-cards .cs-deco-card-img {
+      position: absolute; right: 0; top: -1px; width: 57%; height: 196px; overflow: hidden;
+    }
+    .cs-result-cards .cs-deco-card-img img {
+      width: 100%; height: 100%; object-fit: contain; object-position: center;
+      position: static; transform: none; left: auto;
+    }
+
+    /* Phone panel black */
+    .cs-phone-panel--black { background: #000000; }
+    .cs-phone-panel--black .cs-phone-panel-phone img {
+      position: absolute; width: 100%; height: 100%; object-fit: contain;
     }
   </style>
   <!-- Google Analytics -->
@@ -498,8 +449,8 @@
 <!-- NAV -->
 <header>
   <div class="nav-wrapper">
-    <nav class="nav" aria-label="Main navigation">
-      <a href="../index.html" class="nav-avatar">
+    <nav class="nav" id="main-nav" aria-label="Main navigation">
+      <a href="../index.html" class="nav-avatar" aria-label="Alex Cain home">
         <img src="../assets/alex-hero.jpg" alt="Alex Cain">
       </a>
       <ul class="nav-links" role="list">
@@ -516,50 +467,53 @@
     <nav class="nav-drawer" id="navDrawer" aria-label="Mobile navigation">
       <a href="../work.html" onclick="closeMenu()">Work</a>
       <a href="../about.html" onclick="closeMenu()">About</a>
-      <a href="../index.html#apps" onclick="closeMenu()">Thoughts</a>
+      <a href="https://substack.com/@alexcaindesign" target="_blank" rel="noopener" onclick="closeMenu()">Thoughts</a>
       <a href="https://docs.google.com/document/d/1baQoC_o6pZB8Hsee8ddzqnkunp4sn146tAxX6LeLSK4/edit?pli=1&tab=t.vh9lp2u1ry7g#heading=h.x8fm1uorkbaw" target="_blank" rel="noopener" onclick="closeMenu()">CV</a>
       <a href="#contact" class="nav-cta" onclick="closeMenu()">Contact</a>
     </nav>
   </div>
 </header>
 
-<!-- CASE STUDY HERO -->
-<section class="cs-hero" aria-label="Case study hero">
-  <div class="cs-hero-left">
-    <h1 class="cs-hero-title">When the risk of widely releasing an MVP doesn't pay off</h1>
-  </div>
-  <div class="cs-hero-right">
-    <p class="cs-results-label">RESULT</p>
-    <p class="cs-results-text">40% increase in feature adoption.</p>
-    <p class="cs-results-text">5% increase in good chats.</p>
+<!-- HERO -->
+<section class="cs-hero cs-hero--black" aria-label="Case study hero">
+  <div class="cs-hero-inner">
+    <div class="cs-hero-left">
+      <div class="cs-title-line">
+        <h1 class="cs-title" id="cs-title">When the risk of widely releasing an MVP doesn't pay off</h1>
+      </div>
+    </div>
+    <div class="cs-results-wrap">
+      <span class="cs-results-label">Results</span>
+      <p class="cs-results-text" id="cs-results">40% increase in feature adoption. 5% increase in good chats.</p>
+    </div>
   </div>
 </section>
 
 <!-- HERO IMAGE -->
-<div class="cs-image-wrap">
-  <div class="cs-image-frame">
+<div class="cs-media sr">
+  <div class="cs-media-frame">
     <img src="hero-bumble.jpg" alt="Bumble Opening Moves case study">
   </div>
 </div>
 
 <!-- TEAM STRIP -->
-<div class="cs-team">
-  <h2 class="cs-team-heading">The team</h2>
-  <div class="cs-team-meta">
-    <div class="cs-meta-block">
-      <svg class="cs-meta-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="7"/><polyline points="12 9 12 12 13.5 13.5"/><path d="M16.51 17.35l-.35 3.83a2 2 0 0 1-2 1.82H9.83a2 2 0 0 1-2-1.82l-.35-3.83m.01-10.7l.35-3.83A2 2 0 0 1 9.83 1h4.35a2 2 0 0 1 2 1.82l.35 3.83"/></svg>
-      <span class="cs-meta-label">Timeframe</span>
-      <span class="cs-meta-value">3 months</span>
+<div class="cs-team sr">
+  <span class="cs-team-label">The team</span>
+  <div class="cs-meta-row">
+    <div class="cs-meta">
+      <svg class="cs-meta-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 3"></path></svg>
+      <span class="cs-meta-name">Timeframe</span>
+      <span class="cs-meta-val">3 months</span>
     </div>
-    <div class="cs-meta-block">
-      <svg class="cs-meta-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg>
-      <span class="cs-meta-label">My role</span>
-      <span class="cs-meta-value">Lead Designer</span>
+    <div class="cs-meta">
+      <svg class="cs-meta-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2L2 7l10 5 10-5-10-5z"></path><path d="M2 17l10 5 10-5"></path><path d="M2 12l10 5 10-5"></path></svg>
+      <span class="cs-meta-name">My role</span>
+      <span class="cs-meta-val">Lead Designer</span>
     </div>
-    <div class="cs-meta-block">
-      <svg class="cs-meta-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-      <span class="cs-meta-label">Squad team</span>
-      <span class="cs-meta-value">Devs, PM &amp; Research</span>
+    <div class="cs-meta">
+      <svg class="cs-meta-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+      <span class="cs-meta-name">Squad</span>
+      <span class="cs-meta-val">Devs, PM &amp; Research</span>
     </div>
   </div>
 </div>
@@ -568,27 +522,22 @@
 <div class="cs-content">
 
   <!-- THE PROBLEM -->
-  <div class="cs-row">
-    <div class="cs-row-left">
-      <h2 class="section-heading">The problem</h2>
-    </div>
-    <div class="cs-row-right">
-      <div class="cs-body">
-        <p>Bumble very publicly announced a rebrand and a new feature, Opening Moves where men could respond to a women's Opening Move prompt. However, the new feature wasn't meeting users' expectations, and usage rapidly declined.</p>
-        <p>At the start of 2024 Bumble released Opening Moves. The feature was designed to alleviate the pressure on women to always have to make the first move after matching, whilst still maintaining their control. This was a huge move for Bumble, away from "Women make the first move" to "Make the next move." However, the mechanics of the feature and how it was messaged were confusing to users.</p>
-        <p>At the same time, Bumble made 40% of its tech force redundant. As the new Connect team who, bar 2 engineers, had never worked on chat before, we needed to get up to speed quickly and deliver.</p>
-        <p style="margin-top:16px"><strong style="font-size:14px; font-weight:600;">*Most Bumble users identify as straight, which influenced the design primarily for heterosexual relationships. However, in California, where it was previously illegal to create a binary design for men and women and non heterosexual relationships the feature accommodates both parties equally.</strong></p>
-      </div>
+  <div class="cs-row sr">
+    <h2 class="cs-row-head">The problem</h2>
+    <div class="cs-row-body cs-body">
+      <p>Bumble very publicly announced a rebrand and a new feature, Opening Moves where men could respond to a women's Opening Move prompt. However, the new feature wasn't meeting users' expectations, and usage rapidly declined.</p>
+      <p>At the start of 2024 Bumble released Opening Moves. The feature was designed to alleviate the pressure on women to always have to make the first move after matching, whilst still maintaining their control. This was a huge move for Bumble, away from "Women make the first move" to "Make the next move." However, the mechanics of the feature and how it was messaged were confusing to users.</p>
+      <p>At the same time, Bumble made 40% of its tech force redundant. As the new Connect team who, bar 2 engineers, had never worked on chat before, we needed to get up to speed quickly and deliver.</p>
+      <p style="margin-top:16px"><strong style="font-size:14px; font-weight:600;">*Most Bumble users identify as straight, which influenced the design primarily for heterosexual relationships. However, in California, where it was previously illegal to create a binary design for men and women and non heterosexual relationships the feature accommodates both parties equally.</strong></p>
     </div>
   </div>
 
   <!-- THE RESULT -->
-  <div class="cs-row">
-    <div class="cs-row-left">
-      <h2 class="section-heading">The Result</h2>
-    </div>
+  <div class="cs-row sr">
+    <h2 class="cs-row-head">The result</h2>
+    <div></div>
   </div>
-  <div class="cs-result-cards">
+  <div class="cs-result-cards sr">
     <div class="cs-deco-card cs-deco-card--dark">
       <div class="cs-deco-card-body">
         <p class="cs-deco-card-text">Risk minimised greatly by adding a review flow</p>
@@ -608,21 +557,19 @@
   </div>
 
   <!-- RESEARCH -->
-  <div class="cs-row">
-    <div class="cs-row-left">
-      <h2 class="section-heading">Research</h2>
-    </div>
-    <div class="cs-row-right">
-      <div class="cs-research-items">
+  <div class="cs-row sr">
+    <h2 class="cs-row-head">Research</h2>
+    <div class="cs-row-body">
+      <div class="cs-research">
         <div class="cs-research-item">
-          <p class="cs-research-label">Women's feedback</p>
+          <span class="cs-research-name">Women's feedback</span>
           <div class="cs-research-body">
             <p><em>"I'm still starting 98% of the conversations. It's frustrating because when I have an opening move I actually want it to be answered but it's completely forgotten"</em></p>
             <p><em>"Having fake conversation starters only makes the situation worse."</em></p>
           </div>
         </div>
         <div class="cs-research-item">
-          <p class="cs-research-label">Men's feedback</p>
+          <span class="cs-research-name">Men's feedback</span>
           <div class="cs-research-body">
             <p><em>"I set an opening move and none of my matches acknowledge it... Most people don't respond to them. They just start the conversation with 'hi' and completely ignores my opening move."</em></p>
           </div>
@@ -632,17 +579,15 @@
   </div>
 
   <!-- PULL QUOTE -->
-  <div class="cs-pull-quote cs-pull-quote--yellow">
+  <div class="cs-pull-quote cs-pull-quote--yellow sr">
     <p class="cs-pull-quote-text">30% of non adopters didn't use the feature because they didn't understand it.</p>
   </div>
 
   <!-- DESIGN -->
-  <div class="cs-row">
-    <div class="cs-row-left">
-      <h2 class="section-heading">Design</h2>
-    </div>
-    <div class="cs-row-right">
-      <p class="cs-sub">Building clarity from the start</p>
+  <div class="cs-row sr">
+    <h2 class="cs-row-head">Design</h2>
+    <div class="cs-row-body">
+      <span class="cs-sub">Building clarity from the start</span>
       <div class="cs-body">
         <p>I kicked off the design process with a workshop to gather ideas from the entire team, as I believe great ideas can come from anyone, not just product. The workshop also established clear design principles to help us prioritise what we work on.</p>
       </div>
@@ -650,7 +595,7 @@
   </div>
 
   <!-- PRINCIPLE CARDS -->
-  <div class="cs-principle-cards">
+  <div class="cs-principle-cards sr">
     <div class="cs-deco-card cs-deco-card--dark">
       <div class="cs-deco-card-body cs-deco-card-body--end">
         <p class="cs-principle-label">Principle 1</p>
@@ -680,15 +625,15 @@
     </div>
   </div>
 
-  <!-- DESIGN CONTINUED (no heading) -->
-  <div class="cs-row">
-    <div class="cs-row-left"><!-- spacing --></div>
-    <div class="cs-row-right">
-      <p class="cs-sub">Building education touchpoints</p>
+  <!-- DESIGN CONTINUED -->
+  <div class="cs-row sr">
+    <div></div>
+    <div class="cs-row-body">
+      <span class="cs-sub">Building education touchpoints</span>
       <div class="cs-body">
         <p>The first job the content designer and I worked on was doing an audit of all the education pieces around Opening Moves. This way she was able to tackle each piece and give a clear narrative, this saw a 5% increase in feature usage.</p>
       </div>
-      <p class="cs-sub" style="margin-top: 24px;">Allowing freedom to show personality</p>
+      <span class="cs-sub" style="margin-top: 24px;">Allowing freedom to show personality</span>
       <div class="cs-body">
         <p>Our large scale survey results showed that the fixed nature of the options for opening moves made users feel "fake" and disingenuous, we wanted to allow custom opening moves through image and text.</p>
       </div>
@@ -696,17 +641,15 @@
   </div>
 
   <!-- SCREENSHOT 1 -->
-  <div class="cs-white-card">
+  <div class="cs-white-card sr">
     <img src="screenshot-1.png" alt="Opening Moves design — education and customisation">
   </div>
 
   <!-- BLOCKERS -->
-  <div class="cs-row">
-    <div class="cs-row-left">
-      <h2 class="section-heading">Blockers</h2>
-    </div>
-    <div class="cs-row-right">
-      <p class="cs-sub">Safety</p>
+  <div class="cs-row sr">
+    <h2 class="cs-row-head">Blockers</h2>
+    <div class="cs-row-body">
+      <span class="cs-sub">Safety</span>
       <div class="cs-body">
         <p>The ideas I wanted to give this feature centred around individuality, allowing users to show more of their personality and themselves. But that meant people writing their own Opening Moves, adding their own images, and I wanted to ensure after the backlash of the MVP this was done in a safe way. So the content designer and I partnered with the safety team and worked on ways we can use AI to gather sentiment of messages and flag inappropriate images. These required their own flows and working with the customer service team.</p>
       </div>
@@ -714,7 +657,7 @@
   </div>
 
   <!-- PHONE PANEL -->
-  <div class="cs-phone-panel">
+  <div class="cs-phone-panel cs-phone-panel--black sr">
     <div class="cs-phone-panel-phone">
       <img src="phone-a.png" alt="Bumble Opening Moves — review flow screen">
     </div>
@@ -726,11 +669,11 @@
     </div>
   </div>
 
-  <!-- EASE CONFUSION (no heading) -->
-  <div class="cs-row">
-    <div class="cs-row-left"><!-- spacing --></div>
-    <div class="cs-row-right">
-      <p class="cs-sub">Ease confusion</p>
+  <!-- EASE CONFUSION -->
+  <div class="cs-row sr">
+    <div></div>
+    <div class="cs-row-body">
+      <span class="cs-sub">Ease confusion</span>
       <div class="cs-body">
         <p>One of the features that added to the confusion was that men could write an opening move but women would not be able to write directly back to the opening move, so a message appeared without context if they did respond, but most likely women gave up. I designed the feature so the functionality worked equally for men and women eliminating that confusion.</p>
       </div>
@@ -738,21 +681,19 @@
   </div>
 
   <!-- SCREENSHOT 3 -->
-  <div class="cs-white-card">
+  <div class="cs-white-card sr">
     <img src="screenshot-3.png" alt="Opening Moves redesigned flow for men and women">
   </div>
 
   <!-- LESSONS LEARNED -->
-  <div class="cs-row">
-    <div class="cs-row-left">
-      <h2 class="section-heading">Lessons learned</h2>
-    </div>
-    <div class="cs-row-right">
-      <p class="cs-sub">Patience</p>
+  <div class="cs-row sr">
+    <h2 class="cs-row-head">Lessons learned</h2>
+    <div class="cs-row-body">
+      <span class="cs-sub">Patience</span>
       <div class="cs-body">
         <p>When working on this project, it was easy to spot changes that needed to be made. However, as a new team, devs needed time to work out the tech space. I created a design backlog in Figma which meant, working with the devs, we were able to efficiently scope each project and then prioritise with our PM.</p>
       </div>
-      <p class="cs-sub" style="margin-top: 24px;">Build trust</p>
+      <span class="cs-sub" style="margin-top: 24px;">Build trust</span>
       <div class="cs-body">
         <p>With our success from Opening Moves my Content designer and I were able to lead the team in a 2 week sprint to gather feature ideas and concepts. The result was a series of low and high effort features that we were able to act upon.</p>
       </div>
@@ -761,33 +702,31 @@
 
 </div><!-- /cs-content -->
 
-<!-- LET'S WORK TOGETHER -->
+<!-- CONTACT -->
 <section class="contact" id="contact" aria-labelledby="contact-heading">
-  <div class="contact-grid">
-    <div>
-      <img src="../assets/alex-contact.jpg" alt="Alex Cain" class="contact-photo">
-    </div>
+  <div class="contact-grid sr">
+    <img src="../assets/alex-contact.jpg" alt="Alex Cain" class="contact-photo">
     <div>
       <h2 class="contact-heading" id="contact-heading">Get in touch!</h2>
-      <p class="contact-blurb">Always happy to have a chat or a coffee, whether it's a big product challenge or just a conversation, feel free to reach&nbsp;out.</p>
+      <p class="contact-blurb">Always happy to have a chat or a coffee, whether it&#8217;s a big product challenge or just a conversation, feel free to reach&nbsp;out.</p>
       <form class="contact-form" action="https://formsubmit.co/hi@alexecain.com" method="POST">
         <input type="hidden" name="_subject" value="New message from portfolio">
         <input type="hidden" name="_captcha" value="false">
-        <div class="form-name-row">
+        <div class="form-row">
           <input type="text"  class="form-field" name="first_name" placeholder="First name" autocomplete="given-name" required>
           <input type="text"  class="form-field" name="last_name"  placeholder="Last name"  autocomplete="family-name">
         </div>
         <input type="email" class="form-field" name="email" placeholder="Email" autocomplete="email" required>
         <textarea class="form-field" name="message" placeholder="What can I help you with..." required></textarea>
-        <button type="submit" class="form-submit">Send</button>
+        <button type="submit" class="form-submit">Send message</button>
       </form>
     </div>
   </div>
 </section>
 
-<!-- FOOTER BAR -->
+<!-- FOOTER -->
 <footer class="footer-bar">
-  <p class="footer-copy">© 2026 Alex Cain · Evidence | Strategy | Design</p>
+  <p class="footer-copy">&#169; 2026 Alex Cain &middot; Evidence | Strategy | Design</p>
   <ul class="footer-links" role="list">
     <li><a href="mailto:hi@alexecain.com">Email</a></li>
     <li><a href="https://www.linkedin.com/in/alexandraecain/" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
@@ -795,52 +734,39 @@
   </ul>
 </footer>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 <script>
+  // Nav scroll collapse
+  var nav = document.getElementById('main-nav');
+  window.addEventListener('scroll', function() {
+    nav.classList.toggle('is-scrolled', window.scrollY > 60);
+  }, { passive: true });
+
+  // Hamburger menu
   function toggleMenu(btn) {
-    const drawer = document.getElementById('navDrawer');
-    const open = drawer.classList.toggle('open');
+    var drawer = document.getElementById('navDrawer');
+    var open = drawer.classList.toggle('open');
     btn.setAttribute('aria-expanded', String(open));
   }
   function closeMenu() {
     document.getElementById('navDrawer').classList.remove('open');
-    const btn = document.querySelector('.nav-hamburger');
+    var btn = document.querySelector('.nav-hamburger');
     if (btn) btn.setAttribute('aria-expanded', 'false');
   }
 
-  // Nav scroll collapse
-  (function () {
-    var nav = document.querySelector('.nav');
-    if (!nav) return;
-    function onScroll() {
-      nav.classList.toggle('is-scrolled', window.scrollY > 60);
-    }
-    window.addEventListener('scroll', onScroll, { passive: true });
-  })();
+  // Hero entrance animations
+  gsap.to('#cs-title',   { y: '0%', duration: 1, ease: 'power3.out', delay: 0.1 });
+  gsap.to('#cs-results', { opacity: 1, y: 0, duration: 0.75, ease: 'power2.out', delay: 0.35 });
 
-  // GSAP scroll animations
-  window.addEventListener('DOMContentLoaded', function () {
-    if (typeof gsap === 'undefined') return;
-    gsap.registerPlugin(ScrollTrigger);
-
-    // Hero entrance
-    gsap.from('.cs-hero-title', { y: 24, opacity: 0, duration: 0.65, ease: 'power2.out', delay: 0.1 });
-    gsap.from('.cs-hero-right', { y: 20, opacity: 0, duration: 0.65, ease: 'power2.out', delay: 0.25 });
-    gsap.from('.cs-image-frame', { y: 28, opacity: 0, duration: 0.7, ease: 'power2.out', delay: 0.4 });
-
-    // Team strip
-    gsap.from('.cs-team', {
-      y: 20, opacity: 0, duration: 0.55, ease: 'power2.out',
-      scrollTrigger: { trigger: '.cs-team', start: 'top 88%', toggleActions: 'play none none none' }
+  // Scroll reveal
+  var srEls = document.querySelectorAll('.sr');
+  var revealObserver = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) { e.target.classList.add('in'); revealObserver.unobserve(e.target); }
     });
-
-    // Each content row
-    document.querySelectorAll('.cs-row, .cs-pull-quote, .cs-full-image, .cs-phone-panel, .cs-white-card, .cs-result-cards, .cs-principle-cards').forEach(function (el) {
-      gsap.from(el, {
-        y: 28, opacity: 0, duration: 0.65, ease: 'power2.out',
-        scrollTrigger: { trigger: el, start: 'top 87%', toggleActions: 'play none none none' }
-      });
-    });
-  });
+  }, { threshold: 0.1 });
+  srEls.forEach(function(el) { revealObserver.observe(el); });
 </script>
+
 </body>
 </html>
